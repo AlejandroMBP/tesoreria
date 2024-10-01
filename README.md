@@ -23,8 +23,8 @@ Sigue estos pasos para ejecutar el proyecto:
 
 1. **Clona el repositorio:**
    <pre style="color: #4CAF50;">
-   git clone https://github.com/AlejandroMBP/tu_repositorio.git
-   cd tu_repositorio
+   git clone https://github.com/AlejandroMBP/tesoreria.git || git clone git@github.com:AlejandroMBP/tesoreria.git
+   cd tesoreria
    </pre>
 
 2. **Instala las dependencias:**
