@@ -21,11 +21,22 @@ Este es un proyecto desarrollado con Laravel 10. Aquí hay algunos detalles sobr
    git clone https://github.com/tu_usuario/tu_repositorio.git
    cd tu_repositorio
 2. Instala las dependencias:
-   '''bash
+   ```bash
        composer install
 
 4. Configura el archivo .env:
-5. Generar clave de aplicacion:
-6. Ejecutar migraciones (si es necesario):
-7. Hacer correr el servidor local: 
+   ```bash
+   cp .env.example .env
+
+6. Generar clave de aplicacion:
+   ```bash
+   php artisan key:generate
+
+8. Ejecutar migraciones (si es necesario):
+   ```bash
+   php artisan migrate
+
+10. Hacer correr el servidor local: 
+    ```bash
+    php artisan serve
 
