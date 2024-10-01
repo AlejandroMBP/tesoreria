@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h1 align="center">Proyecto Laravel 10</h1>
+<h1 align="center">🚀 Proyecto Laravel 10</h1>
 
 <p align="center">
   <strong>Un proyecto desarrollado con Laravel 10</strong>
@@ -12,7 +12,7 @@
 
 ---
 
-## 🚀 Requisitos
+## 🌟 Requisitos
 
 - PHP >= 8.1
 - Composer
@@ -22,27 +22,48 @@
 Sigue estos pasos para ejecutar el proyecto:
 
 1. **Clona el repositorio:**
-   ```bash
+   <pre style="color: #4CAF50;">
    git clone https://github.com/AlejandroMBP/tu_repositorio.git
    cd tu_repositorio
+   </pre>
 
-2. Instala las dependencias:
-   ```bash
+2. **Instala las dependencias:**
+   <pre style="color: #2196F3;">
    composer install
+   </pre>
 
-4. Configura el archivo .env:
-   ```bash
+3. **Configura el archivo `.env`:**
+   <pre style="color: #FF9800;">
    cp .env.example .env
+   </pre>
 
-6. Generar clave de aplicacion:
-   ```bash
+4. **Genera la clave de aplicación:**
+   <pre style="color: #9C27B0;">
    php artisan key:generate
+   </pre>
 
-8. Ejecutar migraciones (si es necesario):
-   ```bash
+5. **Ejecuta las migraciones (si es necesario):**
+   <pre style="color: #FF5722;">
    php artisan migrate
+   </pre>
 
-10. Hacer correr el servidor local: 
-    ```bash
-    php artisan serve
+6. **Inicia el servidor local:**
+   <pre style="color: #3F51B5;">
+   php artisan serve
+   </pre>
 
+---
+
+## 🎉 ¡Listo!
+
+Ahora deberías poder acceder a tu aplicación en `http://localhost:8000`.
+
+## 📚 Más información
+
+Para más detalles sobre cómo utilizar Laravel, consulta la [documentación oficial](https://laravel.com/docs).
+
+---
+
+<p align="center">
+  <i>¡Disfruta desarrollando con Laravel!</i>
+</p>
