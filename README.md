@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/tu_usuario" target="_blank">
-    <img src="[URL_DE_TU_FOTO_DE_PERFIL](https://avatars.githubusercontent.com/u/155660138?v=4&size=64)" width="150" alt="AlejandroMBP">
+    <img src="https://avatars.githubusercontent.com/u/155660138?s=400&u=9b6d536e9f012ef961054861ecae72c6ff13bace&v=4" width="150" alt="AlejandroMBP">
   </a>
 </p>
 
