@@ -20,4 +20,12 @@ Este es un proyecto desarrollado con Laravel 10. Aquí hay algunos detalles sobr
    ```bash
    git clone https://github.com/tu_usuario/tu_repositorio.git
    cd tu_repositorio
+2. Instala las dependencias:
+   '''bash
+       composer install
+
+4. Configura el archivo .env:
+5. Generar clave de aplicacion:
+6. Ejecutar migraciones (si es necesario):
+7. Hacer correr el servidor local: 
 
