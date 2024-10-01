@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/AlejandroMBP" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/155660138?s=400&u=9b6d536e9f012ef961054861ecae72c6ff13bace&v=4" width="150" alt="AlejandroMBP">
+    <img src="https://avatars.githubusercontent.com/u/155660138?s=400&u=9b6d536e9f012ef961054861ecae72c6ff13bace&v=4" width="150" alt="AlejandroMBP" style="border-radius: 50%; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);">
   </a>
 </p>
 
@@ -23,8 +23,9 @@ Sigue estos pasos para ejecutar el proyecto:
 
 1. **Clona el repositorio:**
    <pre style="color: #4CAF50;">
-   1.1    git clone https://github.com/AlejandroMBP/tesoreria.git o
-   1.2    git clone git@github.com:AlejandroMBP/tesoreria.git
+   git clone https://github.com/AlejandroMBP/tesoreria.git
+   o
+   git clone git@github.com:AlejandroMBP/tesoreria.git
    cd tesoreria
    </pre>
 
