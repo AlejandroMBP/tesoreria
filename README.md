@@ -12,7 +12,6 @@ Este es un proyecto desarrollado con Laravel 10. Aquí hay algunos detalles sobr
 
 - PHP >= 8.1
 - Composer
-- Un servidor web (Apache, Nginx, etc.)
 
 ### Instalación
 
@@ -22,7 +21,7 @@ Este es un proyecto desarrollado con Laravel 10. Aquí hay algunos detalles sobr
    cd tu_repositorio
 2. Instala las dependencias:
    ```bash
-       composer install
+   composer install
 
 4. Configura el archivo .env:
    ```bash
