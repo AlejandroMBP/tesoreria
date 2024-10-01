@@ -23,7 +23,8 @@ Sigue estos pasos para ejecutar el proyecto:
 
 1. **Clona el repositorio:**
    <pre style="color: #4CAF50;">
-   git clone https://github.com/AlejandroMBP/tesoreria.git || git clone git@github.com:AlejandroMBP/tesoreria.git
+   1.1    git clone https://github.com/AlejandroMBP/tesoreria.git o
+   1.2    git clone git@github.com:AlejandroMBP/tesoreria.git
    cd tesoreria
    </pre>
 
