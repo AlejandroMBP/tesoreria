@@ -78,7 +78,7 @@ $(function () {
     $(".compose-mail-popup").show()
   }), $(".compose-mail-close").on("click", function() {
     $(".compose-mail-popup").hide()
-  }), 
+  }),
 
 
   /* chat */
