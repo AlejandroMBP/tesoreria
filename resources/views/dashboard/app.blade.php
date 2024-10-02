@@ -38,6 +38,7 @@
     <!--end top header-->
 
 
+<<<<<<< HEAD
     <!--start sidebar-->
     @extends('dashboard.layouts.sidebar')
     <!--end sidebar-->
@@ -50,6 +51,17 @@
     <!--start footer-->
     @extends('dashboard.layouts.footer')
     <!--end footer-->
+=======
+   <!--start sidebar-->
+@extends('dashboard.layouts.sidebar')
+<!--end sidebar-->
+
+    @yield('contenido')
+
+   <!--start footer-->
+@extends('dashboard.layouts.footer')
+  <!--end footer-->
+>>>>>>> a2e4e59 (ajuste de vista usuarios)
 
     <!--cambio de color del sistema-->
     @extends('dashboard.layouts.colores')
@@ -76,3 +88,7 @@
 </body>
 
 </html>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a2e4e59 (ajuste de vista usuarios)

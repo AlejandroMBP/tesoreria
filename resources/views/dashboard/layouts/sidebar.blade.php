@@ -1,5 +1,6 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
+<<<<<<< HEAD
         <div class="logo-icon">
             <img src="assets/images/logo-icon.png" class="logo-img" alt="">
         </div>
@@ -9,6 +10,17 @@
         <div class="sidebar-close">
             <span class="material-icons-outlined">close</span>
         </div>
+=======
+      <div class="logo-icon">
+        <img src="assets/images/logo-icon.png" class="logo-img" alt="">
+      </div>
+      <div class="logo-name flex-grow-1">
+        <h5 class="mb-0">tesoreria</h5>
+      </div>
+      <div class="sidebar-close">
+        <span class="material-icons-outlined">close</span>
+      </div>
+>>>>>>> a2e4e59 (ajuste de vista usuarios)
     </div>
     <div class="sidebar-nav">
         <!--navigation-->
