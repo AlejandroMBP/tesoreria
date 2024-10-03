@@ -17,20 +17,30 @@
         <!--navigation-->
         <ul class="metismenu" id="sidenav">
             <li>
-                <a href="javascript:;" class="has-arrow">
+                <a class="has-arrow" href="javascript:;">
                     <div class="parent-icon"><i class="material-icons-outlined">home</i>
                     </div>
-                    <div class="menu-title">Administracion</div>
+                    <div class="menu-title">Administrador</div>
                 </a>
                 <ul>
                     <li><a href="{{ route('metricas') }}" class="load-content"><i
                                 class="material-icons-outlined">arrow_right</i>Metricas</a>
                     </li>
-                    <li><a href="{{ route('usuario.index') }}" class="load-content"><i
-                                class="material-icons-outlined">arrow_right</i>usuarios</a>
+                    <li><a class="has-arrow" href="javascript:;"><i
+                                class="material-icons-outlined">arrow_right</i>Usuarios</a>
+                        <ul>
+                            <li><a href="{{ route('usuario.index') }}"><i
+                                        class="material-icons-outlined">arrow_right</i>Listar</a></li>
+
+                            <li><a href="auth-boxed-register.html"><i
+                                        class="material-icons-outlined">arrow_right</i>roles</a></li>
+                            <li><a href="auth-boxed-forgot-password.html"><i
+                                        class="material-icons-outlined">arrow_right</i>permisos</a></li>
+                        </ul>
                     </li>
                 </ul>
             </li>
+
             <li>
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="material-icons-outlined">widgets</i>
