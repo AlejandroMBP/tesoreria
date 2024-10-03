@@ -1,26 +1,17 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
-<<<<<<< HEAD
+
+
         <div class="logo-icon">
             <img src="assets/images/logo-icon.png" class="logo-img" alt="">
         </div>
         <div class="logo-name flex-grow-1">
-            <h5 class="mb-0">Maxton</h5>
+            <h5 class="mb-0">tesoreria</h5>
         </div>
         <div class="sidebar-close">
             <span class="material-icons-outlined">close</span>
         </div>
-=======
-      <div class="logo-icon">
-        <img src="assets/images/logo-icon.png" class="logo-img" alt="">
-      </div>
-      <div class="logo-name flex-grow-1">
-        <h5 class="mb-0">tesoreria</h5>
-      </div>
-      <div class="sidebar-close">
-        <span class="material-icons-outlined">close</span>
-      </div>
->>>>>>> a2e4e59 (ajuste de vista usuarios)
+
     </div>
     <div class="sidebar-nav">
         <!--navigation-->
@@ -29,14 +20,14 @@
                 <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon"><i class="material-icons-outlined">home</i>
                     </div>
-                    <div class="menu-title">Dashboard</div>
+                    <div class="menu-title">Administracion</div>
                 </a>
                 <ul>
                     <li><a href="{{ route('metricas') }}" class="load-content"><i
-                                class="material-icons-outlined">arrow_right</i>Analysis</a>
+                                class="material-icons-outlined">arrow_right</i>Metricas</a>
                     </li>
                     <li><a href="{{ route('usuario.index') }}" class="load-content"><i
-                                class="material-icons-outlined">arrow_right</i>eCommerce</a>
+                                class="material-icons-outlined">arrow_right</i>usuarios</a>
                     </li>
                 </ul>
             </li>
