@@ -23,4 +23,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])
 ->group(function () {
     Route::get('/dashboard',[administradorController::class,'index'])->name('metricas');
     Route::get('/usuarios',[usuarioController::class,'index'])->name('usuario.index');
+    Route::put('/{id}',[usuarioController::class,'cambioEstado'])->name('usuario.eliminar');
 });

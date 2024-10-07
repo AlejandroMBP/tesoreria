@@ -15,22 +15,7 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary">Settings</button>
-                        <button type="button"
-                            class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <!--end breadcrumb-->
             <div class="row">
@@ -49,26 +34,28 @@
                                     </div>
                                     <div class="d-flex align-items-center gap-5">
                                         <div class="">
-                                            <h4 class="mb-1 fw-semibold d-flex align-content-center">$65.4K<i
+                                            <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $usActivos }}<i
                                                     class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                             </h4>
-                                            <p class="mb-3">Today's Sales</p>
+                                            <p class="mb-3">Usuarios Activos</p>
                                             <div class="progress mb-0" style="height:5px;">
                                                 <div class="progress-bar bg-grd-success" role="progressbar"
-                                                    style="width: 60%" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
+                                                    style="width: {{ ($usActivos / ($usActivos + $usInactivos)) * 100 }}%"
+                                                    aria-valuenow="{{ ($usActivos / ($usActivos + $usInactivos)) * 100 }}"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="vr"></div>
                                         <div class="">
-                                            <h4 class="mb-1 fw-semibold d-flex align-content-center">78.4%<i
+                                            <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $usInactivos }}<i
                                                     class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                             </h4>
-                                            <p class="mb-3">Growth Rate</p>
+                                            <p class="mb-3">Ausuarios inactivos</p>
                                             <div class="progress mb-0" style="height:5px;">
                                                 <div class="progress-bar bg-grd-danger" role="progressbar"
-                                                    style="width: 60%" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
+                                                    style="width: {{ ($usInactivos / ($usActivos + $usInactivos)) * 100 }}%"
+                                                    aria-valuenow="{{ ($usInactivos / ($usActivos + $usInactivos)) * 100 }}"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -82,47 +69,123 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-12">
-                    <h6 class="mb-0 text-uppercase">Dark Table</h6>
-                    <hr>
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table mb-0 table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
-                                        <th scope="col">estado</th>
-                                        <th scope="col">editar</th>
-                                        <th scope="col">eliminar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="activos-tab" data-bs-toggle="tab" data-bs-target="#activos"
+                            type="button" role="tab" aria-controls="activos" aria-selected="true">Usuarios
+                            Activos</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="inactivos-tab" data-bs-toggle="tab" data-bs-target="#inactivos"
+                            type="button" role="tab" aria-controls="inactivos" aria-selected="false">Usuarios
+                            Inactivos</button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="myTabContent">
+                    <!-- Usuarios Activos -->
+                    <div class="tab-pane fade show active" id="activos" role="tabpanel" aria-labelledby="activos-tab">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="mb-0 text-uppercase">Usuarios Activos</h6>
+                                <hr>
+                                <table class="table mb-0 table-dark table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nombre usuario</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Rol</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Editar</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($usuariosActivos as $us)
+                                            <tr>
+                                                <td class="align-middle">{{ $loop->iteration }}</td>
+                                                <td class="align-middle">{{ $us->name }}</td>
+                                                <td class="align-middle">{{ $us->email }}</td>
+                                                <td class="align-middle">rol</td>
+                                                <td class="align-middle">{{ $us->estado == 1 ? 'Activo' : 'Inactivo' }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button type="button"
+                                                        class="btn btn-warning btn-circle raised rounded-circle">
+                                                        <i class="material-icons-outlined">edit</i>
+                                                    </button>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <form action="{{ route('usuario.eliminar', $us->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-circle raised rounded-circle">
+                                                            <i class="material-icons-outlined">delete</i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Usuarios Inactivos -->
+                    <div class="tab-pane fade" id="inactivos" role="tabpanel" aria-labelledby="inactivos-tab">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="mb-0 text-uppercase">Usuarios Inactivos</h6>
+                                <hr>
+                                <table class="table mb-0 table-dark table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nombre usuario</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Rol</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Editar</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($usuariosInactivos as $us)
+                                            <tr>
+                                                <td class="align-middle">{{ $loop->iteration }}</td>
+                                                <td class="align-middle">{{ $us->name }}</td>
+                                                <td class="align-middle">{{ $us->email }}</td>
+                                                <td class="align-middle">rol</td>
+                                                <td class="align-middle">{{ $us->estado == 1 ? 'Activo' : 'Inactivo' }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    <button type="button"
+                                                        class="btn btn-warning btn-circle raised rounded-circle">
+                                                        <i class="material-icons-outlined">edit</i>
+                                                    </button>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <form action="{{ route('usuario.eliminar', $us->id) }}"
+                                                        method="POST">
+                                                        @method('PUT')
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-circle raised rounded-circle">
+                                                            <i class="material-icons-outlined">delete</i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </main>
 @endsection
