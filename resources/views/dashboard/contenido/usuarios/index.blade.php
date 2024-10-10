@@ -16,6 +16,16 @@
                     </nav>
                 </div>
 
+                <div class="ms-auto">
+                    <button type="button" class="btn btn-grd btn-grd-branding px-5" onclick="openCreateModal()">Crear
+                        Usuarios</button>
+                </div>
+
+                {{-- <button type="button" class="btn btn-warning btn-circle rounded-circle"
+                    onclick="openEditModal({{ $us->id }}, '{{ addslashes($us->name) }}','{{ $us->username }}', '{{ $us->email }}')">
+                    <i class="material-icons-outlined">edit</i>
+                </button> --}}
+
             </div>
             <!--end breadcrumb-->
             <div class="row">
@@ -69,6 +79,7 @@
                         </div>
                     </div>
                 </div>
+
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="activos-tab" data-bs-toggle="tab" data-bs-target="#activos"
@@ -81,6 +92,7 @@
                             Inactivos</button>
                     </li>
                 </ul>
+
                 <div class="tab-content mt-3" id="myTabContent">
                     <!-- Usuarios Activos -->
                     <div class="tab-pane fade show active" id="activos" role="tabpanel" aria-labelledby="activos-tab">
@@ -92,7 +104,8 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Nombre usuario</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Nombre de usuario</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Rol</th>
                                             <th scope="col">Estado</th>
@@ -105,18 +118,21 @@
                                             <tr>
                                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                                 <td class="align-middle">{{ $us->name }}</td>
+                                                <td class="align-middle">{{ $us->username }}</td>
                                                 <td class="align-middle">{{ $us->email }}</td>
-                                                <td class="align-middle">rol</td>
+                                                <td class="align-middle">{{ $us->getRoleNames()->implode(',') }}</td>
                                                 <td class="align-middle">{{ $us->estado == 1 ? 'Activo' : 'Inactivo' }}
                                                 </td>
                                                 <td class="align-middle">
+
                                                     <button type="button"
-                                                        class="btn btn-warning btn-circle raised rounded-circle">
+                                                        class="btn btn-warning btn-circle rounded-circle"
+                                                        onclick="openEditModal({{ $us->id }}, '{{ addslashes($us->name) }}','{{ $us->username }}', '{{ $us->email }}')">
                                                         <i class="material-icons-outlined">edit</i>
                                                     </button>
                                                 </td>
                                                 <td class="align-middle">
-                                                    <form action="{{ route('usuario.eliminar', $us->id) }}"
+                                                    <form action="{{ route('usuario.cambioEstado', $us->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
@@ -144,6 +160,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
+                                            <th scope="col">Nombre</th>
                                             <th scope="col">Nombre usuario</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Rol</th>
@@ -157,18 +174,20 @@
                                             <tr>
                                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                                 <td class="align-middle">{{ $us->name }}</td>
+                                                <td class="align-middle">{{ $us->username }}</td>
                                                 <td class="align-middle">{{ $us->email }}</td>
-                                                <td class="align-middle">rol</td>
+                                                <td class="align-middle">{{ $us->getRoleNames()->implode(',') }}</td>
                                                 <td class="align-middle">{{ $us->estado == 1 ? 'Activo' : 'Inactivo' }}
                                                 </td>
                                                 <td class="align-middle">
                                                     <button type="button"
-                                                        class="btn btn-warning btn-circle raised rounded-circle">
+                                                        class="btn btn-warning btn-circle rounded-circle"
+                                                        onclick="openEditModal({{ $us->id }}, '{{ addslashes($us->name) }}','{{ $us->username }}','{{ $us->email }}')">
                                                         <i class="material-icons-outlined">edit</i>
                                                     </button>
                                                 </td>
                                                 <td class="align-middle">
-                                                    <form action="{{ route('usuario.eliminar', $us->id) }}"
+                                                    <form action="{{ route('usuario.cambioEstado', $us->id) }}"
                                                         method="POST">
                                                         @method('PUT')
                                                         @csrf
@@ -188,4 +207,35 @@
                 </div>
             </div>
     </main>
+    @include('dashboard.contenido.usuarios.crear')
+    @include('dashboard.contenido.usuarios.edit')
 @endsection
+@push('scripts')
+    <script>
+        function openEditModal(id, name, username, email, role) {
+
+            // Nota. Asignamos los campos del formulario del modal
+            document.getElementById('userId').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('username').value = username;
+            document.getElementById('userEmail').value = email;
+
+            //estamos asignando el rol al usuario ya creado
+            document.getElementById('userRole').value = role;
+
+            // Actualizamos mediante la ruta update
+            var form = document.getElementById('editUserForm');
+            form.action = '{{ route('usuario.update', ':id') }}'.replace(':id', id);
+
+            // Mostramos el modal
+            var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            editModal.show();
+        }
+
+        function openCreateModal() {
+
+            var createModal = new bootstrap.Modal(document.getElementById('createUserModal'));
+            createModal.show();
+        }
+    </script>
+@endpush

@@ -32,7 +32,7 @@
                             <li><a href="{{ route('usuario.index') }}"><i
                                         class="material-icons-outlined">arrow_right</i>Listar</a></li>
 
-                            <li><a href="auth-boxed-register.html"><i
+                            <li><a href="{{ route('roles.index') }}"><i
                                         class="material-icons-outlined">arrow_right</i>roles</a></li>
                             <li><a href="auth-boxed-forgot-password.html"><i
                                         class="material-icons-outlined">arrow_right</i>permisos</a></li>
