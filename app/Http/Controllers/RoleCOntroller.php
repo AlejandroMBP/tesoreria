@@ -10,38 +10,73 @@ class RoleCOntroller extends Controller
 {
     public function index(){
         $roles = Role::all();
-        return view('roles.index', compact('roles'));
+        $permissions = Permission::all();
+        return view('roles.index',[
+            'roles'=>$roles,
+            'permissions'=>$permissions
+    ]);
     }
     public function create(){
         $permissions = Permission::all();
         return view('roles.create', compact('permissions'));
     }
     public function store(Request $request){
-        $request->validate([
-            'name' => 'required|unique:roles,name',
-            'permissions' => 'required|array',
-        ]);
-        $role = Role::create(['name'=> $request->name]);
-        $role -> syncPermissions($request->permissions);
-
-        return redirect()->route('role.index')->with('success','Rol creado exitosamente');
-    }
-    public function edit(Role $role){
-        $permissions = Permission::all();
-        return view('roles.editar', compact('role','permissions'));
-    }
-    public function update(Request $request, Role $role){
-        $request->validate([
-            'name' => 'required|unique:roles,name,'.$role->id,
-            'permissions' => 'required|array',
+        $validate = $request->validate([
+            //'name' => 'required|unique:roles,name',
+            'name'=>'required|string|max:255',
+            'permissions'=>'nullable|array',
+            'permissions' => 'exists:permissions,name',
         ]);
 
-        $role -> name = $request->name;
-        $role -> save();
-        $role -> syncPermissions($request->permissions);
+        $role = Role::create(['name'=> $validate['name'],'guard_name'=>'web']);
+
+        if (isset($validate['permissions'])) {
+            $role -> syncPermissions($validate['permissions']);
+        }
+
+        return redirect()->route('roles.index')->with('success','Rol creado exitosamente');
     }
-    public function destroy(Role $role){
-        $role->delete();
-        return redirect()->route('roles.index')->with('success','Rol eliminado exitosamente');
+
+    // public function edit(Role $role){
+    //     $permissions = Permission::all();
+    //     return view('roles.editar', compact('role','permissions'));
+    // }
+    public function update(Request $request, Role $role,$id){
+        //validamos los datos del request
+        $validate = $request->validate([
+            'name' => 'required|string|max:255',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,name',
+        ]);
+
+        $role = Role::findOrFail($id);
+        $role->update([
+        'name' => $validate['name'],
+        'guard_name' => 'web'
+        ]);
+
+        if (isset($validate['permissions'])) {
+            $role->syncPermissions($validate['permissions']);
+        }
+        // $role -> syncPermissions($request->permissions);
+        return redirect()->route('roles.index')->with('success','Rol actualizado correctamente');
     }
+    public function destroy($id)
+{
+    // Buscar el rol por ID
+    $role = Role::findOrFail($id);
+
+    // Verificar si el rol tiene usuarios asignados
+    if ($role->users()->count() > 0) {
+        return redirect()->route('roles.index')->with('error', 'No se puede eliminar el rol porque está asignado a usuarios.');
+    }
+
+    // Eliminar el rol
+    $role->delete();
+
+    // Redirigir a la lista de roles con un mensaje de éxito
+    return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente');
+}
+
+
 }

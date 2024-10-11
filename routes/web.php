@@ -37,10 +37,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
 
         // rutas de roles
         Route::get('roles', [RoleCOntroller::class,'index'])->name('roles.index');
-        Route::get('/roles/{edit}',[RoleCOntroller::class,'edit'])->name('roles.edit');
-        Route::post('/roles/destroy/{id}',[RoleCOntroller::class,'destroy'])->name('roles.destroy');
-        Route::post('/roles/create',[RoleCOntroller::class,'create'])->name('roles.create');
-        Route::post('/roles/create',[RoleCOntroller::class,'create'])->name('roles.create');
-
+        // Route::get('/roles/{edit}',[RoleCOntroller::class,'edit'])->name('roles.edit');
+        Route::post('/roles/create',[RoleCOntroller::class,'store'])->name('roles.store');
+        Route::put('/roles/update/{roles}',[RoleCOntroller::class,'update'])->name('roles.update');
+        Route::delete('/roles/destroy/{id}',[RoleCOntroller::class,'destroy'])->name('roles.destroy');
     });
 });

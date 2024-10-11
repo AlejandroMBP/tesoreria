@@ -28,6 +28,8 @@
     <link href="{{ asset('sass/semi-dark.css') }}" rel="stylesheet">
     <link href="{{ asset('sass/semi-dark.css') }}" rel="stylesheet">
     <link href="{{ asset('sass/responsive.css') }}" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 </head>
 

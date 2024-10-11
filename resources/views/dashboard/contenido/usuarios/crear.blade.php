@@ -58,10 +58,10 @@
         </div>
     </div>
 </div>
-/*
+{{-- /*
 esta parte de js se puede agregar a un archivo por el momento lo mantengo para
 recordar las funciones
-*/
+*/ --}}
 <script>
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password_create');

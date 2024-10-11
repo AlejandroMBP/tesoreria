@@ -1,43 +1,34 @@
-@extends('dashboard.app')
+<div class="modal fade" id="createRolModal" tabindex="-1" aria-labelledby="createRolModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 py-2 bg-grd-info">
+                <h5 class="modal-title" id="createRolModalLabel">Crear Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createRolForm" action="" method="POST">
+                    @csrf
 
-@section('contenido')
-    <main class="main-wrapper">
-        <div class="main-content">
-            <h6 class="mb-0 text-uppercase">Crear Nuevo Rol</h6>
-            <hr>
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form action="{{ route('roles.store') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nombre del Rol</label>
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Nombre del rol"
-                        required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Permisos</label>
-                    <div>
-                        @foreach ($permissions as $permission)
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="permissions[]"
-                                    id="perm{{ $permission->id }}" value="{{ $permission->name }}">
-                                <label class="form-check-label"
-                                    for="perm{{ $permission->id }}">{{ $permission->name }}</label>
-                            </div>
-                        @endforeach
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="name_create" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name_create" name="name" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="username_create" class="form-label">Nombre Usuario</label>
+                            <input type="text" class="form-control" id="username_create" name="username" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="userEmail_create" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="userEmail_create" name="email" required>
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-success">Crear Rol</button>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-grd-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-grd-info">Crear Usuario</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </main>
-@endsection
+    </div>
+</div>

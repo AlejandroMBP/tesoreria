@@ -21,11 +21,6 @@
                         Usuarios</button>
                 </div>
 
-                {{-- <button type="button" class="btn btn-warning btn-circle rounded-circle"
-                    onclick="openEditModal({{ $us->id }}, '{{ addslashes($us->name) }}','{{ $us->username }}', '{{ $us->email }}')">
-                    <i class="material-icons-outlined">edit</i>
-                </button> --}}
-
             </div>
             <!--end breadcrumb-->
             <div class="row">
