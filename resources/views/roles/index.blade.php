@@ -48,7 +48,7 @@
             </table>
         </div>
     </main>
-    @include('roles.pruebam')
+    @include('roles.crear')
     @include('roles.edit')
 @endsection
 @push('scripts')
