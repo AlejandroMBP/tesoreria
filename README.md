@@ -14,7 +14,7 @@
 
 ## 🌟 Requisitos
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Composer
 
 ## 🛠️ Instalación
@@ -43,13 +43,23 @@ Sigue estos pasos para ejecutar el proyecto:
    <pre style="color: #9C27B0;">
    php artisan key:generate
    </pre>
-
-5. **Ejecuta las migraciones (si es necesario):**
+   
+4. **Instalacion de spatie:**
+    <pre style="color: #9C27B0;">
+    composer require spatie/laravel-permission
+    </pre>
+    
+5. **publicar las migraciones:**
+    <pre style="color: #FF5722;">
+   php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+    </pre>
+    
+7. **Ejecuta las migraciones (si es necesario):**
    <pre style="color: #FF5722;">
    php artisan migrate
    </pre>
 
-6. **Inicia el servidor local:**
+8. **Inicia el servidor local:**
    <pre style="color: #3F51B5;">
    php artisan serve
    </pre>
