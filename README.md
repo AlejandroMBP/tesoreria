@@ -58,8 +58,12 @@ Sigue estos pasos para ejecutar el proyecto:
    <pre style="color: #FF5722;">
    php artisan migrate
    </pre>
-
-8. **Inicia el servidor local:**
+   
+8. **Ejecuta los seeders**
+   <pre style="color: #FF5722;">
+       php artisan db:seed
+   </pre>
+9. **Inicia el servidor local:**
    <pre style="color: #3F51B5;">
    php artisan serve
    </pre>
