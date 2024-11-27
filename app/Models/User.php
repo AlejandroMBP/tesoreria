@@ -32,7 +32,11 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'estado'
+        'estado',
+        'cargo',
+        'fecha_inicio',
+        'fecha_fin',
+        'uuid'
     ];
 
     /**
