@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maxton | Bootstrap 5 Admin Dashboard Template</title>
+  <title>UPEA | Sistema de Administración de Tesoro Universitario</title>
   <!--favicon-->
-	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png">
+	<link rel="icon" href="assets/images/logoUpea.png" type="image/png">
   <!-- loader-->
 	<link href="assets/css/pace.min.css" rel="stylesheet">
 	<script src="assets/js/pace.min.js"></script>
@@ -50,9 +50,12 @@
         <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center border-top border-4 border-primary border-gradient-1">
           <div class="card rounded-0 m-3 mb-0 border-0 shadow-none bg-none">
             <div class="card-body p-sm-5">
-              <img src="assets/images/logo1.png" class="mb-4" width="145" alt="">
-              <h4 class="fw-bold">Get Started Now</h4>
-              <p class="mb-0">Enter your credentials to login your account</p>
+              
+            <h4 class="fw-bold" style="text-align: center;">Sistema de Administración de Tesoro Universitario</h4>
+            <div class="text-center">
+              <img src="assets/images/logoUpea.png" class="mb-4" width="145" alt="">
+            </div>
+              <p class="mb-0" style="text-align: center;">Ingrese sus credenciales para iniciar sesión en su cuenta</p>
 
               {{-- <div class="row g-3 my-4">
                 <div class="col-12 col-lg-6">
@@ -73,11 +76,11 @@
                 <form class="row g-3" method="POST" action="{{ route('login') }}">
                     @csrf
                   <div class="col-12">
-                    <label for="inputEmailAddress" class="form-label">Email</label>
+                    <label for="inputEmailAddress" class="form-label">Usuario</label>
                     <input type="email" name="email" class="form-control" id="inputEmailAddress" placeholder="jhon@example.com" required autofocus autocomplete="username" >
                   </div>
                   <div class="col-12">
-                    <label for="inputChoosePassword" class="form-label">Password</label>
+                    <label for="inputChoosePassword" class="form-label">Contraseña</label>
                     <div class="input-group" id="show_hide_password">
                       <input type="password" name="password" class="form-control" id="inputChoosePassword" value="12345678" placeholder="Enter Password" required autocomplete="current-password">
                       <a href="javascript:;" class="input-group-text bg-transparent"><i class="bi bi-eye-slash-fill"></i></a>
@@ -86,22 +89,22 @@
                   <div class="col-md-6">
                     <div class="form-check form-switch">
                       <input name="remember" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                      <label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
+                      <label class="form-check-label" for="flexSwitchCheckChecked">Recordarme</label>
                     </div>
                   </div>
-                  <div class="col-md-6 text-end">	<a href="auth-cover-forgot-password.html">Forgot Password ?</a>
+                  <div class="col-md-6 text-end">	<a href="auth-cover-forgot-password.html">Olvidaste tu contraseña ?</a>
                   </div>
                   <div class="col-12">
                     <div class="d-grid">
-                      <button type="submit" class="btn btn-grd-primary">Login</button>
+                      <button type="submit" class="btn btn-grd-primary">Ingresar</button>
                     </div>
                   </div>
-                  <div class="col-12">
+                  <!--<div class="col-12">
                     <div class="text-start">
                       <p class="mb-0">Don't have an account yet? <a href="auth-cover-register.html">Sign up here</a>
                       </p>
                     </div>
-                  </div>
+                  </div>-->
                 </form>
               </div>
 
