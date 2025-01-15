@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tesoreria</title>
+    <title>UPEA | Sistema de Administración de Tesoro Universitario</title>
     <!--favicon-->
-    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="assets/images/logoUpea.png" type="image/png">
     <!-- loader-->
     <link href="assets/css/pace.min.css" rel="stylesheet">
     <script src="assets/js/pace.min.js"></script>
@@ -29,7 +29,14 @@
     <link href="{{ asset('sass/semi-dark.css') }}" rel="stylesheet">
     <link href="{{ asset('sass/responsive.css') }}" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!--datatable-->
+    
+    <!--<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>-->
+    <!--<script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>-->
 
 </head>
 
@@ -59,18 +66,26 @@
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
     <!--plugins-->
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-    <!--plugins-->
+
+   <!--<script src="{{ asset('assets/js/jquery.min.js') }}"></script> -->
     <script src="{{ asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('assets/plugins/metismenu/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/metismenu/metisMenu.min.js') }}"></script> 
     <script src="{{ asset('assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script> 
+    <!--Datatables-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+  
     @stack('scripts')
-    {{-- <script>
+
+    <script>
         $(document).ready(function() {
-            $(".data-attributes span").peity("donut");
+            $('#menu').metisMenu(); 
         });
-    </script> --}}
+    </script>
+
 </body>
 
 </html>

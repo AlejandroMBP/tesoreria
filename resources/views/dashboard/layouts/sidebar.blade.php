@@ -4,7 +4,7 @@
             <img src="assets/images/logoUpea.png" class="logo-img" alt="">
         </div>
         <div class="logo-name flex-grow-1">
-            <h6 class="mb-0" style="text-align: center;">Sistema de Administración de Tesoro Universitario</h6>
+            <h7 class="mb-0" style="text-align: center;">Sistema de Administración de Tesoro Universitario</h7>
         </div>
         <div class="sidebar-close">
             <span class="material-icons-outlined">close</span>
@@ -45,6 +45,8 @@
                     <li><a href="{{ route('entrada_valores') }}"><i class="material-icons-outlined">arrow_right</i>Entrada de valores</a>
                     </li>
                     <li><a href="{{ route('salida_valores') }}"><i class="material-icons-outlined">arrow_right</i>Salida de valores</a>
+                    </li>
+                    <li><a href="{{ route('reporte_valores_bodega') }}"><i class="material-icons-outlined">arrow_right</i>Reporte de valores</a>
                     </li>
                 </ul>
             </li>
