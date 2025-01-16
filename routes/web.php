@@ -3,6 +3,12 @@
 use App\Http\Controllers\administradorController;
 use App\Http\Controllers\RoleCOntroller;
 use App\Http\Controllers\usuarioController;
+use App\Http\Controllers\bodegaController;
+use App\Http\Controllers\depositosController;
+use App\Http\Controllers\ventanillavalController;
+use App\Http\Controllers\gestionchequeController;
+use App\Http\Controllers\configuracionController;
+use App\Http\Controllers\documentacionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,30 +52,35 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::delete('/roles/destroy/{id}',[RoleCOntroller::class,'destroy'])->name('roles.destroy');
         Route::get('/admin', [administradorController::class,'admin_usuarios'])->name('admin_usuarios');
         //ADMINISTRACION DE BODEGA
-        Route::get('/val_univ', [administradorController::class,'valores_universitarios'])->name('valores_universitarios');
-        Route::get('/proveedores', [administradorController::class,'proveedores'])->name('proveedores');
-        Route::get('/stock', [administradorController::class,'stock'])->name('stock');
-        Route::get('/ent_val', [administradorController::class,'entrada_valores'])->name('entrada_valores');
-        Route::get('/sal_val', [administradorController::class,'salida_valores'])->name('salida_valores');
-        Route::get('/sol_val_bod', [administradorController::class,'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
-        Route::get('/rep_val_bod', [administradorController::class,'reporte_valores_bodega'])->name('reporte_valores_bodega');
-        Route::get('generar-pdf', [administradorController::class, 'generatePDFreporte']);
+        Route::get('/val_univ', [bodegaController::class,'valores_universitarios'])->name('valores_universitarios');
+        Route::get('/proveedores', [bodegaController::class,'proveedores'])->name('proveedores');
+        Route::get('/stock', [bodegaController::class,'stock'])->name('stock');
+        Route::get('/ent_val', [bodegaController::class,'entrada_valores'])->name('entrada_valores');
+        Route::get('/sal_val', [bodegaController::class,'salida_valores'])->name('salida_valores');
+        Route::get('/sol_val_bod', [bodegaController::class,'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
+        Route::get('/rep_val_bod', [bodegaController::class,'reporte_valores_bodega'])->name('reporte_valores_bodega');
+        Route::get('generar-pdf', [bodegaController::class, 'generatePDFreporte']);
         //GESTIÓN DE DEPÓSITOS
-        Route::get('/importar', [administradorController::class,'importar'])->name('importar');
-        Route::get('/movimientos', [administradorController::class,'movimientos'])->name('movimientos');
-        Route::get('/conceptos', [administradorController::class,'conceptos'])->name('conceptos');
-        Route::get('/multiboletas', [administradorController::class,'multiboletas'])->name('multiboletas');
-        Route::get('/reportes', [administradorController::class,'reportes'])->name('reportes');
+        Route::get('/importar', [depositosController::class,'importar'])->name('importar');
+        Route::get('/movimientos', [depositosController::class,'movimientos'])->name('movimientos');
+        Route::get('/conceptos', [depositosController::class,'conceptos'])->name('conceptos');
+        Route::get('/multiboletas', [depositosController::class,'multiboletas'])->name('multiboletas');
+        Route::get('/reportes', [depositosController::class,'reportes'])->name('reportes');
         //GESTIÓN DE VENTANILLA DE VALORES
-        Route::get('/stock_vent', [administradorController::class,'stock_ventanilla'])->name('stock_ventanilla');
-        Route::get('/sol_val', [administradorController::class,'solicitud_valores'])->name('solicitud_valores');
-        Route::get('/form_sol_val', [administradorController::class,'formulario_solicitud_valores'])->name('formulario_solicitud_valores');
-        Route::get('/ven_val', [administradorController::class,'venta_valores'])->name('venta_valores');
-        Route::get('/reg_ven_val', [administradorController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
-        Route::get('generar-pdf_solicitud', [administradorController::class, 'generatePDFsolicitud']);
+        Route::get('/stock_vent', [ventanillavalController::class,'stock_ventanilla'])->name('stock_ventanilla');
+        Route::get('/sol_val', [ventanillavalController::class,'solicitud_valores'])->name('solicitud_valores');
+        Route::get('/form_sol_val', [ventanillavalController::class,'formulario_solicitud_valores'])->name('formulario_solicitud_valores');
+        Route::get('/ven_val', [ventanillavalController::class,'venta_valores'])->name('venta_valores');
+        Route::get('/reg_ven_val', [ventanillavalController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
+        Route::get('generar-pdf_solicitud', [ventanillavalController::class, 'generatePDFsolicitud']);
         //GESTIÓN DE CHEQUES
-        Route::get('/cheque', [administradorController::class,'cheque'])->name('cheque');
-        Route::get('/form_cheque', [administradorController::class,'formulario_registro_cheque'])->name('formulario_registro_cheque');
+        Route::get('/cheque', [gestionchequeController::class,'cheque'])->name('cheque');
+        Route::get('/form_cheque', [gestionchequeController::class,'formulario_registro_cheque'])->name('formulario_registro_cheque');
+        //******ADMINISTRACIÓN OTROS
+        //CONFIGURACION
+        Route::get('/configuracion', [configuracionController::class,'configuracion'])->name('configuracion');
+        //DOCUMENTACIÓN
+        Route::get('/documentacion', [documentacionController::class,'documentacion'])->name('documentacion');
 
 
     });

@@ -95,14 +95,14 @@
             <li class="menu-label">Others</li>
             
             <li>
-                <a href="javascrpt:;">
+                <a href="{{ route('documentacion') }}">
                     <div class="parent-icon"><i class="material-icons-outlined">description</i>
                     </div>
                     <div class="menu-title">Documentación</div>
                 </a>
             </li>
             <li>
-                <a href="javascrpt:;">
+                <a href="{{ route('configuracion') }}">
                     <div class="parent-icon"><i class="material-icons-outlined">support</i>
                     </div>
                     <div class="menu-title">Configuración</div>
