@@ -17,14 +17,12 @@
             </div>
             <!--end breadcrumb-->
             <div class="row"> 
-                <!-- Boton Crear nuevo Usuario -->
-                
                 <hr>
                 <div class="card">
-                <div class="card-body">
-                <h6 class="mb-0 text-uppercase">Reportes CSV</h6>
-                <hr>
-                <form id="formulariosoli" class="mt-4">
+                    <div class="card-body">
+                        <h6 class="mb-0 text-uppercase">Reportes CSV</h6>
+                        <hr>
+                        <form id="form_guardar_solicitudVal" class="mt-4">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="tabla-valores">
                                     <thead>
@@ -48,20 +46,20 @@
                                         </tr>
                                     </tbody>
                                 </table>
-</div>
-                                <div class="text-end">
+                            </div>
+                            <div class="text-end">
                                 <button id="agregar-fila" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;">
                                     <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span> 
                                 </button>   
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-between mt-3">
-                                    <button type="button" class="btn btn-danger">Cancelar</button>
-                                    <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> 
-                                </div>
-                            </form>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="button" class="btn btn-danger">Cancelar</button>
+                                <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> 
+                            </div>
+                        </form>
+                    </div> 
                 </div> 
-            </div> 
             </div>
         </div>
     </main>
@@ -72,7 +70,6 @@
         $(document).ready(function() {
         $('#agregar-fila').click(function(event) {
             event.preventDefault();
-            // Agregar una nueva fila al final de la tabla
             var nuevaFila = `<tr>
                                 <td>
                                     <select class="form-control" name="columna1[]">
@@ -88,7 +85,6 @@
                 $('#tabla-valores tbody').append(nuevaFila);
             });
         });
-        // alert al enviar el formulario de entrega de valores universitarios
     const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
         confirmButton: "btn btn-success",
@@ -108,26 +104,33 @@
         cancelButtonText: "No, cancelar!",
         reverseButtons: true,
         didRender: () => {
-        // Agregar espacio entre botones en línea
         const actionsContainer = document.querySelector('.swal2-actions');
         if (actionsContainer) {
-            actionsContainer.style.justifyContent = "center"; // Centrar botones
-            actionsContainer.style.gap = "1rem"; // Agregar espacio entre botones
+            actionsContainer.style.justifyContent = "center"; 
+            actionsContainer.style.gap = "1rem"; 
         }
         }
     }).then((result) => {
-        if (result.isConfirmed) {
-        //  procede a enviar el formulario
-        document.getElementById("formulariosoli").submit();
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire({
-            title: "Cancelado",
-            text: "No se ha enviado el formulario.",
-            icon: "error"
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Enviado exitosamente",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        document.getElementById("form_guardar_solicitudVal").submit();
+                        setTimeout(() => {
+                        location.reload();  
+                        }, 1000);  
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                        text: "No se ha enviado el formulario.",
+                        icon: "error"
+                    });
+                }
+            });
         });
-        }
-    });
-    });
 
     </script>
 @endpush

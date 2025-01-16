@@ -16,15 +16,15 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <div class="row"> 
-                <!-- Boton Crear nuevo Usuario -->
+            
                 
+            <div class="row"> 
                 <hr>
                 <div class="card">
-                <div class="card-body">
-                <h6 class="mb-0 text-uppercase">Reportes CSV</h6>
-                <hr>
-                <form class="row g-3">
+                    <div class="card-body">
+                        <h6 class="mb-0 text-uppercase">Reportes CSV</h6>
+                        <hr>
+                        <form class="row g-3" id="form_guardar_cheque">
 									<div class="col-md-6">
 										<label for="input1" class="form-label">Hoja Ruta Rectorado</label>
 										<input type="text" class="form-control" id="input1" placeholder="First Name">
@@ -125,16 +125,16 @@
                                         </div>
                                         </div>
                                         <hr>
-								
-									<div class="col-md-12">
-										<div class="d-md-flex d-grid align-items-center gap-3">
-                                        <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> 
-											<button type="button" class="btn btn-grd-royal px-4">Cancelar</button>
-										</div>
-									</div>
+                                        <hr>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="button" class="btn btn-danger">Cancelar</button>
+                                <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> 
+                            </div>
+                                        
 								</form>
+                    </div> 
                 </div> 
-            </div> 
+            </div>
             </div>
         </div>
     </main>
@@ -173,34 +173,41 @@
     document.getElementById("btnGuardar").addEventListener("click", function (e) {
     e.preventDefault(); 
     swalWithBootstrapButtons.fire({
-        title: "¿Estás seguro de enviar la solicitud?",
+        title: "¿Estás seguro de guardar el cheque?",
         text: "No podrás revertir esta acción.",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Sí, enviar!",
+        confirmButtonText: "Sí, guardar!",
         cancelButtonText: "No, cancelar!",
         reverseButtons: true,
         didRender: () => {
-        // Agregar espacio entre botones en línea
         const actionsContainer = document.querySelector('.swal2-actions');
         if (actionsContainer) {
-            actionsContainer.style.justifyContent = "center"; // Centrar botones
-            actionsContainer.style.gap = "1rem"; // Agregar espacio entre botones
+            actionsContainer.style.justifyContent = "center"; 
+            actionsContainer.style.gap = "1rem"; 
         }
         }
     }).then((result) => {
-        if (result.isConfirmed) {
-        //  procede a enviar el formulario
-        document.getElementById("formulariosoli").submit();
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire({
-            title: "Cancelado",
-            text: "No se ha enviado el formulario.",
-            icon: "error"
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Guardado exitosamente",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        document.getElementById("form_guardar_cheque").submit();
+                        setTimeout(() => {
+                        location.reload();  
+                        }, 1000);  
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                        text: "No se ha enviado el formulario.",
+                        icon: "error"
+                    });
+                }
+            });
         });
-        }
-    });
-    });
 
     </script>
 @endpush

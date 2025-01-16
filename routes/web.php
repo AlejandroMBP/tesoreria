@@ -5,6 +5,9 @@ use App\Http\Controllers\RoleCOntroller;
 use App\Http\Controllers\usuarioController;
 use Illuminate\Support\Facades\Route;
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,8 +51,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('/stock', [administradorController::class,'stock'])->name('stock');
         Route::get('/ent_val', [administradorController::class,'entrada_valores'])->name('entrada_valores');
         Route::get('/sal_val', [administradorController::class,'salida_valores'])->name('salida_valores');
-        Route::get('/sol_val_bod', [administradorController::class,'solicitud_valores_bodega'])->name('solicitud_valores_bodega');
+        Route::get('/sol_val_bod', [administradorController::class,'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
         Route::get('/rep_val_bod', [administradorController::class,'reporte_valores_bodega'])->name('reporte_valores_bodega');
+        Route::get('generar-pdf', [administradorController::class, 'generatePDFreporte']);
         //GESTIÓN DE DEPÓSITOS
         Route::get('/importar', [administradorController::class,'importar'])->name('importar');
         Route::get('/movimientos', [administradorController::class,'movimientos'])->name('movimientos');
@@ -62,6 +66,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('/form_sol_val', [administradorController::class,'formulario_solicitud_valores'])->name('formulario_solicitud_valores');
         Route::get('/ven_val', [administradorController::class,'venta_valores'])->name('venta_valores');
         Route::get('/reg_ven_val', [administradorController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
+        Route::get('generar-pdf_solicitud', [administradorController::class, 'generatePDFsolicitud']);
         //GESTIÓN DE CHEQUES
         Route::get('/cheque', [administradorController::class,'cheque'])->name('cheque');
         Route::get('/form_cheque', [administradorController::class,'formulario_registro_cheque'])->name('formulario_registro_cheque');

@@ -42,7 +42,14 @@
                                     <td style="text-align: center;">20-12-2024</td>
                                     <td>DAVID FLORES MAMANI</td>
                                     <td>6 TIPOS</td> 
-                                    <td><button class="btn btn-warning btn-sm">IMPRIMIR SOLICITUD</button></td>
+                                    <td>
+                                        <a href="{{ url('generar-pdf_solicitud') }}"  target="_blank">
+                                            <button class="btn btn-warning btn-sm">IMPRIMIR SOLICITUD</button>
+                                        </a>
+                                    </td>
+                                   
+
+                                    
                                 </tr>
                             </tbody>
                         </table>

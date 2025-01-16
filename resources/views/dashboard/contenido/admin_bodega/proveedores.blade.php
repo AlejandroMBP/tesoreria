@@ -112,11 +112,17 @@
                                                                 <label for="nombreproveedor" class="form-label">Nombre del proveedor:</label>
                                                                 <input type="text" class="form-control" id="nombreproveedor" placeholder="Ingrese el tipo de documento">
                                                             </div>
-                                                        
-                                                        
                                                             <div class="mb-3">
                                                                 <label for="nrocelular" class="form-label">Nro de celular:</label>
-                                                                <input type="text" class="form-control" id="nrocelular" placeholder="Ingrese el precio unitario">
+                                                                <input type="text" class="form-control" id="nrocelularproveedor" placeholder="Ingrese el precio unitario">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="correoelectronico" class="form-label">Correo electrónico:</label>
+                                                                <input type="text" class="form-control" id="correoelectronicoproveedor" placeholder="Ingrese el correo electrónico">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="direccionproveedor" class="form-label">Dirección:</label>
+                                                                <input type="text" class="form-control" id="direccionproveedor" placeholder="Ingrese la dirección">
                                                             </div>
                                                     </div>  
                                                 </form>
@@ -152,6 +158,14 @@
                                                             <div class="mb-3">
                                                                 <label for="nrocelular" class="form-label">Nro de celular:</label>
                                                                 <input type="text" class="form-control" id="nrocelular" placeholder="Ingrese el precio unitario">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="correoelectronico" class="form-label">Correo electrónico:</label>
+                                                                <input type="text" class="form-control" id="correoelectronicoproveedor" placeholder="Ingrese el correo electrónico">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="direccionproveedor" class="form-label">Dirección:</label>
+                                                                <input type="text" class="form-control" id="direccionproveedor" placeholder="Ingrese la dirección">
                                                             </div>
                                                         </div>    
                                                     </form>

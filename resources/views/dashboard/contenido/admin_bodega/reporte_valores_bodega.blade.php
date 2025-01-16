@@ -22,46 +22,44 @@
                     <div class="card w-100 overflow-hidden rounded-4">
                         <div class="card-body position-relative p-4">
                             <div class="row">
-                                <!-- Columna para los select -->
-                                <div class="col-12 col-sm-5">
-                                    <!-- Primer select -->
-                                    <div class="mb-3">
-                                        <label for="input33a" class="form-label">Gestión</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="material-icons-outlined fs-5">date_range</i></span>
-                                            <select class="form-select" id="input33a">
-                                                <option selected="">Selecciona la gestión</option>
-                                                <option value="1">2024</option>
-                                                <option value="2">2023</option>
-                                                <option value="3">2022</option>
-                                            </select>
+                                <div class="col-12 col-sm-8 d-flex align-items-center">
+                                    <div class="w-75 me-3">
+                                        <div class="mb-3">
+                                            <label for="input33a" class="form-label">Gestión</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="material-icons-outlined fs-5">date_range</i></span>
+                                                <select class="form-select" id="input33a">
+                                                    <option selected="">Selecciona la gestión</option>
+                                                    <option value="1">2024</option>
+                                                    <option value="2">2023</option>
+                                                    <option value="3">2022</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="input33b" class="form-label">Tipo documento</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="material-icons-outlined fs-5">description</i></span>
+                                                <select class="form-select" id="input33b">
+                                                    <option selected="">Selecciona el tipo de documento</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                        <!-- Segundo select -->
-                                    <div>
-                                        <label for="input33b" class="form-label">Tipo documento</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="material-icons-outlined fs-5">description</i></span>
-                                            <select class="form-select" id="input33b">
-                                                <option selected="">Selecciona el tipo de documento</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </div>
+                                    <div class="ms-auto">
+                                        <a href="{{ url('generar-pdf') }}" target="_blank" class="btn btn-primary d-flex align-items-center">
+                                            <img src="assets/images/apps/pdf.png" height="50" alt="PDF Icon" class="mr-2"> Ver PDF
+                                        </a>
                                     </div>
-                                </div>
-                                    <!-- Columna para la imagen -->
-                                <div class="col-12 col-sm-4 d-flex justify-content-center align-items-center">
-                                    <div class="welcome-back-img">
-                                        <img src="assets/images/apps/pdf.png" height="100" alt="PDF Icon">
-                                    </div>
-                                </div>
+                                </div>   
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>     
+            </div>
             <h6 class="mb-0 text-uppercase">Control de valores universitarios</h6>       
             <hr>
             <div class="card">

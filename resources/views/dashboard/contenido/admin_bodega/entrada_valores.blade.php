@@ -4,7 +4,7 @@
         <div class="main-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Bodega</div>
+                <div class="breadcrumb-title pe-3">Administración de Bodega</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -13,22 +13,6 @@
                             <li class="breadcrumb-item active" aria-current="page">Entrada de valores</li>
                         </ol>
                     </nav>
-                </div>
-                <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary">Settings</button>
-                        <button type="button"
-                            class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!--end breadcrumb-->
@@ -81,12 +65,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Pestañas para usuarios activos e inactivos -->
-                <h6 class="mb-0 text-uppercase">Administración de Entrada de valores</h6>       
-                <!-- Boton Crear nuevo Usuario -->
-                <div class="d-flex justify-content-end mb-3">
-                    <button type="button" class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearProveedorModal">Crear nuevo</button>
-                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0 text-uppercase">Administración de Entrada devalores </h6>
+                </div>      
                 <hr>
                 <div class="card">
                     <div class="card-body">
@@ -115,45 +96,88 @@
                                     </div>
                                 </a>
                             </li>
-                        
-                            <!--********************* Modal para crear un nuevo proveedor ****************************-->
-                            <div class="modal fade" id="crearProveedorModal" tabindex="-1" aria-labelledby="crearProveedorModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
+                            <!--********************* Modal para crear un nuevo valor ****************************-->
+                            <div class="modal fade" id="ingresarValorModal" tabindex="-1" aria-labelledby="ingresarValorModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="crearProveedorModalLabel">Registrar nuevo ingreso</h5>
-                                            <a href="javascript:;" class="primaery-menu-close" data-bs-dismiss="modal">
-                                                <i class="material-icons-outlined">close</i>
-                                            </a>
+                                        <div class="modal-header border-bottom-0 bg-primary py-2">
+                                            <h5 class="modal-title text-white">Crear nuevo Valor Universitario</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- Formulario para crear un nuevo proveedor -->
-                                            <form>
-                                                <div class="row">
-                                                    <!-- Primera columna -->
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label for="nombreproveedor" class="form-label">Nombre del proveedor:</label>
-                                                            <input type="text" class="form-control" id="nombreproveedor" placeholder="Ingrese el nombre del proveedor">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Segunda columna -->
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label for="nrocelular" class="form-label">Nro de celular:</label>
-                                                            <input type="text" class="form-control" id="nrocelular" placeholder="Ingrese el número de celular">
-                                                        </div>
+                                            <div class="row">
+                                                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                                                    <div class="text-center">
+                                                        <img src="assets/images/gallery/documents.png" alt="Imagen del proveedor" class="img-fluid rounded mb-3" style="max-width: 80%; height: auto;">
+                                                        <p>Ingrese los Valores universitarios</p>
+                                                        <table class="table table-bordered">                     
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Cantidad de unidades actual</td>
+                                                                    <td>300</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Fecha de último ingreso</td>
+                                                                    <td>10-10-24</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Correlativo inicial de ultimo ingreso</td>
+                                                                    <td>723 - A</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Correlativo final de ultimo ingreso</td>
+                                                                    <td>1023 - A</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
-                                                <div class="row mt-3">
-                                                    <div class="col-12 text-center">
-                                                        <button type="submit" class="btn btn-primary">Guardar</button>
-                                                    </div>
+                                                <div class="col-md-6">
+                                                    <form id="form_nuevo_ingreso">
+                                                        <div class="mb-3">
+                                                            <label for="fechaingresovalor" class="form-label">Fecha de hoy:</label>
+                                                            <input type="date" class="form-control" id="fechaingresovalor" placeholder="Ingrese la fecha de ingreso de valor">
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-1">
+                                                                <label for="nrocelular1" class="form-label">Unidades:</label>
+                                                                <input type="text" class="form-control" id="nrocelular1" placeholder="Ingrese el número de celular">
+                                                            </div>
+                                                            <div class="col-md-6 mb-1">
+                                                                <label for="nrocelular2" class="form-label">Valor total en Bs.:</label>
+                                                                <input type="text" class="form-control" id="nrocelular2" placeholder="Ingrese el número de celular">
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-1">
+                                                                <label for="nrocelular1" class="form-label">Correlativo inicial:</label>
+                                                                <input type="text" class="form-control" id="nrocelular1" placeholder="Ingrese el número de celular">
+                                                            </div>
+                                                            <div class="col-md-6 mb-1">
+                                                                <label for="nrocelular2" class="form-label">Serie:</label>
+                                                                <input type="text" class="form-control" id="nrocelular2" placeholder="Ingrese el número de celular">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-1">
+                                                                <label for="nrocelular1" class="form-label">Correlativo final:</label>
+                                                                <input type="text" class="form-control" id="nrocelular1" placeholder="Ingrese el número de celular">
+                                                            </div>
+                                                            <div class="col-md-6 mb-1">
+                                                                <label for="nrocelular2" class="form-label">Serie:</label>
+                                                                <input type="text" class="form-control" id="nrocelular2" placeholder="Ingrese el número de celular">
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <div class="modal-footer border-top-0">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                            <button id="btnGuardarNuevoIngreso" type="button" class="btn btn-primary">Guardar</button> 
                                         </div>
                                     </div>
                                 </div>
@@ -183,9 +207,10 @@
                                                                 </div>
                                                                 <div class="mt-4 text-center">
                                                                     <button class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
-                                                                                style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;" data-bs-toggle="modal" data-bs-target="#crearProveedorModal">
+                                                                                style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;" data-bs-toggle="modal" data-bs-target="#ingresarValorModal">
                                                                         <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span>
                                                                             Agregar
+                                                                            
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -222,7 +247,7 @@
                                                                 </div>
                                                                 <div class="mt-4 text-center">
                                                                     <button class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
-                                                                                style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;" data-bs-toggle="modal" data-bs-target="#crearProveedorModal">
+                                                                                style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;" data-bs-toggle="modal" data-bs-target="#ingresarValorModal">
                                                                         <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span>
                                                                             Agregar
                                                                     </button>
@@ -245,6 +270,51 @@
     <div class="overlay btn-toggle"></div>
 @endsection
 @push('scripts')
-   
-   
+<script>
+const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        //********************Script botón guardar el nuevo ingreso********************************
+        document.getElementById("btnGuardarNuevoIngreso").addEventListener("click", function (e) {
+            e.preventDefault();
+            swalWithBootstrapButtons.fire({
+                title: "¿Estás seguro de guardar el nuevo ingreso?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, guardar!",
+                cancelButtonText: "No, cancelar!",
+                reverseButtons: true,
+                didRender: () => {
+                    const actionsContainer = document.querySelector('.swal2-actions');
+                    if (actionsContainer) {
+                        actionsContainer.style.justifyContent = "center"; 
+                        actionsContainer.style.gap = "1rem"; 
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Guardado exitosamente",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        document.getElementById("form_nuevo_ingreso").submit();
+                        setTimeout(() => {
+                        location.reload();  
+                        }, 1000);  
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                       
+                        icon: "error"
+                    });
+                }
+            });
+        });
+    </script>
 @endpush

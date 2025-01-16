@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <!-- Formulario para crear un nuevo proveedor -->
-                                        <form>
+                                        <form id="form_guardar_multiboletas">
                                             <div class="row">
                                                 <!-- Columna para Concepto y Nro. celular -->
                                                 <div class="col-12 col-md-6">
@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-primary ms-auto">Guardar y generar código</button>
+                                        <button id="btnGuardarMultiboletas" type="button" class="btn btn-primary ms-auto">Guardar y generar código</button>
                                     </div>
                                 </div>
                             </div>
@@ -231,8 +231,7 @@
         });
     });
     document.getElementById('agregar-boleta').addEventListener('click', function() {
-        event.preventDefault(); // Evita el comportamiento predeterminado del botón
-        // Crear una nueva fila para Nro. boleta y Monto
+        event.preventDefault(); 
         var newBoletaRow = document.createElement('div');
         newBoletaRow.classList.add('row', 'boleta-row');
         newBoletaRow.innerHTML = `
@@ -245,8 +244,52 @@
                 <input type="text" class="form-control" name="monto[]" placeholder="Ingrese el monto">
             </div>
         `;
-        // Insertar la nueva fila dentro del contenedor de boletas
         document.getElementById('boletas-container').appendChild(newBoletaRow);
     });
+    const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        //********************Script botón guardar usuario********************************
+        document.getElementById("btnGuardarMultiboletas").addEventListener("click", function (e) {
+            e.preventDefault();
+            swalWithBootstrapButtons.fire({
+                title: "¿Estás seguro de guardar las boletas y generar el código?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, guardar!",
+                cancelButtonText: "No, cancelar!",
+                reverseButtons: true,
+                didRender: () => {
+                    const actionsContainer = document.querySelector('.swal2-actions');
+                    if (actionsContainer) {
+                        actionsContainer.style.justifyContent = "center"; 
+                        actionsContainer.style.gap = "1rem"; 
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Guardado y generado exitosamente",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        document.getElementById("form_guardar_multiboletas").submit();
+                        setTimeout(() => {
+                        location.reload();  
+                        }, 1000);  
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                        text: "No se ha enviado el formulario.",
+                        icon: "error"
+                    });
+                }
+            });
+        });
 </script>
 @endpush

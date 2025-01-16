@@ -4,13 +4,13 @@
         <div class="main-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Bodega</div>
+                <div class="breadcrumb-title pe-3">Administración de Bodega</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Salida de valores</li>
+                            <li class="breadcrumb-item active" aria-current="page">Formulario de entrega de valores</li>
                         </ol>
                     </nav>
                 </div>
@@ -65,7 +65,7 @@
                             <div class="text-center mt-3">
                                 <h6 class="fw-bold" style="font-size: 0.7rem;">FORMULARIO DE ENTREGA DE VALORES UNIVERSITARIOS</h6>
                             </div>
-                            <form id="formulariosoli" class="mt-4">
+                            <form id="formularioentregaval" class="mt-4">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="tabla-valores">
                                     <thead>
@@ -134,7 +134,6 @@
             $('#tabla-valores tbody').append(nuevaFila);
         });
     });
-    // alert al enviar el formulario de entrega de valores universitarios
     const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
         confirmButton: "btn btn-success",
@@ -154,26 +153,35 @@
         cancelButtonText: "No, cancelar!",
         reverseButtons: true,
         didRender: () => {
-        // Agregar espacio entre botones en línea
+      
         const actionsContainer = document.querySelector('.swal2-actions');
         if (actionsContainer) {
-            actionsContainer.style.justifyContent = "center"; // Centrar botones
-            actionsContainer.style.gap = "1rem"; // Agregar espacio entre botones
+            actionsContainer.style.justifyContent = "center"; 
+            actionsContainer.style.gap = "1rem"; 
         }
         }
     }).then((result) => {
-        if (result.isConfirmed) {
-        // Aquí puedes proceder a enviar el formulario
-        document.getElementById("formulariosoli").submit(); // Reemplaza "formulario" con el ID real de tu formulario
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire({
-            title: "Cancelado",
-            text: "No se ha enviado el formulario.",
-            icon: "error"
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Guardado exitosamente",
+                        text: "Se ha realizado la entrega",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        document.getElementById("formularioentregaval").submit();
+                        setTimeout(() => {
+                        location.reload();  
+                        }, 1000);  
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelado",
+                        text: "No se ha enviado el formulario.",
+                        icon: "error"
+                    });
+                }
+            });
         });
-        }
-    });
-    });
 
 </script>
 @endpush

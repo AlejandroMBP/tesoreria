@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class administradorController extends Controller
 {
@@ -28,11 +29,16 @@ class administradorController extends Controller
     public function salida_valores(){
         return view('dashboard.contenido.admin_bodega.salida_valores');
     }
-    public function solicitud_valores_bodega(){
-        return view('dashboard.contenido.admin_bodega.solicitud_valores_bodega');
+    public function form_entrega_valores_bodega(){
+        return view('dashboard.contenido.admin_bodega.form_entrega_valores_bodega');
     }
     public function reporte_valores_bodega(){
         return view('dashboard.contenido.admin_bodega.reporte_valores_bodega');
+    }
+    public function generatePDFreporte()
+    {
+        $pdf = \PDF::loadView('dashboard.contenido.admin_bodega.reporte_pdf');
+        return $pdf->stream('Reporte_Valor_universitarios.pdf');
     }
     //GESTIÓN DE DEPÓSITOS
     public function importar(){
@@ -65,6 +71,11 @@ class administradorController extends Controller
     }
     public function registro_ventas_valores(){
         return view('dashboard.contenido.gestion_ventanilla.registro_ventas_valores');
+    }
+    public function generatePDFsolicitud()
+    {
+        $pdf = \PDF::loadView('dashboard.contenido.gestion_ventanilla.solicitud_pdf');
+        return $pdf->stream('Solicitud.pdf');
     }
     //GESTIÓN DE CHEQUES
     public function cheque(){
