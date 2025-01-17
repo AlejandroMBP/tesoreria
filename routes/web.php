@@ -51,6 +51,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::put('/roles/update/{roles}',[RoleCOntroller::class,'update'])->name('roles.update');
         Route::delete('/roles/destroy/{id}',[RoleCOntroller::class,'destroy'])->name('roles.destroy');
         Route::get('/admin', [administradorController::class,'admin_usuarios'])->name('admin_usuarios');
+        //USUARIOS
+        Route::put('/usuarios/{id}/inactivar', [administradorController::class, 'inactivar'])->name('usuarios.inactivar');
+        Route::put('/usuarios/{id}/activar', [administradorController::class, 'activar'])->name('usuarios.activar');
+        Route::put('/usuarios/{id}/eliminar', [administradorController::class, 'eliminar'])->name('usuarios.eliminar');
         //ADMINISTRACION DE BODEGA
         Route::get('/val_univ', [bodegaController::class,'valores_universitarios'])->name('valores_universitarios');
         Route::get('/proveedores', [bodegaController::class,'proveedores'])->name('proveedores');

@@ -234,16 +234,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Juan Pérez</td>
-                                        <td>juanperez@example.com</td>
-                                        <td><button id="btnActivo" class="btn btn-success btn-sm">Activo</button></td>
-                                        <td>
-                                        <button id="editarUsuarioModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal">Editar</button>
-                                        <button button id="btnEliminarUsuario" class="btn btn-danger btn-sm">Eliminar</button>
-                                        </td>
-                                    </tr>
+                                    @foreach($usuarios_activos as $usuario)
+                                        <tr>
+                                            <td>{{ $usuario->id }}</td>
+                                            <td>{{ $usuario->name }}</td>
+                                            <td>{{ $usuario->email }}</td>
+                                            <td>
+                                                <button class="btnActivo btn btn-success btn-sm" data-id="{{ $usuario->id }}">Activo</button>
+                                            </td>
+                                            <td>
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal" data-id="{{ $usuario->id }}">Editar</button>
+                                                <button class="btnEliminar btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Eliminar</button>
+                                            </td>
+                                        </tr>    
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -264,16 +268,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach($usuarios_inactivos as $usuario)
                                         <tr>
-                                            <td>1</td>
-                                            <td>Mario Gómez</td>
-                                            <td>mariogomez@example.com</td>
-                                            <td><button id="btnInactivo" class="btn btn-danger btn-sm">Inactivo</button></td>
+                                            <td>{{ $usuario->id }}</td>
+                                            <td>{{ $usuario->name }}</td>
+                                            <td>{{ $usuario->email }}</td>
+                                            <td>
+                                                <button class="btnInactivo btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Inactivo</button>
+                                            </td>
                                             <td>
                                                 <button button id="editarUsuarioModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal">Editar</button>
-                                                <button button id="btnEliminarUsuario" class="btn btn-danger btn-sm">Eliminar</button>
+                                                <button class="btnEliminar btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Eliminar</button>
                                             </td>
                                         </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -359,10 +367,10 @@
         document.getElementById("btnEditarUsuario").addEventListener("click", function (e) {
             e.preventDefault();
             swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de guardar?",
+                title: "¿Estás seguro de modificar datos del usuario?",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Sí, guardar!",
+                confirmButtonText: "Sí, modificar!",
                 cancelButtonText: "No, cancelar!",
                 reverseButtons: true,
                 didRender: () => {
@@ -376,130 +384,216 @@
                 if (result.isConfirmed) {
                     swalWithBootstrapButtons.fire({
                         title: "Guardado",
-                        text: "La edición se guardó correctamente.",
+                        text: "Se modificó correctamente.",
                         icon: "success",
                         confirmButtonText: "OK"
                     }).then(() => {
                         document.getElementById("form_editar_usuario").submit();
                         setTimeout(() => {
                         location.reload();  
-                        }, 1000); 
+                        }, 1000);  
                     });
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     swalWithBootstrapButtons.fire({
                         title: "Cancelado",
-                        text: "No se ha editado la información",
+                        text: "No se ha enviado el formulario.",
                         icon: "error"
                     });
                 }
             });
         });
         //********************Script botón activo a inactivo********************************
-        document.getElementById("btnActivo").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de inactivar al usuario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, inactivar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnActivos = document.querySelectorAll('.btnActivo');
+            
+            btnActivos.forEach(function(btnActivo) {
+                btnActivo.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const userId = this.getAttribute('data-id');
                     swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El usuario se ha inactivo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+                        title: "¿Estás seguro de inactivar al usuario?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, inactivar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/usuarios/' + userId + '/inactivar', {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ estado: 0 })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Guardado",
+                                        text: "El usuario ha sido desactivado correctamente.",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload(); 
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al desactivar al usuario.",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El usuario no ha sido activado.",
+                                icon: "error"
+                            });
+                        }
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha inactivado al usuario",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
         //********************Script botón inactivo a activo********************************
-        document.getElementById("btnInactivo").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de activar al usuario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, activar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleccionar todos los botones con la clase 'btnInactivo'
+            const btnInactivos = document.querySelectorAll('.btnInactivo');
+            
+            btnInactivos.forEach(function(btnInactivo) {
+                btnInactivo.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Obtener el ID del usuario desde el atributo data-id
+                    const userId = this.getAttribute('data-id');
+
                     swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El usuario se ha activo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+                        title: "¿Estás seguro de activar al usuario?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, activar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Realizar la solicitud AJAX para cambiar el estado del usuario
+                            fetch('/usuarios/' + userId + '/activar', {
+                                method: 'PUT',  // Asumimos que vas a usar PUT para actualizar el estado
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Para proteger contra CSRF
+                                },
+                                body: JSON.stringify({ estado: 1 }) // Pasar el estado = 0
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Guardado",
+                                        text: "El usuario ha sido activado correctamente.",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload();  // Recargar la página para reflejar los cambios
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al activar al usuario.",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El usuario no ha sido desactivado.",
+                                icon: "error"
+                            });
+                        }
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha activado al usuario",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
         //********************Script botón eliminar usuario********************************
-        document.getElementById("btnEliminarUsuario").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de eliminar al usuario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, eliminar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnEliminars = document.querySelectorAll('.btnEliminar');
+            
+            btnEliminars.forEach(function(btnEliminar) {
+                btnEliminar.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const userId = this.getAttribute('data-id');
                     swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "Se eliminó al usuario correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+                        title: "¿Estás seguro de eliminar al usuario?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, eliminar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/usuarios/' + userId + '/eliminar', {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ estado: 3 })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Eliminado exitosamente",
+                                        text: "El usuario ha sido eliminado correctamente.",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload(); 
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al eliminar al usuario.",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El usuario no ha sido eliminado.",
+                                icon: "error"
+                            });
+                        }
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha eliminado al usuario",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
 
