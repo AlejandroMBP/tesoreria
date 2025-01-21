@@ -108,8 +108,8 @@
                                                 <form id="form_guardar_usuario">
                                                     <div class="row g-3">
                                                         <div class="col-12 col-md-6">
-                                                            <label for="tipodocumento" class="form-label">Tipo de documento:</label>
-                                                            <input type="text" class="form-control" id="tipodocumento" placeholder="Ingrese el tipo de documento">
+                                                            <label for="nombre" class="form-label">Tipo de documento:</label>
+                                                            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el tipo de documento">
                                                         </div>
                                                         <div class="col-12 col-md-6">
                                                             <label for="preciounitario" class="form-label">Precio unitario:</label>
@@ -144,8 +144,8 @@
                                             <form id="form_guardar_usuario">
                                                 <div class="row g-3">
                                                     <div class="col-12 col-md-6">
-                                                        <label for="tipodocumento" class="form-label">Tipo documento:</label>
-                                                        <input type="text" class="form-control" id="tipodocumento" placeholder="Ingrese el tipo de documento">
+                                                        <label for="nombre" class="form-label">Tipo documento:</label>
+                                                        <input type="text" class="form-control" id="nombre" placeholder="Ingrese el tipo de documento">
                                                     </div>
                                                     <div class="col-12 col-md-6">
                                                         <label for="preciounitario" class="form-label">Precio unitario:</label>
@@ -180,16 +180,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($valores_universitarios_activos as $valores)
                                     <tr>
-                                        <td>1</td>
-                                        <td>PRORROGA DE TITULO DE BACHILLER</td>
-                                        <td>Bs. 34</td>
-                                        <td><button id="btnActivoVal" class="btn btn-success btn-sm">Activo</button></td>
+                                        <td>{{ $valores->id }}</td>
+                                        <td>{{ $valores->nombre }}</td>
+                                        <td>{{ $valores->precio_unitario }}</td>
+                                        <td><button class="btnActivoVal btn btn-success btn-sm" data-id="{{ $valores->id }}">Activo</button></td>
                                         <td>
                                             <button id="editarValoruniModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">Editar</button>
-                                            <button button id="btnEliminarValoruni" class="btn btn-danger btn-sm">Eliminar</button>
+                                            <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
                                         </td>
                                     </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -211,16 +213,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>PRORROGA DE TITULO DE BACHILLER</td>
-                                            <td>Bs. 34</td>
-                                            <td><button id="btnInactivoVal" class="btn btn-danger btn-sm">Inactivo</button></td>
-                                            <td>
-                                            <button id="editarValoruniModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">Editar</button>
-                                            <button button id="btnEliminarValoruni2" class="btn btn-danger btn-sm">Eliminar</button>
-                                        </td>
-                                        </tr>
+                                        @foreach($valores_universitarios_inactivos as $valores)
+                                            <tr>
+                                                <td>{{ $valores->id }}</td>
+                                                <td>{{ $valores->nombre }}</td>
+                                                <td>{{ $valores->precio_unitario }}</td>
+                                                <td><button class="btnInactivoVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Inactivo</button></td>
+                                                <td>
+                                                    <button id="editarValoruniModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">Editar</button>
+                                                    <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -269,44 +273,66 @@
             buttonsStyling: false
         });
     //********************Script botón guardar valor universitario********************************
-    document.getElementById("btnGuardarValoruni").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de guardar el Valor universitario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, guardar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El Valor universitario se guardó correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("form_guardar_usuario").submit();
-                        setTimeout(() => {
-                        location.reload();  
-                        }, 1000);  
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha guardado el Valor universitario",
-                        icon: "error"
-                    });
-                }
+    document.addEventListener('DOMContentLoaded', function () {
+  
+    const btnGuardarValoruni = document.getElementById('btnGuardarValoruni');
+
+    btnGuardarValoruni.addEventListener('click', function () {
+        const nombre = document.getElementById('nombre').value;
+        const preciounitario = document.getElementById('preciounitario').value;
+        if (!nombre || !preciounitario) {
+            Swal.fire({
+                title: "Error",
+                text: "Todos los campos son obligatorios.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+            return;
+        }
+        fetch('/guardarValor', {  
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                precio_unitario: preciounitario
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Éxito",
+                    text: "El Valor universitario se ha creado correctamente.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    location.reload(); 
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Hubo un error al crear el Valor universitario.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: "Error",
+                text: "Hubo un error al realizar la acción.",
+                icon: "error",
+                confirmButtonText: "OK"
             });
         });
+    });
+});
+
+
     
     //********************Script botón editar usuario********************************
     document.getElementById("btnEditarValoruni").addEventListener("click", function (e) {
@@ -347,152 +373,198 @@
                 }
             });
         });
-        //********************Script botón eliminar usuario********************************
-        document.getElementById("btnEliminarValoruni").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de eliminar el Valor universitario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, eliminar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+        
+        //********************Script botón activo a inactivo********************************
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnActivosVal = document.querySelectorAll('.btnActivoVal');
+            
+            btnActivosVal.forEach(function(btnActivoVal) {
+                btnActivoVal.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const userId = this.getAttribute('data-id');
                     swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "Se eliminó el Valor universitario correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+                        title: "¿Estás seguro de inactivar el Valor universitario?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, inactivar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/val_univ/' + userId + '/inactivarVal', {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ estado: 0 })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Guardado",
+                                        text: "El Valor universitario ha sido desactivado correctamente.",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload(); 
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al desactivar el Valor universitario",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El Valor universitario no ha sido desactivado.",
+                                icon: "error"
+                            });
+                        }
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha eliminado el Valor universitario correctamente",
-                        icon: "error"
-                    });
-                }
-            });
-        });
-        //********************Script botón eliminar usuario********************************
-        document.getElementById("btnEliminarValoruni2").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de eliminar el Valor universitario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, eliminar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "Se eliminó el Valor universitario correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha eliminado el Valor universitario correctamente",
-                        icon: "error"
-                    });
-                }
-            });
-        });
-
-    //********************Script botón activo a inactivo********************************
-    document.getElementById("btnActivoVal").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de inactivar el valor universitario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, inactivar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El Valor universitario se ha inactivo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha inactivado el Valor universitario",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
         //********************Script botón inactivo a activo********************************
-        document.getElementById("btnInactivoVal").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de activar el Valor universitario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, activar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleccionar todos los botones con la clase 'btnInactivo'
+            const btnInactivosVal = document.querySelectorAll('.btnInactivoVal');
+            
+            btnInactivosVal.forEach(function(btnInactivoVal) {
+                btnInactivoVal.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const userId = this.getAttribute('data-id');
+
                     swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El valor universitario se ha activo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+                        title: "¿Estás seguro de activar el valor universitario?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, activar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Realizar la solicitud AJAX para cambiar el estado del usuario
+                            fetch('/val_univ/' + userId + '/activarVal', {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ estado: 1 })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Activado exitosamente",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload();  // Recargar la página para reflejar los cambios
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al activar el Valor Universitario.",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El Valor universitario no ha sido activado.",
+                                icon: "error"
+                            });
+                        }
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha activado el Valor universitario",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
-
+        //********************Script botón eliminar usuario********************************
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnEliminarVal = document.querySelectorAll('.btnEliminarVal');
+            btnEliminarVal.forEach(function(btnEliminarVal) {
+                btnEliminarVal.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const userId = this.getAttribute('data-id');
+                    swalWithBootstrapButtons.fire({
+                        title: "¿Estás seguro de eliminar el Valor universitario?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, eliminar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/val_univ/' + userId + '/eliminarVal', {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ estado: 3 })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Eliminado exitosamente",
+                                        text: "El Valor universitario ha sido eliminado correctamente.",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload(); 
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al eliminar el Valor universitario",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El Valor universitario no ha sido eliminado.",
+                                icon: "error"
+                            });
+                        }
+                    });
+                });
+            });
+        });
         
 </script>
 @endpush

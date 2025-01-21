@@ -12,7 +12,6 @@ class administradorController extends Controller
     public function index(){
         return view('dashboard.contenido.metricas.metricas');
     }
-    
 
     public function admin_usuarios() {
         $usuarios_activos = DB::table('users')->where('estado', 1)->get();
@@ -56,7 +55,4 @@ class administradorController extends Controller
         }
         return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
     }
-
-
-
 }

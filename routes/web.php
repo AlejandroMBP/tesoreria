@@ -57,6 +57,14 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::put('/usuarios/{id}/eliminar', [administradorController::class, 'eliminar'])->name('usuarios.eliminar');
         //ADMINISTRACION DE BODEGA
         Route::get('/val_univ', [bodegaController::class,'valores_universitarios'])->name('valores_universitarios');
+        //****** VALORES UNIVRSITARIOS*/
+        
+        Route::post('/guardarValor', [bodegaController::class, 'guardarVal']);
+        Route::put('/val_univ/{id}/inactivarVal', [bodegaController::class, 'inactivarVal'])->name('val_univ.inactivarVal');
+        Route::put('/val_univ/{id}/activarVal', [bodegaController::class, 'activarVal'])->name('val_univ.activarVal');
+        Route::put('/val_univ/{id}/eliminarVal', [bodegaController::class, 'eliminarVal'])->name('val_univ.eliminarVal');
+
+        // PROVEEDORES
         Route::get('/proveedores', [bodegaController::class,'proveedores'])->name('proveedores');
         Route::get('/stock', [bodegaController::class,'stock'])->name('stock');
         Route::get('/ent_val', [bodegaController::class,'entrada_valores'])->name('entrada_valores');

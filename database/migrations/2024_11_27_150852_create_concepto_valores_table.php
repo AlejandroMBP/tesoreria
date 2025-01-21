@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->double('precio_unitario');
+            $table->string('estado')->default(1);
             $table->timestamps();
             $table->uuid('uuid')->unique();
         });

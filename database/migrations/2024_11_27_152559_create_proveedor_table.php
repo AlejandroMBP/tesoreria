@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('direccion');
             $table->string('contacto');
+            $table->string('email');
             $table->integer('estado')->default(1);
             $table->timestamps();
             $table->uuid('uuid')->unique();
