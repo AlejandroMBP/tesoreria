@@ -180,7 +180,6 @@
     
         cargarValoresEscasos();
 
- 
         $('a[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
             let target = $(e.target).attr("href");
 

@@ -467,14 +467,12 @@
         });
         //********************Script botón inactivo a activo********************************
         document.addEventListener('DOMContentLoaded', function() {
-            // Seleccionar todos los botones con la clase 'btnInactivo'
+            
             const btnInactivos = document.querySelectorAll('.btnInactivo');
             
             btnInactivos.forEach(function(btnInactivo) {
                 btnInactivo.addEventListener('click', function (e) {
                     e.preventDefault();
-
-                    // Obtener el ID del usuario desde el atributo data-id
                     const userId = this.getAttribute('data-id');
 
                     swalWithBootstrapButtons.fire({
@@ -486,14 +484,14 @@
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Realizar la solicitud AJAX para cambiar el estado del usuario
+                     
                             fetch('/usuarios/' + userId + '/activar', {
-                                method: 'PUT',  // Asumimos que vas a usar PUT para actualizar el estado
+                                method: 'PUT',  
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Para proteger contra CSRF
                                 },
-                                body: JSON.stringify({ estado: 1 }) // Pasar el estado = 0
+                                body: JSON.stringify({ estado: 1 }) 
                             })
                             .then(response => response.json())
                             .then(data => {
@@ -504,7 +502,7 @@
                                         icon: "success",
                                         confirmButtonText: "OK"
                                     }).then(() => {
-                                        location.reload();  // Recargar la página para reflejar los cambios
+                                        location.reload();  
                                     });
                                 } else {
                                     swalWithBootstrapButtons.fire({

@@ -105,7 +105,7 @@
                                     <div class="order-summary">
                                         <div class="card mb-0">
                                             <div class="card-body">
-                                                <form id="form_guardar_usuario">
+                                                <form id="form_guardar_valoruni">
                                                     <div class="row g-3">
                                                         <div class="col-12 col-md-6">
                                                             <label for="nombre" class="form-label">Tipo de documento:</label>
@@ -158,7 +158,7 @@
                         </div>
                     </div>
                 </div>
-                <!--***************Pestaña de Usuario activo************************-->
+                <!--***************Pestaña de valor universitario activo************************-->
                 <div class='tab-content' id='espacioactivo'>
                     
                     <div class='tab-pane fade show active' id='tabValoresactivos' role='tabpanel'>
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                <!--********************Pestaña de Usuario inactivo ***********************-->
+                <!--********************Pestaña de valor universitario inactivo ***********************-->
                 <div class='tab-content' id='espacioinactivo'>
                     
                     <div class='tab-pane fade show' id='tabValoresinactivos' role='tabpanel'>
@@ -366,8 +366,6 @@
         var id = $(this).data('id');
         var nombre = $('#nombreeditar').val();
         var precio = $('#preciounitarioeditar').val();
-
-        // Mostrar SweetAlert de confirmación antes de guardar
         Swal.fire({
             title: '¿Estás seguro?',
             text: "¿Quieres guardar los cambios?",
@@ -377,7 +375,7 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Si el usuario confirma, hacer la solicitud AJAX para guardar los datos
+                
                 $.ajax({
                     url: '{{ route("val_univ.actualizarval") }}',
                     type: 'POST',
@@ -389,16 +387,16 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            // Mostrar mensaje de éxito con SweetAlert
+                           
                             Swal.fire(
                                 '¡Guardado!',
                                 'El registro se actualizó correctamente.',
                                 'success'
                             );
                             $('#editarValoruniModal').modal('hide');
-                            location.reload(); // Recargar la página para reflejar los cambios
+                            location.reload(); 
                         } else {
-                            // Mostrar mensaje de error con SweetAlert
+                            
                             Swal.fire(
                                 'Error',
                                 'Hubo un error al actualizar.',
@@ -408,7 +406,7 @@
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
-                        // Mostrar mensaje de error con SweetAlert
+                        
                         Swal.fire(
                             'Error',
                             'Hubo un error inesperado.',
@@ -489,7 +487,7 @@
         });
         //********************Script botón inactivo a activo********************************
         document.addEventListener('DOMContentLoaded', function() {
-            // Seleccionar todos los botones con la clase 'btnInactivo'
+        
             const btnInactivosVal = document.querySelectorAll('.btnInactivoVal');
             
             btnInactivosVal.forEach(function(btnInactivoVal) {
@@ -507,7 +505,7 @@
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Realizar la solicitud AJAX para cambiar el estado del usuario
+                       
                             fetch('/val_univ/' + userId + '/activarVal', {
                                 method: 'PUT', 
                                 headers: {
@@ -524,7 +522,7 @@
                                         icon: "success",
                                         confirmButtonText: "OK"
                                     }).then(() => {
-                                        location.reload();  // Recargar la página para reflejar los cambios
+                                        location.reload(); 
                                     });
                                 } else {
                                     swalWithBootstrapButtons.fire({
