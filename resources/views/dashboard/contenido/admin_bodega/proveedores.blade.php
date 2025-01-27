@@ -71,7 +71,7 @@
             <h6 class="mb-0 text-uppercase">Administración de Proveedores</h6>       
                 <!-- Boton Crear nuevo Usuario -->
             <div class="d-flex justify-content-end mb-3">
-                <button type="button" class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearProveedorModal">Crear nuevo</button>
+                <button type="button" class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearProvModal">Crear nuevo</button>
             </div>
             <hr>
             <div class="card">
@@ -93,52 +93,44 @@
                                 </div>
                             </a>
                         </li>
-                        <!--********************* Modal para crear un proveedor ****************************-->
-                        <div class="modal fade" id="crearProveedorModal" tabindex="-1" aria-labelledby="crearProveedorModalLabel">
+                        <!--********************* Modal para crear un proveedor ****************************-->   
+                        <div class="modal fade" id="crearProvModal" tabindex="-1" aria-labelledby="crearProvModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header border-bottom-0 bg-primary py-2">
-                                        <h5 class="modal-title text-white">Crear nuevo Valor Universitario</h5>
+                                        <h5 class="modal-title text-white">Crear nuevo Proveedor</h5>
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="order-summary">
                                             <div class="card mb-0">
                                                 <div class="card-body">
-                                                <form id="form_guardar_proveedor">
-                                                    <div class="row">
-                                                        
-                                                            <div class="mb-3">
-                                                                <label for="nombreproveedor" class="form-label">Nombre del proveedor:</label>
-                                                                <input type="text" class="form-control" id="nombreproveedor" placeholder="Ingrese el tipo de documento">
+                                                    <form id="form_guardar_proveedor">
+                                                        <div class="row g-3">
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="nombreprov" class="form-label">Tipo de documento:</label>
+                                                                <input type="text" class="form-control" id="nombreprov" placeholder="Ingrese el tipo de documento">
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="nrocelular" class="form-label">Nro de celular:</label>
-                                                                <input type="text" class="form-control" id="nrocelularproveedor" placeholder="Ingrese el precio unitario">
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="direccionprov" class="form-label">Precio unitario:</label>
+                                                                <input type="text" class="form-control" id="direccionprov" placeholder="Ingrese el precio unitario">
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="correoelectronico" class="form-label">Correo electrónico:</label>
-                                                                <input type="text" class="form-control" id="correoelectronicoproveedor" placeholder="Ingrese el correo electrónico">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="direccionproveedor" class="form-label">Dirección:</label>
-                                                                <input type="text" class="form-control" id="direccionproveedor" placeholder="Ingrese la dirección">
-                                                            </div>
-                                                    </div>  
-                                                </form>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer border-top-0">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                        <button id="btnGuardarProveedor1" type="button" class="btn btn-primary">Guardar</button> 
+                                        <button id="btnGuardarProv" type="button" class="btn btn-primary">Guardar</button> 
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </ul>
                         <!--********************* Modal para editar un proveedor ****************************-->
-                        <div class="modal fade" id="editarProveedorModal" tabindex="-1" aria-labelledby="editarProveedorModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="editarProvModal" tabindex="-1" aria-labelledby="editarProvModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header border-bottom-0 bg-primary py-2">
@@ -152,20 +144,20 @@
                                                     <form id="form_editar_proveedor">
                                                         <div class="row">
                                                             <div class="mb-3">
-                                                                <label for="nombreproveedor" class="form-label">Nombre del proveedor:</label>
-                                                                <input type="text" class="form-control" id="nombreproveedor" placeholder="Ingrese el tipo de documento">
+                                                                <label for="nombreproveedoredit" class="form-label">Nombre Proveedor</label>
+                                                                <input type="text" class="form-control" id="nombreproveedoredit" placeholder="Ingrese el nombre proveedor">
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="nrocelular" class="form-label">Nro de celular:</label>
-                                                                <input type="text" class="form-control" id="nrocelular" placeholder="Ingrese el precio unitario">
+                                                                <label for="direccionproveedoredit" class="form-label">Dirección</label>
+                                                                <input type="text" class="form-control" id="direccionproveedoredit" placeholder="Ingrese la dirección">
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="correoelectronico" class="form-label">Correo electrónico:</label>
-                                                                <input type="text" class="form-control" id="correoelectronicoproveedor" placeholder="Ingrese el correo electrónico">
+                                                                <label for="nrocelularproveedoredit" class="form-label">Nro_celular</label>
+                                                                <input type="number" class="form-control" id="nrocelularproveedoredit" placeholder="Ingrese el número de celular">
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="direccionproveedor" class="form-label">Dirección:</label>
-                                                                <input type="text" class="form-control" id="direccionproveedor" placeholder="Ingrese la dirección">
+                                                                <label for="correoelectronicoproveedoredit" class="form-label">Correo electrónico</label>
+                                                                <input type="email" class="form-control" id="correoelectronicoproveedoredit" placeholder="Ingrese el correo electrónico">
                                                             </div>
                                                         </div>    
                                                     </form>
@@ -175,12 +167,12 @@
                                     </div>
                                     <div class="modal-footer border-top-0">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                        <button id="btnEditarProveedor1" type="button" class="btn btn-primary">Guardar</button> 
+                                        <button id="btnEditarProv" type="button" class="btn btn-primary">Guardar</button> 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </ul>
+                    
                     <!--Pestaña de Proveedor activo-->
                     <div class='tab-content' id='espacioactivo'>
                         <div class='tab-pane fade show active' id='tabProveedoresactivos' role='tabpanel'>
@@ -190,26 +182,31 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Nombre proveedor</th>
+                                            <th>Dirección</th>
                                             <th>Nro. celular</th>
                                             <th>Correo electrónico</th>
-                                            <th>Dirección</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach($proveedores_activos as $proveedores)
                                         <tr>
-                                            <td>1</td>
-                                            <td>FLORALES</td>
-                                            <td>72648223</td>
-                                            <td>florales@gmail.com</td>
-                                            <td>Av. montes #434</td>
-                                            <td><button id="btnActivoProv" class="btn btn-success btn-sm">Activo</button></td>
+                                            <td>{{ $proveedores->id }}</td>
+                                            <td>{{ $proveedores->nombre }}</td>
+                                            <td>{{ $proveedores->direccion }}</td>
+                                            <td>{{ $proveedores->contacto }}</td>
+                                            <td>{{ $proveedores->email }}</td>
+                                            <td><button class="btnActivoProv btn btn-success btn-sm" data-id="{{ $proveedores->id }}">Activo</button></td>
                                             <td>
-                                                <button button id="editarProveedorModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarProveedorModal">Editar</button>
-                                                <button button id="btnEliminarProveedor" class="btn btn-danger btn-sm">Eliminar</button>
+                                                <button class="btn btn-warning btn-sm btnEditarProv" data-id="{{ $proveedores->id }}" 
+                                                    data-bs-toggle="modal" data-bs-target="#editarProvModal">
+                                                    Editar
+                                                </button>
+                                                <button button class="btnEliminarProv btn btn-danger btn-sm" data-id="{{ $proveedores->id }}">Eliminar</button>
                                             </td>
                                         </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -232,18 +229,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>FLORALES</td>
-                                                <td>72648223</td>
-                                                <td>florales@gmail.com</td>
-                                                <td>Av. montes #434</td>
-                                                <td><button id="btnInactivoProv" class="btn btn-danger btn-sm">Inactivo</button></td>
+                                    @foreach($proveedores_inactivos as $proveedores)
+                                        <tr>
+                                            <td>{{ $proveedores->id }}</td>
+                                            <td>{{ $proveedores->nombre }}</td>
+                                            <td>{{ $proveedores->direccion }}</td>
+                                            <td>{{ $proveedores->contacto }}</td>
+                                            <td>{{ $proveedores->email }}</td>
+                                            <td><button class="btnInactivoProv btn btn-danger btn-sm" data-id="{{ $proveedores->id }}">Inactivo</button></td>
                                                 <td>
-                                                    <button button id="editarProveedorModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarProveedorModal">Editar</button>
-                                                    <button button id="btnEliminarProveedor2" class="btn btn-danger btn-sm">Eliminar</button>
+                                                <button class="btn btn-warning btn-sm btnEditarProv" data-id="{{ $proveedores->id }}" 
+                                                    data-bs-toggle="modal" data-bs-target="#editarProvModal">
+                                                    Editar
+                                                </button>
+                                                    <button button class="btnEliminarProv btn btn-danger btn-sm" data-id="{{ $proveedores->id }}">Eliminar</button>
                                                 </td>
                                             </tr>
+                                    @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -286,231 +288,346 @@
             },
             buttonsStyling: false
         });
-    //********************Script botón guardar proveedor*******************************
-    document.getElementById("btnGuardarProveedor1").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de guardar al proveedor?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, guardar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El proveedor se guardó correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("form_guardar_proveedor").submit();
-                        setTimeout(() => {
-                        location.reload();  
-                        }, 1000);  
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha enviado el formulario.",
-                        icon: "error"
-                    });
-                }
-            });
-        });
-        //********************Script botón editar proveedor********************************
-        document.getElementById("btnEditarProveedor1").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de modificar?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, guardar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "se modificó exitosamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("form_editar_proveedor").submit();
-                        setTimeout(() => {
-                        location.reload();  
-                        }, 1000); 
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha modificado la información",
-                        icon: "error"
-                    });
-                }
-            });
-        });
-        //********************Script botón activo a inactivo********************************
-        document.getElementById("btnActivoProv").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de inactivar al Proveedor?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, inactivar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El Proveedor se ha inactivo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha inactivado al Proveedor",
-                        icon: "error"
-                    });
-                }
-            });
-        });
-        //********************Script botón inactivo a activo********************************
-        document.getElementById("btnInactivoProv").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de activar al Proveedor?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, activar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El Proveedor se ha activo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+    //********************Script botón guardar nuevo proveedor********************************
+    document.addEventListener('DOMContentLoaded', function () {
+  
+  const btnGuardarProv = document.getElementById('btnGuardarProv');
 
-                
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha activado al Proveedor",
-                        icon: "error"
-                    });
-                }
-            });
-        });
-        //********************Script botón eliminar proveedor activo********************************
-        document.getElementById("btnEliminarProveedor").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de eliminar al Proveedor?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, eliminar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
+  btnGuardarProv.addEventListener('click', function () {
+      const nombreprov = document.getElementById('nombreprov').value;
+      const direccionprov = document.getElementById('direccionprov').value;
+      if (!nombreprov || !direccionprov) {
+          Swal.fire({
+              title: "Error",
+              text: "Todos los campos son obligatorios.",
+              icon: "error",
+              confirmButtonText: "OK"
+          });
+          return;
+      }
+      fetch('/guardarProv', {  
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+              nombre: nombreprov,
+              precio_unitario: direccionprov
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              Swal.fire({
+                  title: "Éxito",
+                  text: "El Proveedor se ha creado correctamente.",
+                  icon: "success",
+                  confirmButtonText: "OK"
+              }).then(() => {
+                  location.reload(); 
+              });
+          } else {
+              Swal.fire({
+                  title: "Error",
+                  text: "Hubo un error al crear el Proveedor",
+                  icon: "error",
+                  confirmButtonText: "OK"
+              });
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+              title: "Error",
+              text: "Hubo un error al realizar la acción.",
+              icon: "error",
+              confirmButtonText: "OK"
+          });
+      });
+  });
+});
+    //********************Script botón activo a inactivo********************************
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnActivoProv = document.querySelectorAll('.btnActivoProv');
+        btnActivoProv.forEach(function(btnActivoProv) {
+            btnActivoProv.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userId = this.getAttribute('data-id');
+                console.log('ID del proveedor:', userId);
+                swalWithBootstrapButtons.fire({
+                    title: "¿Estás seguro de inactivar el Proveedor?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, inactivar!",
+                    cancelButtonText: "No, cancelar!",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/proveedores/' + userId + '/inactivarProv', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({ estado: 0 })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                swalWithBootstrapButtons.fire({
+                                    title: "Inactivado exitosamente",
+                                    icon: "success",
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    location.reload(); 
+                            });
+                            } else {
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al inactivar el Proveedor.",
+                                    icon: "error"
+                                    });
+                                }
+                            })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swalWithBootstrapButtons.fire({
+                                title: "Error",
+                                text: "Hubo un error al realizar la acción.",
+                                icon: "error"
+                            });
+                        });
+                            
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                            title: "Cancelado",
+                            text: "El Proveedor no ha sido inactivado.",
+                            icon: "error"
+                                
+                        });
                     }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "Se eliminó al proveedor correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha eliminado al Proveedor",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
-    //********************Script botón eliminar proveedor inactivo********************************
-    document.getElementById("btnEliminarProveedor2").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de eliminar al Proveedor?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, eliminar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "Se eliminó al proveedor correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha eliminado al Proveedor",
-                        icon: "error"
-                    });
-                }
-            });
-        });
+    });
 
+    //************************************script editar proveedor ***************/
+    $(document).ready(function() {
+    // Script para abrir el modal de edición
+    $('.btnEditarProv').on('click', function() {
+        var id = $(this).data('id');
+        $.ajax({
+            url: '{{ route("proveedores.obtenerProv") }}',
+            type: 'GET',
+            data: { id: id },
+            success: function(response) {
+                if (response) {
+                    console.log(response);
+                    $('#nombreproveedoredit').val(response.nombre);
+                    $('#direccionproveedoredit').val(response.direccion);
+                    $('#nrocelularproveedoredit').val(response.contacto);
+                    $('#correoelectronicoproveedoredit').val(response.email);
+
+                    $('#btnEditarProv').data('id', id);
+                    $('#editarProvModal').modal('show');
+                } else {
+                    alert('No se encontraron datos.');
+                }
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                alert('Error al obtener los datos.');
+            }
+        });
+    });
+    $('#btnEditarProv').on('click', function() {
+        var id = $(this).data('id');
+        var nombre = $('#nombreproveedoredit').val();
+        var direccion = $('#direccionproveedoredit').val();
+        var contacto = $('#nrocelularproveedoredit').val();
+        var email = $('#correoelectronicoproveedoredit').val();
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Quieres guardar los cambios?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '{{ route("proveedores.actualizarProv") }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id,
+                        nombre: nombre,
+                        direccion: direccion,
+                        contacto:contacto,
+                        email:email
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire(
+                                '¡Guardado!',
+                                'El registro se actualizó correctamente.',
+                                'success'
+                            );
+                            $('#editarProvModal').modal('hide');
+                            location.reload(); 
+                        } else {
+                            Swal.fire(
+                                'Error',
+                                'Hubo un error al actualizar.',
+                                'error'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        Swal.fire(
+                            'Error',
+                            'Hubo un error inesperado.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+});
+
+    //********************Script botón inactivo a activo********************************
+    document.addEventListener('DOMContentLoaded', function() {     
+        const btnInactivoProv = document.querySelectorAll('.btnInactivoProv');
+        btnInactivoProv.forEach(function(btnInactivoProv) {
+            btnInactivoProv.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userId = this.getAttribute('data-id');
+                console.log('ID del proveedor:', userId);
+                swalWithBootstrapButtons.fire({
+                    title: "¿Estás seguro de activar el Proveedor?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, activar!",
+                    cancelButtonText: "No, cancelar!",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/proveedores/' + userId + '/activarProv', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({ estado: 0 })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                swalWithBootstrapButtons.fire({
+                                    title: "Activado exitosamente",
+                                    icon: "success",
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    location.reload(); 
+                            });
+                            } else {
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al activar el Proveedor.",
+                                    icon: "error"
+                                    });
+                                }
+                            })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swalWithBootstrapButtons.fire({
+                                title: "Error",
+                                text: "Hubo un error al realizar la acción.",
+                                icon: "error"
+                            });
+                        });
+                            
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                            title: "Cancelado",
+                            text: "El Proveedor no ha sido activado.",
+                            icon: "error"
+                                
+                        });
+                    }
+                });
+            });
+        });
+    });
+    //********************Script botón eliminar proveedor********************************
+    document.addEventListener('DOMContentLoaded', function() {     
+        const btnEliminarProv = document.querySelectorAll('.btnEliminarProv');
+        btnEliminarProv.forEach(function(btnEliminarProv) {
+            btnEliminarProv.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userId = this.getAttribute('data-id');
+                console.log('ID del proveedor:', userId);
+                swalWithBootstrapButtons.fire({
+                    title: "¿Estás seguro de eliminar el Proveedor?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, elimianr!",
+                    cancelButtonText: "No, cancelar!",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/proveedores/' + userId + '/eliminarProv', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({ estado: 3 })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                swalWithBootstrapButtons.fire({
+                                    title: "Eliminado exitosamente",
+                                    icon: "success",
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    location.reload(); 
+                            });
+                            } else {
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al activar el Proveedor.",
+                                    icon: "error"
+                                    });
+                                }
+                            })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swalWithBootstrapButtons.fire({
+                                title: "Error",
+                                text: "Hubo un error al realizar la acción.",
+                                icon: "error"
+                            });
+                        });
+                            
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                            title: "Cancelado",
+                            text: "El Proveedor no ha sido eliminado.",
+                            icon: "error"
+                                
+                        });
+                    }
+                });
+            });
+        });
+    });
+    
 
 </script>
 @endpush

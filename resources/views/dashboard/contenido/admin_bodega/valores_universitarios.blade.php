@@ -130,36 +130,30 @@
                     </div>
                     </ul>
                 <!--********************* Modal para editar un nuevo valor ****************************-->
-                <div class="modal fade" id="editarValoruniModal" tabindex="-1" aria-labelledby="editarValorunivModalLabel" >
+                <div class="modal fade" id="editarValoruniModal" tabindex="-1" aria-labelledby="editarValoruniModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                         <div class="modal-content">
                             <div class="modal-header border-bottom-0 bg-primary py-2">
-                                <h5 class="modal-title text-white">Editar el Valor Universitario</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title text-white" id="editarValoruniModalLabel">Editar Valor Universitario</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="order-summary">
-                                    <div class="card mb-0">
-                                        <div class="card-body">
-                                            <form id="form_guardar_usuario">
-                                                <div class="row g-3">
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="nombre" class="form-label">Tipo documento:</label>
-                                                        <input type="text" class="form-control" id="nombre" placeholder="Ingrese el tipo de documento">
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="preciounitario" class="form-label">Precio unitario:</label>
-                                                        <input type="text" class="form-control" id="preciounitario" placeholder="Ingrese el precio unitario">
-                                                    </div>
-                                                </div>
-                                            </form>
+                                <form id="form_editar_valoruni">
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label for="nombre" class="form-label">Tipo de Documento:</label>
+                                            <input type="text" class="form-control" id="nombreeditar" placeholder="Ingrese el tipo de documento">
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="preciounitario" class="form-label">Precio Unitario:</label>
+                                            <input type="number" step="0.01" class="form-control" id="preciounitarioeditar" placeholder="Ingrese el precio unitario">
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                             <div class="modal-footer border-top-0">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button id="btnEditarValoruni" type="button" class="btn btn-primary">Guardar</button> 
+                                <button id="btnEditarValoruni" type="button" class="btn btn-primary">Guardar Cambios</button>
                             </div>
                         </div>
                     </div>
@@ -187,7 +181,9 @@
                                         <td>{{ $valores->precio_unitario }}</td>
                                         <td><button class="btnActivoVal btn btn-success btn-sm" data-id="{{ $valores->id }}">Activo</button></td>
                                         <td>
-                                            <button id="editarValoruniModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">Editar</button>
+                                        <button class="btn btn-warning btn-sm btnEditarValoruni" data-id="{{ $valores->id }}" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
+                                            Editar
+                                        </button>
                                             <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
                                         </td>
                                     </tr>
@@ -218,9 +214,12 @@
                                                 <td>{{ $valores->id }}</td>
                                                 <td>{{ $valores->nombre }}</td>
                                                 <td>{{ $valores->precio_unitario }}</td>
-                                                <td><button class="btnInactivoVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Inactivo</button></td>
+                                                <td><button class="btnInactivoVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Inactivo</button></td><
                                                 <td>
-                                                    <button id="editarValoruniModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">Editar</button>
+                                                <button class="btn btn-warning btn-sm btnEditarValoruni" data-id="{{ $valores->id }}" 
+                                                    data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
+                                                    Editar
+                                                </button>
                                                     <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
                                                 </td>
                                             </tr>
@@ -334,45 +333,96 @@
 
 
     
-    //********************Script botón editar usuario********************************
-    document.getElementById("btnEditarValoruni").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de editar el Valor universitario?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, guardar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
+    //********************Script botón editar Valor universitario********************************
+    $(document).ready(function() {
+    // Script para abrir el modal de edición
+    $('.btnEditarValoruni').on('click', function() {
+        var id = $(this).data('id');
+        $.ajax({
+            url: '{{ route("val_univ.obtenerval") }}',
+            type: 'GET',
+            data: { id: id },
+            success: function(response) {
+                if (response) {
+                    console.log(response);
+                    $('#nombreeditar').val(response.nombre);
+                    $('#preciounitarioeditar').val(response.precio_unitario);
+
+                    $('#btnEditarValoruni').data('id', id);
+                    $('#editarValoruniModal').modal('show');
+                } else {
+                    alert('No se encontraron datos.');
                 }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "Se ha modificado exitosamente",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("form_editar_usuario").submit();
-                        setTimeout(() => {
-                        location.reload();  
-                        }, 1000); 
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha modificado el Valor universitario",
-                        icon: "error"
-                    });
-                }
-            });
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                alert('Error al obtener los datos.');
+            }
         });
+    });
+
+    // Script para guardar los cambios con confirmación de SweetAlert
+    $('#btnEditarValoruni').on('click', function() {
+        var id = $(this).data('id');
+        var nombre = $('#nombreeditar').val();
+        var precio = $('#preciounitarioeditar').val();
+
+        // Mostrar SweetAlert de confirmación antes de guardar
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Quieres guardar los cambios?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, hacer la solicitud AJAX para guardar los datos
+                $.ajax({
+                    url: '{{ route("val_univ.actualizarval") }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id,
+                        nombre: nombre,
+                        precio_unitario: precio
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Mostrar mensaje de éxito con SweetAlert
+                            Swal.fire(
+                                '¡Guardado!',
+                                'El registro se actualizó correctamente.',
+                                'success'
+                            );
+                            $('#editarValoruniModal').modal('hide');
+                            location.reload(); // Recargar la página para reflejar los cambios
+                        } else {
+                            // Mostrar mensaje de error con SweetAlert
+                            Swal.fire(
+                                'Error',
+                                'Hubo un error al actualizar.',
+                                'error'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        // Mostrar mensaje de error con SweetAlert
+                        Swal.fire(
+                            'Error',
+                            'Hubo un error inesperado.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+});
+
+
+
         
         //********************Script botón activo a inactivo********************************
         document.addEventListener('DOMContentLoaded', function() {

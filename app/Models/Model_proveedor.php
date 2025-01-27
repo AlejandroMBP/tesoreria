@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Spatie\Permission\Traits\HasRoles;
 
-class Model_bodega extends Authenticatable
+class Model_proveedor extends Authenticatable
 {
     use HasRoles;
     use HasApiTokens;
@@ -20,18 +20,13 @@ class Model_bodega extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'concepto_valores'; // Nombre de la tabla
-    protected $fillable = ['nombre', 'precio_unitario', 'estado'];
 
-    // Relación inversa con 'Model_stock'
-    public function valoresStock()
-    {
-        return $this->hasMany(Model_stock::class, 'id_concepto_valor', 'id');
-    }
-
-    
-    
+    protected $table = 'proveedor';  
+    protected $fillable = [
+        'nombre', 
+        'direccion', 
+        'contacto', 
+        'email', 
+        'estado',
+    ];
 }
-
-
-

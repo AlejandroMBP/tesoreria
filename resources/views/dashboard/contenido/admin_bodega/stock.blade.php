@@ -74,98 +74,40 @@
                 <hr>
                 <div class="card">
                     <div class="card-body">
-                        <ul class="nav nav-tabs nav-success" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="pill" href="#tabProveedoresactivos" role="tab" aria-selected="true">
-                                    <div class="d-flex align-items-center">
-                                        <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i></div>
-                                        <div class="tab-title">Valores escasos</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="pill" href="#tabProveedoresinactivos" role='tab' aria-selected='false' tabindex='-1'>
-                                    <div class='d-flex align-items-center'>
-                                        <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
-                                        <div class='tab-title'>Valores suficientes</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="pill" href="#tablistadquisiciones" role='tab' aria-selected='false' tabindex='-1'>
-                                    <div class='d-flex align-items-center'>
-                                        <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
-                                        <div class='tab-title'>Lista de adquisiciones</div>
-                                    </div>
-                                </a>
-                            </li>
-                        
-                    
-                        </ul>
-                        <!--Pestaña de Valores escasos-->
-                        <div class='tab-content' id='espacioactivo'>
-                            <div class='tab-pane fade show active' id='tabProveedoresactivos' role='tabpanel'>
-                                <div class="table-responsive">
-                                    <table id="tablaProveedoresActivos" class="table table-bordered dt-responsive nowrap">
-                                        <div class="card rounded-4">
-                                            <div class="card-body">
-                                                <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4 g-3">
-                                                    <div class="col">
-                                                        <div class="card rounded-4 mb-0 border">
-                                                            <div class="card-body">
-                                                                <div class="mt-4 text-center">
-                                                                    <p class="mb-0" style="font-weight: bold;">PRORROGA DE TITULO DE BACHILLER</p>
-                                                                </div>
-                                                                <div class="d-flex align-items-center justify-content-center mt-3">
-                                                                    <img src="assets/images/gallery/documents.png" width="150" alt="">
-                                                                </div>
-                                                                <div class="mt-4 text-center">
-                                                                    <p class="mb-0" style="color: red; font-size: 1.2rem; font-weight: bold;">50 unidades</p>
-                                                                    <p class="mb-0" >Fecha de ultimo ingreso: </p>
-                                                                    <p class="mb-0" >Estado:  </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>  
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </table>
+                    <ul class="nav nav-tabs nav-success" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="pill" href="#tabStockEscaso" role="tab" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i></div>
+                                    <div class="tab-title">Valores escasos</div>
                                 </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="pill" href="#tabStockSuficiente" role="tab" aria-selected="false">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon"><i class="bi bi-person me-1 fs-6"></i></div>
+                                    <div class="tab-title">Valores suficientes</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Pestaña de Valores escasos -->
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane fade show active" id="tabStockEscaso" role="tabpanel">
+                                <p class="text-center">Cargando datos...</p>
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="contenedorStockEscaso">
                             </div>
                         </div>
-                        <!--Pestaña de Valores suficientes -->
-                        <div class='tab-content' id='espacioinactivo'>   
-                            <div class='tab-pane fade show' id='tabProveedoresinactivos' role='tabpanel'>
-                                <div class="table-responsive">
-                                    <table id="tablaProveedoresInactivos" class="table table-bordered dt-responsive nowrap">
-                                        <div class="card rounded-4">
-                                                <div class="card-body">
-                                                    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4 g-3">
-                                                        <div class="col">
-                                                            <div class="card rounded-4 mb-0 border">
-                                                                <div class="card-body">
-                                                                    <div class="mt-4 text-center">
-                                                                        <p class="mb-0" style="font-weight: bold;">PRORROGA DE TITULO DE BACHILLER</p>
-                                                                    </div>
-                                                                    <div class="d-flex align-items-center justify-content-center mt-3">
-                                                                        <img src="assets/images/gallery/documents.png" width="150" alt="">
-                                                                    </div>
-                                                                    <div class="mt-4 text-center">
-                                                                        <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;">1250 unidades</p>
-                                                                        <p class="mb-0" >Fecha de ultimo ingreso: </p>
-                                                                        <p class="mb-0" >Estado:  </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div> 
+
+                        <!-- Pestaña de Valores suficientes -->
+                        <div class="tab-pane fade" id="tabStockSuficiente" role="tabpanel">
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="contenedorStockSuficiente">
+                                <p class="text-center">Cargando datos...</p>
+                            </div>
+                        </div>
+                    </div>
+
                         </div> 
                     </div> 
                 </div>
@@ -175,6 +117,80 @@
     <div class="overlay btn-toggle"></div>
 @endsection
 @push('scripts')
+<script>
+    $(document).ready(function () {
    
+        function cargarValoresEscasos() {
+            $.ajax({
+                url: '{{ url("stock/valores-escasos") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    let cards = '';
+                    response.forEach(function (valor) {
+                        cards += `
+                            <div class="col">
+                                <div class="card shadow-lg rounded-4 border">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">${valor.conceptoValor ? valor.conceptoValor.nombre : 'Sin nombre'}</h5>
+                                        <p class="text-danger fw-bold">${valor.cantidad} unidades</p>
+                                        <p class="text-muted">Fecha ingreso: ${valor.fecha_ingreso}</p>
+                                        <span class="badge bg-warning">${valor.estado}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    $('#contenedorStockEscaso').html(cards);
+                },
+                error: function () {
+                    $('#contenedorStockEscaso').html('<p class="text-danger">Error al cargar los datos.</p>');
+                }
+            });
+        }
+
+      
+        function cargarValoresSuficientes() {
+            $.ajax({
+                url: '{{ url("stock/valores-suficientes") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    let cards = '';
+                    response.forEach(function (valor) {
+                        cards += `
+                            <div class="col">
+                                <div class="card shadow-lg rounded-4 border">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">${valor.conceptoValor ? valor.conceptoValor.nombre : 'Sin nombre'}</h5>
+                                        <p class="text-success fw-bold">${valor.cantidad} unidades</p>
+                                        <p class="text-muted">Fecha ingreso: ${valor.fecha_ingreso}</p>
+                                        <span class="badge bg-success">${valor.estado}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    $('#contenedorStockSuficiente').html(cards);
+                },
+                error: function () {
+                    $('#contenedorStockSuficiente').html('<p class="text-danger">Error al cargar los datos.</p>');
+                }
+            });
+        }
+
+    
+        cargarValoresEscasos();
+
+ 
+        $('a[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+            let target = $(e.target).attr("href");
+
+            if (target === "#tabStockEscaso") {
+                cargarValoresEscasos();
+            } else if (target === "#tabStockSuficiente") {
+                cargarValoresSuficientes();
+            }
+        });
+    });
+</script>
    
 @endpush

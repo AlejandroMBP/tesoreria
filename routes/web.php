@@ -57,16 +57,27 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::put('/usuarios/{id}/eliminar', [administradorController::class, 'eliminar'])->name('usuarios.eliminar');
         //ADMINISTRACION DE BODEGA
         Route::get('/val_univ', [bodegaController::class,'valores_universitarios'])->name('valores_universitarios');
-        //****** VALORES UNIVRSITARIOS*/
-        
+        //****** VALORES UNIVERSITARIOS*/
         Route::post('/guardarValor', [bodegaController::class, 'guardarVal']);
         Route::put('/val_univ/{id}/inactivarVal', [bodegaController::class, 'inactivarVal'])->name('val_univ.inactivarVal');
         Route::put('/val_univ/{id}/activarVal', [bodegaController::class, 'activarVal'])->name('val_univ.activarVal');
         Route::put('/val_univ/{id}/eliminarVal', [bodegaController::class, 'eliminarVal'])->name('val_univ.eliminarVal');
-
+        Route::get('/val_univ/obtenerval', [bodegaController::class, 'obtenerval'])->name('val_univ.obtenerval');
+        Route::post('/val_univ/actualizarval', [bodegaController::class, 'actualizarval'])->name('val_univ.actualizarval');
         // PROVEEDORES
         Route::get('/proveedores', [bodegaController::class,'proveedores'])->name('proveedores');
+        Route::post('/guardarProv', [bodegaController::class, 'guardarProv']);
+        Route::put('/proveedores/{id}/inactivarProv', [bodegaController::class, 'inactivarProv']);
+        Route::put('/proveedores/{id}/activarProv', [bodegaController::class, 'activarProv']);
+        Route::put('/proveedores/{id}/eliminarProv', [bodegaController::class, 'eliminarProv']);
+        Route::get('/proveedores/obtenerProv', [bodegaController::class, 'obtenerProv'])->name('proveedores.obtenerProv');
+        Route::post('/proveedores/actualizarProv', [bodegaController::class, 'actualizarProv'])->name('proveedores.actualizarProv');
+        //STOCK
         Route::get('/stock', [bodegaController::class,'stock'])->name('stock');
+        Route::get('stock/valores-escasos', [bodegaController::class, 'obtenerValoresEscasos']);
+        Route::get('stock/valores-suficientes', [bodegaController::class, 'obtenerValoresSuficientes']);
+
+        //********************ENTRADA VALORES*************
         Route::get('/ent_val', [bodegaController::class,'entrada_valores'])->name('entrada_valores');
         Route::get('/sal_val', [bodegaController::class,'salida_valores'])->name('salida_valores');
         Route::get('/sol_val_bod', [bodegaController::class,'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
