@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Model_bodega;
 use App\Models\Model_proveedor;
 use App\Models\Model_stock;
-
+use App\Models\Model_solicitud;
+use App\Models\Model_adquisicion;
 class bodegaController extends Controller
 {
     
@@ -120,17 +121,20 @@ class bodegaController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
+            'contacto' => 'required|numeric|digits_between:5,15', 
+            'email' => 'required|email|max:255',
         ]);
         $proveedor = new Model_proveedor();
-        $proveedor->nombre = $request->nombre;
-        $proveedor->direccion = $request->direccion;
-        $proveedor->contacto = "323323";
-        $proveedor->email = "ds@fdf";
-        $proveedor->estado = 1; 
-        $proveedor->uuid = \Str::uuid()->toString();
-        $proveedor->save();
+            $proveedor->nombre = $request->nombre;
+            $proveedor->direccion = $request->direccion;
+            $proveedor->contacto = $request->contacto;
+            $proveedor->email = $request->email;
+            $proveedor->estado = 1; 
+            $proveedor->uuid = \Str::uuid()->toString();
+            $proveedor->save();
         return response()->json(['success' => true]);
     }
+    
     
     //**************FUNCION PARA INACTIVAR PROVEEDOR ********************
     public function inactivarProv($id)
@@ -183,56 +187,135 @@ class bodegaController extends Controller
     // Actualizar el registro
     public function actualizarProv(Request $request)
     {
-        $request->validate([
-            'id' => 'required|exists:concepto_valores,id',
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
-            'contacto' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-        ]);
+        $proveedor = Model_proveedor::find($request->id);
 
-        $valor = Model_proveedor::find($request->id);
-        if ($valor) {
-            $valor->update([
-                'nombre' => $request->nombre,
-                'direccion' => $request->direccion,
-                'contacto' => $request->contacto,
-                'email' => $request->email,
-            ]);
-
-            return response()->json(['success' => true]);
+        if (!$proveedor) {
+            return response()->json(['message' => 'Proveedor no encontrado'], 404);
         }
+        $proveedor->nombre = $request->nombre;
+        $proveedor->direccion = $request->direccion;
+        $proveedor->contacto = $request->contacto;
+        $proveedor->email = $request->email;
+        $proveedor->save();
 
-        return response()->json(['error' => 'No se pudo actualizar'], 500);
+        return response()->json(['success' => true]);
     }
-
 
     //STOCK
     public function stock(){
         return view('dashboard.contenido.admin_bodega.stock');
     }
 
-    public function obtenerValoresEscasos()
-    {
-        $valores = Model_stock::where('cantidad', '<', 50)->get();
-        $valores->load('conceptoValor');  
-        
-        return response()->json($valores);
-    }
-    public function obtenerValoresSuficientes()
-    {
-        $valores = Model_stock::where('cantidad', '>=', 50)->get();
-        $valores->load('conceptoValor'); 
-        
-        return response()->json($valores);
-    }
+public function obtenerValoresEscasos()
+{
+    $valores = DB::table('b_valores_stock')
+        ->join('concepto_valores', 'b_valores_stock.id_concepto_valor', '=', 'concepto_valores.id')
+        ->join('adquisicion_valores','b_valores_stock.id_adquisicion_valores', '=', 'adquisicion_valores.id')
+        ->where('b_valores_stock.cantidad', '<', 50)
+        ->where('concepto_valores.estado', '=', 1) 
+        ->select('b_valores_stock.*', 'concepto_valores.nombre', 'concepto_valores.estado','fecha_adquisicion')
+        ->get();
+
+    return response()->json($valores);
+}
+
+public function obtenerValoresSuficientes()
+{
+    $valores = DB::table('b_valores_stock')
+        ->join('concepto_valores', 'b_valores_stock.id_concepto_valor', '=', 'concepto_valores.id')
+        ->join('adquisicion_valores','b_valores_stock.id_adquisicion_valores', '=', 'adquisicion_valores.id')
+        ->where('b_valores_stock.cantidad', '>=', 50)
+        ->where('concepto_valores.estado', '=', 1) 
+        ->select('b_valores_stock.*', 'concepto_valores.nombre', 'concepto_valores.estado','adquisicion_valores.fecha_adquisicion')
+        ->get();
+
+    return response()->json($valores);
+}
     //ENTRADA VALORES
     public function entrada_valores(){
-        return view('dashboard.contenido.admin_bodega.entrada_valores');
+       
+        $lista_adquisiciones = DB::table('adquisicion_valores')->where('estado', 1)->get();
+        return view('dashboard.contenido.admin_bodega.entrada_valores',compact('lista_adquisiciones'));
     }
-    public function salida_valores(){
-        return view('dashboard.contenido.admin_bodega.salida_valores');
+
+    public function guardar_adqui(Request $request)
+    {
+        $request->validate([
+            'fecha' => 'required|string|max:255',
+           
+        ]);
+        $valor = new Model_adquisicion();
+        $valor->fecha_adquisicion = $request->fecha;
+        $valor->uuid = \Str::uuid()->toString();
+        $valor->save();
+        return response()->json(['success' => true]);
+    }    
+    public function registrarEntrada($id)
+    {
+        $adquisicion = Model_adquisicion::find($id);
+        if (!$adquisicion) {
+            return redirect()->route('ruta_de_error')->with('error', 'Registro no encontrado.');
+        }
+       
+        return view('dashboard.contenido.admin_bodega.registro_entrada_valores', compact('adquisicion'));
     }
+    
+   
+    public function guardar_ingreso_valores(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio_unitario' => 'required|numeric',
+        ]);
+        $valor = new Model_bodega();
+        $valor->nombre = $request->nombre;
+        $valor->precio_unitario = $request->precio_unitario;
+        $valor->estado = 1; 
+        $valor->uuid = \Str::uuid()->toString();
+        $valor->save();
+        return response()->json(['success' => true]);
+    }
+   
+    //SALIDA VALORES
+    public function salida_valores()
+    {
+        $valores_salida_nuevas = DB::table('solicitud as sol')
+            ->join('concepto_valores as cv', 'sol.id_concepto_val', '=', 'cv.id')
+            ->join('users as u_remitente', 'sol.id_usuario_remitente', '=', 'u_remitente.id')
+            ->join('users as u_destinatario', 'sol.id_usuario_destinatario', '=', 'u_destinatario.id')
+            ->select(
+                'sol.*', 
+                'cv.nombre as concepto_nombre',
+                'u_remitente.name as nombre_remitente',
+                'u_destinatario.name as nombre_destinatario',
+                'u_remitente.cargo as cargo'
+            )
+            ->where('sol.estado', 1)
+            ->get();
+
+            $valores_salida_atendidas = DB::table('solicitud as sol')
+            ->join('concepto_valores as cv', 'sol.id_concepto_val', '=', 'cv.id')
+            ->join('users as u_remitente', 'sol.id_usuario_remitente', '=', 'u_remitente.id')
+            ->join('users as u_destinatario', 'sol.id_usuario_destinatario', '=', 'u_destinatario.id')
+            ->select(
+                'sol.*', 
+                'cv.nombre as concepto_nombre',
+                'u_remitente.name as nombre_remitente',
+                'u_destinatario.name as nombre_destinatario',
+                'u_remitente.cargo as cargo'
+            )
+            ->where('sol.estado', 2)
+            ->get();
+
+        return view('dashboard.contenido.admin_bodega.salida_valores', compact('valores_salida_nuevas', 'valores_salida_atendidas'));
+    }
+    public function generar_pdf_valores_entregados(){
+
+        $pdf = \PDF::loadView('dashboard.contenido.admin_bodega.valores_entregados_pdf');
+        return $pdf->stream('Rep_valores_entregados.pdf');
+
+    }
+    //***************************** */
     public function form_entrega_valores_bodega(){
         return view('dashboard.contenido.admin_bodega.form_entrega_valores_bodega');
     }

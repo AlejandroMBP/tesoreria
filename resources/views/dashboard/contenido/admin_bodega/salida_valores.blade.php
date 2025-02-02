@@ -67,7 +67,7 @@
                 <div class="card-body">
                     <ul class="nav nav-tabs nav-success" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link active" data-bs-toggle="pill" href="#tabProveedoresactivos" role="tab" aria-selected="true">
+                            <a class="nav-link active" data-bs-toggle="pill" href="#tabSalValactivos" role="tab" aria-selected="true">
                                 <div class="d-flex align-items-center">
                                     <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i></div>
                                     <div class="tab-title">Solicitudes nuevas</div>
@@ -75,7 +75,7 @@
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" data-bs-toggle="pill" href="#tabProveedoresinactivos" role='tab' aria-selected='false' tabindex='-1'>
+                            <a class="nav-link" data-bs-toggle="pill" href="#tabSalValinactivos" role='tab' aria-selected='false' tabindex='-1'>
                                 <div class='d-flex align-items-center'>
                                     <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
                                     <div class='tab-title'>Solicitudes atendidas</div>
@@ -85,25 +85,28 @@
                         
                     </ul>
                     <!--Pestaña de Solicitudes nuevas-->
-                    <div class='tab-content' id='espacioactivo'>
-                        <div class='tab-pane fade show active' id='tabProveedoresactivos' role='tabpanel'>
+                    <div class='tab-content' id='espacioactivoSalVal'>
+                        <div class='tab-pane fade show active' id='tabSalValactivos' role='tabpanel'>
                             <div class="table-responsive">
-                                <table id="tablaProveedoresActivos" class="table table-bordered dt-responsive nowrap">
+                                <table id="tablaSalValActivos" class="table table-bordered dt-responsive nowrap">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Remitente</th>
                                             <th>Cargo del remitente</th>
+                                            <th>Destinatario</th>
                                             <th>Fecha de solicitud</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($valores_salida_nuevas as $val_sal)
                                         <tr>
-                                            <td>1</td>
-                                            <td>Pedro Perez Mancilla</td>
-                                            <td>Tecnico I encargado de cajas</td>
-                                            <td>21-12-2024</td>
+                                            <td>{{$val_sal->id }}</td>
+                                            <td>{{$val_sal->nombre_remitente}}</td>
+                                            <td>{{$val_sal->cargo}}</td>
+                                            <td>{{$val_sal->nombre_destinatario}}</td>
+                                            <td>{{$val_sal->fecha_solicitud}}</td>
                                             <td>
                                                 <a href="{{ route('form_entrega_valores_bodega') }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
                                                 style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px; text-decoration: none;">
@@ -111,6 +114,7 @@
                                                 </a>
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>       
                                 </table>
                             </div>
@@ -118,34 +122,46 @@
                     </div>
 
                     <!--Pestaña de Solicitudes atendidas-->
-                    <div class='tab-content' id='espacioinactivo'>   
-                        <div class='tab-pane fade show' id='tabProveedoresinactivos' role='tabpanel'>
+                    <div class='tab-content' id='espacioinactivoSalVal'>   
+                        <div class='tab-pane fade show' id='tabSalValinactivos' role='tabpanel'>
                             <div class="table-responsive">
-                                <table id="tablaProveedoresInactivos" class="table table-bordered dt-responsive nowrap">
+                                <table id="tablaSalValInactivos" class="table table-bordered dt-responsive nowrap">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Remitente</th>
                                             <th>Cargo del remitente</th>
+                                            <th>Destinatario</th>
                                             <th>Fecha de solicitud</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
+                                    
                                     <tbody>
+                                        @foreach($valores_salida_atendidas as $val_sal_aten)
                                         <tr>
-                                            <td>1</td>
-                                            <td>Pedro Perez Mancilla</td>
-                                            <td>Tecnico I encargado de cajas</td>
-                                            <td>21-12-2024</td> 
+                                            <td>{{$val_sal_aten->id }}</td>
+                                            <td>{{$val_sal_aten->nombre_remitente}}</td>
+                                            <td>{{$val_sal_aten->cargo}}</td>
+                                            <td>{{$val_sal_aten->nombre_destinatario}}</td>
+                                            <td>{{$val_sal_aten->fecha_solicitud}}</td>
                                             <td>
-                                                <button class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
-                                                style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;">
-                                                    <img src="assets/images/apps/pdf.png" alt="Icono PDF" style="width: 16px; height: 16px;"> 
-                                                    Imprimir formulario
-                                                </button>
+                                                <a href="{{ url('generar_pdf_valores_entregados') }}"  target="_blank">
+                                                    <button class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
+                                                    style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;">
+                                                        <img src="assets/images/apps/pdf.png" alt="Icono PDF" style="width: 16px; height: 16px;"> 
+                                                        Imprimir formulario
+                                                    </button>
+                                                </a>
                                             </td>
+                                           
                                         </tr>
-                                    </tbody>
+                                        @endforeach
+                                    </tbody>  
+
+
+
+
                                 </table>
                             </div>
                         </div>
@@ -160,7 +176,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#tablaProveedoresActivos').DataTable({
+            $('#tablaSalValActivos').DataTable({
                 responsive: true,
                 paging: true,  
                 searching: true,  
@@ -171,7 +187,7 @@
         });
 
         $(document).ready(function() {
-            $('#tablaProveedoresInactivos').DataTable({
+            $('#tablaSalValInactivos').DataTable({
                 responsive: true,
                 paging: true,  
                 searching: true,  

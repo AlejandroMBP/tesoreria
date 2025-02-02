@@ -46,7 +46,6 @@
                                     <tr>
                                         <td>PRORROGA DE TÍTULO DE BACHILLER</td>
                                         <td>300</td>
-                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -92,7 +91,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-</div>
+                            </div>
                                 <div class="text-end">
                                 <button id="agregar-fila" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;">
                                     <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span> 

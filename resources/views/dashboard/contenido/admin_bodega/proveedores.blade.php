@@ -66,12 +66,12 @@
                     </div>
                 </div>
             </div>
-                
-                <!-- Pestañas para usuarios activos e inactivos -->
-            <h6 class="mb-0 text-uppercase">Administración de Proveedores</h6>       
-                <!-- Boton Crear nuevo Usuario -->
-            <div class="d-flex justify-content-end mb-3">
-                <button type="button" class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearProvModal">Crear nuevo</button>
+            <!-- Pestañas para usuarios activos e inactivos -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0 text-uppercase">Administración de Proveedores</h6>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearProvModal"><i class="bi bi-plus-square"> </i>Crear nuevo </button>       
+                </div>
             </div>
             <hr>
             <div class="card">
@@ -94,7 +94,7 @@
                             </a>
                         </li>
                         <!--********************* Modal para crear un proveedor ****************************-->   
-                        <div class="modal fade" id="crearProvModal" tabindex="-1" aria-labelledby="crearProvModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="crearProvModal" tabindex="-1" aria-labelledby="crearProvModalLabel" >
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header border-bottom-0 bg-primary py-2">
@@ -108,12 +108,20 @@
                                                     <form id="form_guardar_proveedor">
                                                         <div class="row g-3">
                                                             <div class="col-12 col-md-6">
-                                                                <label for="nombreprov" class="form-label">Tipo de documento:</label>
-                                                                <input type="text" class="form-control" id="nombreprov" placeholder="Ingrese el tipo de documento">
+                                                                <label for="nombreprov" class="form-label">Nombre del Proveedor</label>
+                                                                <input type="text" class="form-control" id="nombreprov" placeholder="Ingrese el nombre del proveedor">
                                                             </div>
                                                             <div class="col-12 col-md-6">
-                                                                <label for="direccionprov" class="form-label">Precio unitario:</label>
-                                                                <input type="text" class="form-control" id="direccionprov" placeholder="Ingrese el precio unitario">
+                                                                <label for="direccionprov" class="form-label">Dirección:</label>
+                                                                <input type="text" class="form-control" id="direccionprov" placeholder="Ingrese la dirección del proveedor">
+                                                            </div>
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="contactoprov" class="form-label">Nro. celular</label>
+                                                                <input type="number" class="form-control" id="contactoprov" placeholder="Ingrese el Nro. celular ">
+                                                            </div>
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="emailprov" class="form-label">Correo electrónico</label>
+                                                                <input type="email" class="form-control" id="emailprov" placeholder="Ingrese el correo electrónico del proveedor">
                                                             </div>
                                                         </div>
                                                     </form>
@@ -128,9 +136,8 @@
                                 </div>
                             </div>
                         </div>
-                    </ul>
                         <!--********************* Modal para editar un proveedor ****************************-->
-                        <div class="modal fade" id="editarProvModal" tabindex="-1" aria-labelledby="editarProvModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="editarProvModal" tabindex="-1" aria-labelledby="editarProvModalLabel" >
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header border-bottom-0 bg-primary py-2">
@@ -172,7 +179,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+                    </ul>
                     <!--Pestaña de Proveedor activo-->
                     <div class='tab-content' id='espacioactivo'>
                         <div class='tab-pane fade show active' id='tabProveedoresactivos' role='tabpanel'>
@@ -253,7 +260,7 @@
                         </div> 
                     </div> 
                 </div> 
-            </div>    
+            </div>     
         </div> 
     </main>
     <div class="overlay btn-toggle"></div>
@@ -289,64 +296,70 @@
             buttonsStyling: false
         });
     //********************Script botón guardar nuevo proveedor********************************
-    document.addEventListener('DOMContentLoaded', function () {
-  
-  const btnGuardarProv = document.getElementById('btnGuardarProv');
+document.addEventListener('DOMContentLoaded', function () {
+    const btnGuardarProv = document.getElementById('btnGuardarProv');
 
-  btnGuardarProv.addEventListener('click', function () {
-      const nombreprov = document.getElementById('nombreprov').value;
-      const direccionprov = document.getElementById('direccionprov').value;
-      if (!nombreprov || !direccionprov) {
-          Swal.fire({
-              title: "Error",
-              text: "Todos los campos son obligatorios.",
-              icon: "error",
-              confirmButtonText: "OK"
-          });
-          return;
-      }
-      fetch('/guardarProv', {  
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          },
-          body: JSON.stringify({
-              nombre: nombreprov,
-              precio_unitario: direccionprov
-          })
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.success) {
-              Swal.fire({
-                  title: "Éxito",
-                  text: "El Proveedor se ha creado correctamente.",
-                  icon: "success",
-                  confirmButtonText: "OK"
-              }).then(() => {
-                  location.reload(); 
-              });
-          } else {
-              Swal.fire({
-                  title: "Error",
-                  text: "Hubo un error al crear el Proveedor",
-                  icon: "error",
-                  confirmButtonText: "OK"
-              });
-          }
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          Swal.fire({
-              title: "Error",
-              text: "Hubo un error al realizar la acción.",
-              icon: "error",
-              confirmButtonText: "OK"
-          });
-      });
-  });
+    btnGuardarProv.addEventListener('click', function () {
+        const nombreprov = document.getElementById('nombreprov').value.trim();
+        const direccionprov = document.getElementById('direccionprov').value.trim();
+        const contactoprov = document.getElementById('contactoprov').value.trim();
+        const emailprov = document.getElementById('emailprov').value.trim();
+
+        if (!nombreprov || !direccionprov || !contactoprov || !emailprov) {
+            Swal.fire({
+                title: "Error",
+                text: "Todos los campos son obligatorios.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+            return;
+        }
+        fetch('/guardarProv', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                nombre: nombreprov,
+                direccion: direccionprov,
+                contacto: contactoprov,
+                email: emailprov 
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Éxito",
+                    text: "El Proveedor se ha creado correctamente.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    location.reload();  
+                });
+            } else {
+                throw new Error(data.message || "Error desconocido");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: "Error",
+                text: "Hubo un error al realizar la acción.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        });
+    });
 });
+
+
     //********************Script botón activo a inactivo********************************
     document.addEventListener('DOMContentLoaded', function() {
         const btnActivoProv = document.querySelectorAll('.btnActivoProv');
@@ -416,7 +429,12 @@
     $(document).ready(function() {
     // Script para abrir el modal de edición
     $('.btnEditarProv').on('click', function() {
+        
         var id = $(this).data('id');
+        if (!id) {
+            console.error("ID no válido");
+            return;
+        }
         $.ajax({
             url: '{{ route("proveedores.obtenerProv") }}',
             type: 'GET',

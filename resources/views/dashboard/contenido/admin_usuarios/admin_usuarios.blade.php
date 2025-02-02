@@ -43,7 +43,7 @@
                                     <img src="assets/images/gallery/welcome-back-3.png" height="180" alt="">
                                 </div>
                             </div>
-                        </div> 
+                        </div>  <!--end row -->
                     </div> 
                 </div> 
             </div> 
@@ -52,8 +52,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="mb-0 text-uppercase">Usuarios</h6>
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal"><i class="bi bi-plus-square"> </i>Crear nuevo usuario</button>
-                
+                <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal"><i class="bi bi-plus-square"> </i>Crear nuevo usuario</button>       
             </div>
         </div>
         <hr>
@@ -257,38 +256,38 @@
                 <div class='tab-content' id='espacioinactivo'>
                     <div class='tab-pane fade show' id='tabUsuariosinactivos' role='tabpanel'>
                         <div class="table-responsive">
-                                <table id="tablaUsuariosInactivos" class="table table-bordered dt-responsive nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Email</th>
-                                            <th>Estado</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($usuarios_inactivos as $usuario)
-                                        <tr>
-                                            <td>{{ $usuario->id }}</td>
-                                            <td>{{ $usuario->name }}</td>
-                                            <td>{{ $usuario->email }}</td>
-                                            <td>
-                                                <button class="btnInactivo btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Inactivo</button>
-                                            </td>
-                                            <td>
-                                                <button button id="editarUsuarioModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal">Editar</button>
-                                                <button class="btnEliminar btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Eliminar</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table id="tablaUsuariosInactivos" class="table table-bordered dt-responsive nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($usuarios_inactivos as $usuario)
+                                    <tr>
+                                        <td>{{ $usuario->id }}</td>
+                                        <td>{{ $usuario->name }}</td>
+                                        <td>{{ $usuario->email }}</td>
+                                        <td>
+                                            <button class="btnInactivo btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Inactivo</button>
+                                        </td>
+                                        <td>
+                                            <button button id="editarUsuarioModal" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal">Editar</button>
+                                            <button class="btnEliminar btn btn-danger btn-sm" data-id="{{ $usuario->id }}">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                    </div> 
+                    </div>
                 </div> 
             </div> 
+           
         </div>
     </div>
 </main>

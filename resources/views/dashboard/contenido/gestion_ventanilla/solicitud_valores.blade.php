@@ -43,7 +43,7 @@
                                     <td>DAVID FLORES MAMANI</td>
                                     <td>6 TIPOS</td> 
                                     <td>
-                                        <a href="{{ url('generar-pdf_solicitud') }}"  target="_blank">
+                                        <a href="{{ url('generar_pdf_solicitud') }}"  target="_blank">
                                             <button class="btn btn-warning btn-sm">IMPRIMIR SOLICITUD</button>
                                         </a>
                                     </td>

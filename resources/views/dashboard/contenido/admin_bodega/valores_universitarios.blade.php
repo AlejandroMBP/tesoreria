@@ -16,9 +16,8 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-
             <div class="row">
-            <div class="col-xxl-8 d-flex align-items-stretch">
+                <div class="col-xxl-8 d-flex align-items-stretch">
                     <div class="card w-100 overflow-hidden rounded-4">
                         <div class="card-body position-relative p-4">
                             <div class="row">
@@ -66,138 +65,137 @@
                         </div>
                     </div>
                 </div>
-                <!-- Pestañas para usuarios activos e inactivos -->
-        <h6 class="mb-0 text-uppercase">Administración de valores universitarios</h6>       
-       <!-- Boton Crear nuevo Usuario -->
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearValorunivModal">Crear nuevo</button>
-        </div>
-        <hr>
-        <div class="card">
-            <div class="card-body">
-                <ul class="nav nav-tabs nav-success" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-bs-toggle="pill" href="#tabValoresactivos" role="tab" aria-selected="true">
-                            <div class="d-flex align-items-center">
-                                <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i></div>
-                                <div class="tab-title">Valores activos</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="pill" href="#tabValoresinactivos" role='tab' aria-selected='false' tabindex='-1'>
-                            <div class='d-flex align-items-center'>
-                                <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
-                                <div class='tab-title'>Valores inactivos</div>
-                            </div>
-                        </a>
-                    </li>
-                
-                    <!--********************* Modal para crear un nuevo valor ****************************-->
-                    <div class="modal fade" id="crearValorunivModal" tabindex="-1" aria-labelledby="crearValorunivModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header border-bottom-0 bg-primary py-2">
-                                    <h5 class="modal-title text-white">Crear nuevo Valor Universitario</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <!-- Pestañas para valores activos e inactivos -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0 text-uppercase">Administración de valores universitarios</h6>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearValorunivModal"><i class="bi bi-plus-square"> </i>Crear nuevo usuario</button>       
+                </div>
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-tabs nav-success" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="pill" href="#tabValoresactivos" role="tab" aria-selected="true">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i></div>
+                                    <div class="tab-title">Valores activos</div>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="order-summary">
-                                        <div class="card mb-0">
-                                            <div class="card-body">
-                                                <form id="form_guardar_valoruni">
-                                                    <div class="row g-3">
-                                                        <div class="col-12 col-md-6">
-                                                            <label for="nombre" class="form-label">Tipo de documento:</label>
-                                                            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el tipo de documento">
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="pill" href="#tabValoresinactivos" role='tab' aria-selected='false' tabindex='-1'>
+                                <div class='d-flex align-items-center'>
+                                    <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
+                                    <div class='tab-title'>Valores inactivos</div>
+                                </div>
+                            </a>
+                        </li>
+                        <!--********************* Modal para crear un nuevo valor ****************************-->
+                        <div class="modal fade" id="crearValorunivModal" tabindex="-1" aria-labelledby="crearValorunivModalLabel" >
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header border-bottom-0 bg-primary py-2">
+                                        <h5 class="modal-title text-white">Crear nuevo Valor Universitario</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="order-summary">
+                                            <div class="card mb-0">
+                                                <div class="card-body">
+                                                    <form id="form_guardar_valoruni">
+                                                        <div class="row g-3">
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="nombre" class="form-label">Tipo de documento:</label>
+                                                                <input type="text" class="form-control" id="nombre" placeholder="Ingrese el tipo de documento">
+                                                            </div>
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="preciounitario" class="form-label">Precio unitario:</label>
+                                                                <input type="number" class="form-control" id="preciounitario" placeholder="Ingrese el precio unitario">
+                                                            </div>
                                                         </div>
-                                                        <div class="col-12 col-md-6">
-                                                            <label for="preciounitario" class="form-label">Precio unitario:</label>
-                                                            <input type="number" class="form-control" id="preciounitario" placeholder="Ingrese el precio unitario">
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer border-top-0">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                    <button id="btnGuardarValoruni" type="button" class="btn btn-primary">Guardar</button> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </ul>
-                <!--********************* Modal para editar un nuevo valor ****************************-->
-                <div class="modal fade" id="editarValoruniModal" tabindex="-1" aria-labelledby="editarValoruniModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header border-bottom-0 bg-primary py-2">
-                                <h5 class="modal-title text-white" id="editarValoruniModalLabel">Editar Valor Universitario</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="form_editar_valoruni">
-                                    <div class="row g-3">
-                                        <div class="col-12 col-md-6">
-                                            <label for="nombre" class="form-label">Tipo de Documento:</label>
-                                            <input type="text" class="form-control" id="nombreeditar" placeholder="Ingrese el tipo de documento">
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <label for="preciounitario" class="form-label">Precio Unitario:</label>
-                                            <input type="number" step="0.01" class="form-control" id="preciounitarioeditar" placeholder="Ingrese el precio unitario">
-                                        </div>
+                                    <div class="modal-footer border-top-0">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                        <button id="btnGuardarValoruni" type="button" class="btn btn-primary">Guardar</button> 
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                            <div class="modal-footer border-top-0">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button id="btnEditarValoruni" type="button" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                        <!--********************* Modal para editar un nuevo valor ****************************-->
+                        <div class="modal fade" id="editarValoruniModal" tabindex="-1" aria-labelledby="editarValoruniModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header border-bottom-0 bg-primary py-2">
+                                        <h5 class="modal-title text-white" id="editarValoruniModalLabel">Editar Valor Universitario</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="form_editar_valoruni">
+                                            <div class="row g-3">
+                                                <div class="col-12 col-md-6">
+                                                    <label for="nombre" class="form-label">Tipo de Documento:</label>
+                                                    <input type="text" class="form-control" id="nombreeditar" placeholder="Ingrese el tipo de documento">
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <label for="preciounitario" class="form-label">Precio Unitario:</label>
+                                                    <input type="number" step="0.01" class="form-control" id="preciounitarioeditar" placeholder="Ingrese el precio unitario">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer border-top-0">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                        <button id="btnEditarValoruni" type="button" class="btn btn-primary">Guardar Cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                    <!--***************Pestaña de valor universitario activo************************-->
+                    <div class='tab-content' id='espacioactivo'>       
+                        <div class='tab-pane fade show active' id='tabValoresactivos' role='tabpanel'>
+                            <div class="table-responsive">
+                                <table id="tablaValoresActivos" class="table table-bordered dt-responsive nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tipo documento</th>
+                                            <th>Precio unitario</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($valores_universitarios_activos as $valores)
+                                        <tr>
+                                            <td>{{ $valores->id }}</td>
+                                            <td>{{ $valores->nombre }}</td>
+                                            <td>{{ $valores->precio_unitario }}</td>
+                                            <td><button class="btnActivoVal btn btn-success btn-sm" data-id="{{ $valores->id }}">Activo</button></td>
+                                            <td>
+                                            <button class="btn btn-warning btn-sm btnEditarValoruni" data-id="{{ $valores->id }}" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
+                                                Editar
+                                            </button>
+                                                <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!--***************Pestaña de valor universitario activo************************-->
-                <div class='tab-content' id='espacioactivo'>
-                    
-                    <div class='tab-pane fade show active' id='tabValoresactivos' role='tabpanel'>
-                        <div class="table-responsive">
-                            <table id="tablaValoresActivos" class="table table-bordered dt-responsive nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tipo documento</th>
-                                        <th>Precio unitario</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($valores_universitarios_activos as $valores)
-                                    <tr>
-                                        <td>{{ $valores->id }}</td>
-                                        <td>{{ $valores->nombre }}</td>
-                                        <td>{{ $valores->precio_unitario }}</td>
-                                        <td><button class="btnActivoVal btn btn-success btn-sm" data-id="{{ $valores->id }}">Activo</button></td>
-                                        <td>
-                                        <button class="btn btn-warning btn-sm btnEditarValoruni" data-id="{{ $valores->id }}" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
-                                            Editar
-                                        </button>
-                                            <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--********************Pestaña de valor universitario inactivo ***********************-->
-                <div class='tab-content' id='espacioinactivo'>
-                    
-                    <div class='tab-pane fade show' id='tabValoresinactivos' role='tabpanel'>
-                        <div class="table-responsive">
+                    <!--********************Pestaña de valor universitario inactivo ***********************-->
+                    <div class='tab-content' id='espacioinactivo'>   
+                        <div class='tab-pane fade show' id='tabValoresinactivos' role='tabpanel'>
+                            <div class="table-responsive">
                                 <table id="tablaValoresInactivos" class="table table-bordered dt-responsive nowrap">
                                     <thead>
                                         <tr>
@@ -214,12 +212,11 @@
                                                 <td>{{ $valores->id }}</td>
                                                 <td>{{ $valores->nombre }}</td>
                                                 <td>{{ $valores->precio_unitario }}</td>
-                                                <td><button class="btnInactivoVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Inactivo</button></td><
+                                                <td><button class="btnInactivoVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Inactivo</button></td>
                                                 <td>
-                                                <button class="btn btn-warning btn-sm btnEditarValoruni" data-id="{{ $valores->id }}" 
-                                                    data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
-                                                    Editar
-                                                </button>
+                                                    <button class="btn btn-warning btn-sm btnEditarValoruni" data-id="{{ $valores->id }}" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
+                                                        Editar
+                                                    </button>
                                                     <button class="btnEliminarVal btn btn-danger btn-sm" data-id="{{ $valores->id }}">Eliminar</button>
                                                 </td>
                                             </tr>
@@ -228,14 +225,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div> 
             </div> 
-        </div>
-                        
-              
-            </div>
-        </div>
+        </div>   
     </main>
     <div class="overlay btn-toggle"></div>
 @endsection

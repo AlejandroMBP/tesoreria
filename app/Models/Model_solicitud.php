@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Spatie\Permission\Traits\HasRoles;
 
-class Model_bodega extends Authenticatable
+class Model_solicitud extends Authenticatable
 {
     use HasRoles;
     use HasApiTokens;
@@ -20,12 +20,11 @@ class Model_bodega extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'concepto_valores';
-    protected $fillable = ['id','nombre', 'precio_unitario', 'estado'];
+    protected $table = 'solicitud';
+    protected $fillable = ['id','fecha_solicitud', 'cantidad', 'estado'];
 
     
-    
-    
+
 }
 
 

@@ -18,10 +18,7 @@ class Model_stock extends Authenticatable
     protected $table = 'b_valores_stock'; 
     protected $fillable = ['id', 'id_concepto_valor', 'cantidad'];
 
-    public function conceptoValor()
-    {
-        return $this->belongsTo(Model_bodega::class, 'id_concepto_valor', 'id');
-    }
+    
 }
 
 
