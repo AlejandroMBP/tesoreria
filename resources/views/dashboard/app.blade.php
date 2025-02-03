@@ -8,16 +8,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>UPEA | Sistema de Administración de Tesoro Universitario</title>
     <!--favicon-->
-    <link rel="icon" href="assets/images/logoUpea.png" type="image/png">
+    <link rel="icon" href="{{asset('assets/images/logoUpea.png')}}" type="image/png">
     <!-- loader-->
-    <link href="assets/css/pace.min.css" rel="stylesheet">
-    <script src="assets/js/pace.min.js"></script>
+    <link href="{{asset('assets/css/pace.min.css')}}" rel="stylesheet">
+    <script src="{{asset('assets/js/pace.min.js')}}"></script>
 
     <!--plugins-->
-    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="assets/plugins/metismenu/metisMenu.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/plugins/metismenu/mm-vertical.css">
-    <link rel="stylesheet" type="text/css" href="assets/plugins/simplebar/css/simplebar.css">
+    <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/metismenu/metisMenu.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/metismenu/mm-vertical.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/simplebar/css/simplebar.css')}}">
     <!--bootstrap css-->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -32,8 +32,8 @@
     <link href="{{ asset('sass/responsive.css') }}" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
     <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('https://code.jquery.com/jquery-3.6.0.min.js')}}"></script>
+    <script src="{{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11')}}"></script>
     
     <!--datatable-->
     

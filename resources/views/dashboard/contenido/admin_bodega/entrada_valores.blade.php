@@ -104,7 +104,7 @@
                                             <td>
                                                 <button class="btnEliminar btn btn-danger btn-sm">Eliminar</button>
                                                 
-                                                <a href="{{ route('registrar_entrada', ['id' => $adquisiciones->id]) }}"
+                                                <a href="{{ route('registrar_entrada', [$adquisiciones->id]) }}"
                                                     class="btn btn-sm d-inline-flex align-items-center justify-content-center"
                                                     style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px; text-decoration: none;">
                                                         Realizar registro

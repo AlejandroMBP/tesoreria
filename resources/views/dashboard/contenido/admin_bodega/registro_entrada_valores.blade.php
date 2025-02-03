@@ -1,5 +1,4 @@
 @extends('dashboard.app')
-
 @section('contenido')
     <main class="main-wrapper">
         <div class="main-content">
@@ -79,7 +78,7 @@
                     <div class="row">
                         <div class="col-md-6 d-flex align-items-center justify-content-center">
                             <div class="text-center">
-                                <img src="assets/images/gallery/documents.png" alt="Imagen del proveedor" class="img-fluid rounded mb-3" style="max-width: 80%; height: auto;">
+                                <img src="{{asset('assets/images/gallery/documents.png')}}" alt="Imagen del proveedor" class="img-fluid rounded mb-3" style="max-width: 80%; height: auto;">
                                 <p>Ingrese los Valores universitarios</p>
                                 <table class="table table-bordered">
                                     <tbody> 
@@ -162,7 +161,7 @@
                                                 <p class="mb-0" style="font-weight: bold;">${valor.nombre}</p>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-center mt-3">
-                                                <img src="assets/images/gallery/documents.png" width="150" alt="">
+                                                <img src="{{asset('assets/images/gallery/documents.png')}}" width="150" alt="">
                                             </div>
                                             <div class="mt-4 text-center">
                                                 <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
@@ -215,7 +214,7 @@
                                                 <p class="mb-0" style="font-weight: bold;">${valor.nombre}</p>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-center mt-3">
-                                                <img src="assets/images/gallery/documents.png" width="150" alt="">
+                                                <img src="{{asset('assets/images/gallery/documents.png')}}" width="150" alt="">
                                             </div>
                                             <div class="mt-4 text-center">
                                                 <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>

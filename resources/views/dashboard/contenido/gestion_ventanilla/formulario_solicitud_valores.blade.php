@@ -20,7 +20,7 @@
                 <hr>
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="mb-0 text-uppercase">Reportes CSV</h6>
+                        <h6 class="mb-0 text-uppercase">Formulario de solicitud</h6>
                         <hr>
                         <form id="form_guardar_solicitudVal" class="mt-4">
                             <div class="table-responsive">

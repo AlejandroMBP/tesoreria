@@ -1,7 +1,7 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div class="logo-icon">
-            <img src="assets/images/logoUpea.png" class="logo-img" alt="">
+            <img src="{{asset('assets/images/logoUpea.png')}}" class="logo-img" alt="">
         </div>
         <div class="logo-name flex-grow-1">
             <h7 class="mb-0" style="text-align: center;">Sistema de Administración de Tesoro Universitario</h7>
