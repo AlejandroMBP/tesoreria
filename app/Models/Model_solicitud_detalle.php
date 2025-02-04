@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Spatie\Permission\Traits\HasRoles;
 
-class Model_solicitud extends Authenticatable
+class Model_solicitud_detalle extends Authenticatable
 {
     use HasRoles;
     use HasApiTokens;
@@ -20,8 +20,8 @@ class Model_solicitud extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'solicitud';
-    protected $fillable = ['id','id_usuario_remitente','id_usuario_destinatario','fecha_solicitud', 'cantidad', 'estado','id_tiposolicitud', 'uuid'];
+    protected $table = 'solicitud_detalle';
+    protected $fillable = ['id','id_solicitud','id_concepto_valores','estado', 'cantidad'];
 
     
 

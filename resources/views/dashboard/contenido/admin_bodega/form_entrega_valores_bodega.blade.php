@@ -43,11 +43,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>PRORROGA DE TÍTULO DE BACHILLER</td>
-                                        <td>300</td>
-                                    </tr>
-                                </tbody>
+        @foreach($detallesSolicitud as $detalle)
+            <tr>
+                <td>{{ $detalle->concepto_nombre }}</td> <!-- Aquí asumo que el campo es 'tipo_documento' -->
+                <td>{{ $detalle->cantidad }}</td> <!-- Aquí asumo que el campo es 'cantidad' -->
+            </tr>
+        @endforeach
+    </tbody>
                             </table>
                         </div>
                         </div>

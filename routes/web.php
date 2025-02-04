@@ -86,7 +86,8 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         //********************SALIDA VALORES*************
         Route::get('/sal_val', [bodegaController::class,'salida_valores'])->name('salida_valores');
         //********************FORM ENTREGA VALORES*************
-        Route::get('/sol_val_bod', [bodegaController::class,'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
+        Route::get('/sol_val_bod/{id}', [bodegaController::class, 'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
+
         Route::get('/rep_val_bod', [bodegaController::class,'reporte_valores_bodega'])->name('reporte_valores_bodega');
         Route::get('generar_pdf_valores_entregados', [bodegaController::class, 'generar_pdf_valores_entregados']);
         Route::get('generar-pdf', [bodegaController::class, 'generatePDFreporte']);
@@ -100,6 +101,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('/stock_vent', [ventanillavalController::class,'stock_ventanilla'])->name('stock_ventanilla');
         Route::get('/sol_val', [ventanillavalController::class,'solicitud_valores'])->name('solicitud_valores');
         Route::get('/form_sol_val', [ventanillavalController::class,'formulario_solicitud_valores'])->name('formulario_solicitud_valores');
+
+        Route::post('/guardarSolicitud', [ventanillavalController::class, 'guardarSolicitud'])->name('guardarSolicitud');
+
+
         Route::get('/ven_val', [ventanillavalController::class,'venta_valores'])->name('venta_valores');
         Route::get('/reg_ven_val', [ventanillavalController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
         Route::get('generar_pdf_solicitud', [ventanillavalController::class, 'generatePDFsolicitud']);

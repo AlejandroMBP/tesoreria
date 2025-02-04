@@ -108,7 +108,9 @@
                                             <td>{{$val_sal->nombre_destinatario}}</td>
                                             <td>{{$val_sal->fecha_solicitud}}</td>
                                             <td>
-                                                <a href="{{ route('form_entrega_valores_bodega') }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
+                                                <a href="{{ route('form_entrega_valores_bodega', [$val_sal->id])}}" 
+                                
+                                                class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
                                                 style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px; text-decoration: none;">
                                                     Atender solicitud
                                                 </a>
