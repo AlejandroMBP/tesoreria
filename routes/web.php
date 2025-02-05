@@ -87,6 +87,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('/sal_val', [bodegaController::class,'salida_valores'])->name('salida_valores');
         //********************FORM ENTREGA VALORES*************
         Route::get('/sol_val_bod/{id}', [bodegaController::class, 'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
+        //Route::post('/guardar_form_entrega', [bodegaController::class, 'guardarFormEntrega'])->name('guardarFormEntrega');
+        //Route::post('/guardar_form_entreg', [bodegaController::class, 'guardarFormEntrega']);
+        Route::post('/guardarSolResp', [bodegaController::class, 'guardarSolicitudRespuesta'])->name('guardarSolicitudRespuesta');
 
         Route::get('/rep_val_bod', [bodegaController::class,'reporte_valores_bodega'])->name('reporte_valores_bodega');
         Route::get('generar_pdf_valores_entregados', [bodegaController::class, 'generar_pdf_valores_entregados']);
@@ -102,7 +105,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('/sol_val', [ventanillavalController::class,'solicitud_valores'])->name('solicitud_valores');
         Route::get('/form_sol_val', [ventanillavalController::class,'formulario_solicitud_valores'])->name('formulario_solicitud_valores');
 
-        Route::post('/guardarSolicitud', [ventanillavalController::class, 'guardarSolicitud'])->name('guardarSolicitud');
+        Route::post('/guardarSol', [ventanillavalController::class, 'guardarSolicitud'])->name('guardarSolicitud');
 
 
         Route::get('/ven_val', [ventanillavalController::class,'venta_valores'])->name('venta_valores');
@@ -111,6 +114,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         //GESTIÓN DE CHEQUES
         Route::get('/cheque', [gestionchequeController::class,'cheque'])->name('cheque');
         Route::get('/form_cheque', [gestionchequeController::class,'formulario_registro_cheque'])->name('formulario_registro_cheque');
+        Route::post('/form_cheque/guardar', [gestionchequeController::class, 'guardarCheque'])->name('cheques.guardar');
         //******ADMINISTRACIÓN OTROS
         //CONFIGURACION
         Route::get('/configuracion', [configuracionController::class,'configuracion'])->name('configuracion');

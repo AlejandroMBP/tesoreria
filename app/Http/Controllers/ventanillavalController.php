@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 use App\Models\Model_solicitud;
 use App\Models\Model_solicitud_detalle;
 
@@ -14,7 +15,12 @@ class ventanillavalController extends Controller
         return view('dashboard.contenido.gestion_ventanilla.stock');
     }
     public function solicitud_valores(){
-        return view('dashboard.contenido.gestion_ventanilla.solicitud_valores');
+        $sol_val = DB::table('solicitud as sol')
+        ->join('users as u', 'sol.id_usuario_destinatario', '=', 'u.id')
+        ->select('sol.*', 'u.name')
+        ->where('sol.estado', 1)
+        ->get();
+        return view('dashboard.contenido.gestion_ventanilla.solicitud_valores',compact('sol_val'));
     }
     public function formulario_solicitud_valores(){
         $user = auth()->user();

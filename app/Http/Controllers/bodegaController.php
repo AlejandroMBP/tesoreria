@@ -8,6 +8,8 @@ use App\Models\Model_proveedor;
 use App\Models\Model_stock;
 use App\Models\Model_solicitud;
 use App\Models\Model_solicitud_detalle;
+use App\Models\Model_respuesta_solicitud;
+use App\Models\Model_respuesta_solicitud_detalle;
 use App\Models\Model_adquisicion;
 class bodegaController extends Controller
 {
@@ -286,22 +288,50 @@ class bodegaController extends Controller
     }
     //***************************** */
     public function form_entrega_valores_bodega($id)
-{
-  
-    $valor = Model_solicitud::find($id);
-
-    if (!$valor) {
-        return redirect()->route('ruta_de_error')->with('error', 'Valor no encontrado');
+    {
+        $valor = Model_solicitud::find($id);    
+        $detallesSolicitud = DB::table('solicitud_detalle as sd')
+            ->join('concepto_valores as cv', 'sd.id_concepto_valores', '=', 'cv.id')
+            ->join('solicitud as sol', 'sd.id_solicitud', '=', 'sol.id')
+            ->join('users as u', 'sol.id_usuario_remitente', '=', 'u.id')
+            ->where('sd.id_solicitud', $id)
+            ->select('sd.*', 'cv.nombre as concepto_nombre', 'u.name', 'sol.fecha_solicitud')
+            ->get();
+        $conceptos = \App\Models\Model_bodega::all();
+        return view('dashboard.contenido.admin_bodega.form_entrega_valores_bodega', compact('valor', 'detallesSolicitud','conceptos'));
     }
-    
-    $detallesSolicitud = DB::table('solicitud_detalle as sd')
-        ->join('concepto_valores as cv', 'sd.id_concepto_valores', '=', 'cv.id')
-        ->where('sd.id_solicitud', $id)
-        ->select('sd.*', 'cv.nombre as concepto_nombre')
-        ->get();
-    return view('dashboard.contenido.admin_bodega.form_entrega_valores_bodega', compact('valor', 'detallesSolicitud'));
-}
 
+
+    public function guardarSolicitudRespuesta(Request $request)
+    {
+        $request->validate([
+            'remitente' => 'required|numeric',
+            
+            'fecha_solicitud' => 'required|date',
+            'cantidad_detalles' => 'required|numeric',  
+        ]);
+        $solicitud = new Model_respuesta_solicitud();
+        $solicitud->id_solicitud = $request->remitente;
+      
+        $solicitud->fecha_respuesta = $request->fecha_solicitud;
+        $solicitud->cantidad = $request->cantidad_detalles; 
+        
+        $solicitud->id_usuario = 2;
+        $solicitud->estado = 1; 
+    
+        $solicitud->save();
+
+          // Guardar los detalles de la solicitud
+          foreach ($request->detalles as $detalle) {
+            $detalleSolicitud = new Model_respuesta_solicitud_detalle();
+            $detalleSolicitud->id_respuesta_solicitud = $solicitud->id; 
+            $detalleSolicitud->id_concepto_valores = $detalle['id_concepto_valor'];
+            $detalleSolicitud->cantidad = $detalle['cantidad'];
+            $detalleSolicitud->estado = 1; 
+            $detalleSolicitud->save();  
+        }
+        return response()->json(['success' => true]);
+    }
 
     
     public function reporte_valores_bodega(){

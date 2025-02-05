@@ -19,13 +19,13 @@
             <div class="row"> 
                 <!-- Boton Crear nuevo Usuario -->
                 <div class="d-flex justify-content-end mb-3">
-    <a href="{{ route('formulario_registro_cheque') }}" class="btn btn-inverse-success px-5">Nuevo registro</a>
-</div>
+                    <a href="{{ route('formulario_registro_cheque') }}" class="btn btn-inverse-success px-5">Nuevo registro</a>
+                </div>
                 <hr>
                 <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tablaReporteValores" class="table table-bordered dt-responsive nowrap">
+                        <table id="tablaCheque" class="table table-bordered dt-responsive nowrap">
                             <thead>
                                 <tr>
                                     <th style="text-align: center; vertical-align: middle;">#</th>
@@ -37,24 +37,22 @@
                                     <th style="text-align: center; vertical-align: middle;">Fecha reingreso</th>
                                     <th style="text-align: center; vertical-align: middle;">Fecha entrega a beneficiario</th>
                                     <th style="text-align: center; vertical-align: middle;">Fecha remisión a archivo contable</th>
-
-                                    
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($registros as $registro)
                                 <tr>
-                                    <td>1</td>
-                                
-                                    <td>DAVID FLORES MAMANI</td>
-                                    <td>3000 Bs.</td> 
-                                    <td>..........</td> 
-                                    <td>..........</td>
-                                    <td>..........</td>
-                                    <td>..........</td>
-                                    <td>..........</td>
-                                    <td>..........</td>
-                                    
+                                    <td>{{ $registro->id}}</td>                 
+                                    <td>{{ $registro->nombre_beneficiario}}</td>
+                                    <td>{{ $registro->monto_cheque}}</td> 
+                                    <td>{{ $registro->comprobante}}</</td> 
+                                    <td>{{ $registro->n_verde_DAF}}</</td>
+                                    <td>{{ $registro->fecha_despacho_para_firmas}}</</td>
+                                    <td>{{ $registro->fecha_reingreso}}</</td>
+                                    <td>{{ $registro->fecha_entrega_beneficiario}}</</td>
+                                    <td>{{ $registro->fecha_remision_archivo_contable}}</</td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -67,7 +65,7 @@
 @endsection
 @push('scripts')
 <script>
-$('#tablaReporteValores').DataTable({
+$('#tablaCheque').DataTable({
     responsive: true,
     paging: true,
     searching: true,

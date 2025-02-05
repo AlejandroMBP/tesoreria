@@ -18,7 +18,6 @@
             <!--end breadcrumb-->
             <div class="row">
                 <div class="col-xl-5 col-xxl-4 d-flex align-items-stretch">
-                
                     <div class="card w-100 rounded-4">
                         <div class="card-body">
                             <div class="text-center">
@@ -28,33 +27,37 @@
                             <hr>
                             <div class="text-start mt-4">
                                 <h6 class="fw-normal" style="font-size: 0.6rem;">UNIDAD: UNIDAD DE TESORO UNIVERSITARIO</h6>
-                                <h6 class="fw-normal" style="font-size: 0.6rem;">SOLICITANTE: LIC. ALFREDO PEREZ GOMEZ</h6>
-                                <h6 class="fw-normal" style="font-size: 0.6rem;">FECHA DE SOLICITUD: 24/11/24</h6>
+                                <h6 class="fw-normal" style="font-size: 0.6rem;">SOLICITANTE: LIC. {{ $detallesSolicitud->first()->name ?? 'No disponible' }}</h6>
+                                <h6 class="fw-normal" style="font-size: 0.6rem;">
+                                    FECHA DE SOLICITUD: 
+                                    {{ $detallesSolicitud->first()->fecha_solicitud ?? 'No disponible' }}
+                                </h6>
                             </div>
                             <div class="text-end mt-5">
                                 <h6 class="fw-bold" style="font-size: 0.7rem;">SOLICITUD DE VALORES UNIVERSITARIOS</h6>
                             </div>
                             <div class="table-responsive">
-                            <table id="tablaProveedoresActivos" class="table table-bordered dt-responsive nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>TIPO DE DOCUMENTO</th>
-                                        <th>CANTIDAD EN UNIDADES</th>                
-                                    </tr>
-                                </thead>
-                                <tbody>
-        @foreach($detallesSolicitud as $detalle)
-            <tr>
-                <td>{{ $detalle->concepto_nombre }}</td> <!-- Aquí asumo que el campo es 'tipo_documento' -->
-                <td>{{ $detalle->cantidad }}</td> <!-- Aquí asumo que el campo es 'cantidad' -->
-            </tr>
-        @endforeach
-    </tbody>
-                            </table>
-                        </div>
+                                <table id="tablaProveedoresActivos" class="table table-bordered dt-responsive nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>TIPO DE DOCUMENTO</th>
+                                            <th>CANTIDAD EN UNIDADES</th>                
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($detallesSolicitud as $detalle)
+                                            <tr>
+                                                <td>{{ $detalle->concepto_nombre }}</td> 
+                                                <td>{{ $detalle->cantidad }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-xl-7 col-xxl-6 d-flex align-items-stretch">
                     <div class="card w-100 rounded-4">
                         <div class="card-body">
@@ -66,43 +69,45 @@
                             <div class="text-center mt-3">
                                 <h6 class="fw-bold" style="font-size: 0.7rem;">FORMULARIO DE ENTREGA DE VALORES UNIVERSITARIOS</h6>
                             </div>
-                            <form id="formularioentregaval" class="mt-4">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="tabla-valores">
-                                    <thead>
-                                        <tr>
-                                            <th>TIPO DE DOCUMENTO</th>
-                                            <th>CANTIDAD</th>
-                                            <th>CORRELATIVO INICIAL</th>
-                                            <th>CORRELATIVO FINAL</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <select class="form-control" name="columna1[]">
-                                                    <option value="">Seleccione</option>
-                                                    <option value="valor1">Valor fffffffffffffffffffffffffffffffhdfhd</option>
-                                                    <option value="valor2">Valor 2</option>
-                                                    <option value="valor3">Valor 3</option>
-                                                </select>
-                                            </td>
-                                            <td><input type="text" class="form-control" name="columna2[]"></td>
-                                            <td><input type="text" class="form-control" name="columna3[]"></td>
-                                            <td><input type="text" class="form-control" name="columna4[]"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                                <div class="text-end">
-                                <button id="agregar-fila" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;">
-                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span> 
-                                </button>   
+                            <form id="form_solicitud">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="remitente_nombre" class="form-label">Id_solicitud</label>
+                                        <input type="number" class="form-control" name="remitente" id="remitente">
+                                    </div>
+                                
+                                    <div class="col-md-4">
+                                        <label for="fecha" class="form-label">Fecha solicitud</label>
+                                        <input type="date" class="form-control" name="fecha" id="fecha">
+                                    </div>
+                                </div>                       
+                                <hr>
+                                <div id="dynamicInputs">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="id_concepto_valor_0" class="form-label">ID Concepto Valor</label>
+                                            <select class="form-control" name="id_concepto_valor[]" id="id_concepto_valor_0">
+                                                <option value="">Seleccione un concepto valor</option>
+                                                @foreach ($conceptos as $concepto)
+                                                    <option value="{{ $concepto->id }}">{{ $concepto->nombre }}</option> 
+                                                @endforeach
+                                            </select>   
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="cantidad_0" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" name="cantidad[]" id="cantidad_0" placeholder="Ingrese la cantidad">
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
+                                <div class="text-end">
+                                    <button id="btnAgregarInputs" type="button" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px;">
+                                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span> 
+                                    </button>   
+                                </div>
                                 <div class="d-flex justify-content-between mt-3">
-                                    <button type="button" class="btn btn-danger">Cancelar</button>
-                                    <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> 
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                    <button id="btnGuardarSolicitud" type="button" class="btn btn-primary">Guardar Cambios</button>
                                 </div>
                             </form>
                         </div>
@@ -115,74 +120,129 @@
 @endsection
 @push('scripts')
 <script>
-    $(document).ready(function() {
-    $('#agregar-fila').click(function(event) {
-        event.preventDefault();
-        // Agregar una nueva fila al final de la tabla
-        var nuevaFila = `<tr>
-                            <td>
-                                <select class="form-control" name="columna1[]">
-                                    <option value="">Seleccione</option>
-                                    <option value="valor1">Valor 1</option>
-                                    <option value="valor2">Valor 2</option>
-                                    <option value="valor3">Valor 3</option>
-                                </select>
-                            </td>
-                            <td><input type="text" class="form-control" name="columna2[]"></td>
-                            <td><input type="text" class="form-control" name="columna3[]"></td>
-                            <td><input type="text" class="form-control" name="columna4[]"></td>
-                        </tr>`;
-            $('#tabla-valores tbody').append(nuevaFila);
-        });
-    });
-    const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-        confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger"
-    },
-    buttonsStyling: false
-    });
+   document.addEventListener('DOMContentLoaded', function () {
+        const btnAgregar = document.getElementById('btnAgregarInputs');
+        const dynamicInputs = document.getElementById('dynamicInputs');
+        let counter = 1; // Ya tenemos el par 0
 
-    document.getElementById("btnGuardar").addEventListener("click", function (e) {
-    e.preventDefault(); // Evita el envío directo del formulario
-    swalWithBootstrapButtons.fire({
-        title: "¿Estás seguro de entregar los valores universitarios?",
-        text: "No podrás revertir esta acción.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, enviar!",
-        cancelButtonText: "No, cancelar!",
-        reverseButtons: true,
-        didRender: () => {
-      
-        const actionsContainer = document.querySelector('.swal2-actions');
-        if (actionsContainer) {
-            actionsContainer.style.justifyContent = "center"; 
-            actionsContainer.style.gap = "1rem"; 
-        }
-        }
-    }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado exitosamente",
-                        text: "Se ha realizado la entrega",
+        btnAgregar.addEventListener('click', function () {
+            // Creamos una nueva fila con innerHTML
+            const newRow = document.createElement('div');
+            newRow.className = 'row g-3 mt-2';
+            newRow.innerHTML = `
+            <div class="col-md-6">
+                <label for="id_concepto_valor_${counter}" class="form-label">ID Concepto Valor</label>
+                <select class="form-control" name="id_concepto_valor[]" id="id_concepto_valor_${counter}">
+                <option value="">Seleccione un concepto valor</option>
+                @foreach ($conceptos as $concepto)
+                    <option value="{{ $concepto->id }}">{{ $concepto->nombre }}</option> 
+                @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="cantidad_${counter}" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" name="cantidad[]" id="cantidad_${counter}" placeholder="Ingrese la cantidad">
+            </div>
+            `;
+            dynamicInputs.appendChild(newRow);
+            counter++;
+        });
+        });
+
+//********************Script botón guardar la solicitud********************************
+        document.addEventListener('DOMContentLoaded', function () {
+        const btnGuardarValoruni = document.getElementById('btnGuardarSolicitud');
+
+        btnGuardarValoruni.addEventListener('click', function () {
+            const remitente = document.getElementById('remitente').value;
+           
+            const fecha = document.getElementById('fecha').value;
+
+            if (!remitente || !fecha) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Todos los campos son obligatorios.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+                return;
+            }
+
+            const idConceptoValor = document.querySelectorAll('select[name="id_concepto_valor[]"]');
+            const cantidades = document.querySelectorAll('input[name="cantidad[]"]');
+            
+            const detalles = [];
+            let camposVacios = false;
+            for (let i = 0; i < idConceptoValor.length; i++) {
+                if (!idConceptoValor[i].value || !cantidades[i].value) {
+                    camposVacios = true;
+                    break; 
+                }
+                detalles.push({
+                    id_concepto_valor: idConceptoValor[i].value,
+                    cantidad: cantidades[i].value
+                });
+            }
+            if (camposVacios) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Por favor, complete todos los campos de concepto valor y cantidad.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+                return; 
+            }
+            
+            const cantidadDetalles = detalles.length;
+
+            fetch('/guardarSolResp', {  
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    remitente: remitente,
+                    
+                    fecha_solicitud: fecha,
+                    cantidad_detalles: cantidadDetalles, 
+                    detalles: detalles  
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: "Éxito",
+                        text: "La solicitud se ha creado correctamente.",
                         icon: "success",
                         confirmButtonText: "OK"
                     }).then(() => {
-                        document.getElementById("formularioentregaval").submit();
-                        setTimeout(() => {
-                        location.reload();  
-                        }, 1000);  
+                        window.location.href = 'salida_valores';
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha enviado el formulario.",
-                        icon: "error"
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Hubo un error al crear la solicitud.",
+                        icon: "error",
+                        confirmButtonText: "OK"
                     });
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: "Error",
+                    text: "Hubo un error al realizar la acción.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
             });
         });
+        });
+
+
+       
 
 </script>
 @endpush
