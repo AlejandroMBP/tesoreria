@@ -70,16 +70,9 @@
                                 <h6 class="fw-bold" style="font-size: 0.7rem;">FORMULARIO DE ENTREGA DE VALORES UNIVERSITARIOS</h6>
                             </div>
                             <form id="form_solicitud">
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label for="remitente_nombre" class="form-label">Id_solicitud</label>
-                                        <input type="number" class="form-control" name="remitente" id="remitente">
-                                    </div>
-                                
-                                    <div class="col-md-4">
-                                        <label for="fecha" class="form-label">Fecha solicitud</label>
-                                        <input type="date" class="form-control" name="fecha" id="fecha">
-                                    </div>
+                                <div class="row g-3">                       
+                                    <input type="hidden" class="form-control" name="idSolicitud" id="idSolicitud" value="{{ $valor->id }}" readonly>        
+                                    <input type="hidden" class="form-control" name="fecha" id="fecha" value="<?= date('Y-m-d'); ?>">
                                 </div>                       
                                 <hr>
                                 <div id="dynamicInputs">
@@ -150,96 +143,107 @@
         });
 
 //********************Script botón guardar la solicitud********************************
-        document.addEventListener('DOMContentLoaded', function () {
-        const btnGuardarValoruni = document.getElementById('btnGuardarSolicitud');
+document.addEventListener('DOMContentLoaded', function () {
+    const btnGuardarValoruni = document.getElementById('btnGuardarSolicitud');
 
-        btnGuardarValoruni.addEventListener('click', function () {
-            const remitente = document.getElementById('remitente').value;
-           
-            const fecha = document.getElementById('fecha').value;
+    btnGuardarValoruni.addEventListener('click', function () {
+        const idSolicitud = document.getElementById('idSolicitud').value;
+        const fecha = document.getElementById('fecha').value;
 
-            if (!remitente || !fecha) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Todos los campos son obligatorios.",
-                    icon: "error",
-                    confirmButtonText: "OK"
-                });
-                return;
+        if (!idSolicitud || !fecha) {
+            Swal.fire({
+                title: "Error",
+                text: "Todos los campos son obligatorios.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+            return;
+        }
+        
+        const idConceptoValor = document.querySelectorAll('select[name="id_concepto_valor[]"]');
+        const cantidades = document.querySelectorAll('input[name="cantidad[]"]');
+        
+        const detalles = [];
+        let camposVacios = false;
+        for (let i = 0; i < idConceptoValor.length; i++) {
+            if (!idConceptoValor[i].value || !cantidades[i].value) {
+                camposVacios = true;
+                break; 
             }
+            detalles.push({
+                id_concepto_valor: idConceptoValor[i].value,
+                cantidad: cantidades[i].value
+            });
+        }
+        if (camposVacios) {
+            Swal.fire({
+                title: "Error",
+                text: "Por favor, complete todos los campos de concepto valor y cantidad.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+            return; 
+        }
+        
+        const cantidadDetalles = detalles.length;
 
-            const idConceptoValor = document.querySelectorAll('select[name="id_concepto_valor[]"]');
-            const cantidades = document.querySelectorAll('input[name="cantidad[]"]');
-            
-            const detalles = [];
-            let camposVacios = false;
-            for (let i = 0; i < idConceptoValor.length; i++) {
-                if (!idConceptoValor[i].value || !cantidades[i].value) {
-                    camposVacios = true;
-                    break; 
-                }
-                detalles.push({
-                    id_concepto_valor: idConceptoValor[i].value,
-                    cantidad: cantidades[i].value
-                });
-            }
-            if (camposVacios) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Por favor, complete todos los campos de concepto valor y cantidad.",
-                    icon: "error",
-                    confirmButtonText: "OK"
-                });
-                return; 
-            }
-            
-            const cantidadDetalles = detalles.length;
-
-            fetch('/guardarSolResp', {  
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    remitente: remitente,
-                    
-                    fecha_solicitud: fecha,
-                    cantidad_detalles: cantidadDetalles, 
-                    detalles: detalles  
+        // Confirmación antes de guardar
+        Swal.fire({
+            title: "¿Está seguro de guardar y enviar los Valores Universitarios al remitente?",
+            text: "Una vez guardada, no podrá modificar",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, guardar",
+            cancelButtonText: "No, cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si confirma, proceder con el guardado
+                fetch('/guardarSolResp', {  
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        idSolicitud: idSolicitud,
+                        fecha_respuesta: fecha,
+                        cantidad_detalles: cantidadDetalles, 
+                        detalles: detalles  
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: "Éxito",
-                        text: "La solicitud se ha creado correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        window.location.href = 'salida_valores';
-                    });
-                } else {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Éxito",
+                            text: "Se ha enviado los valores exitosamente",
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = "{{ route('salida_valores') }}";
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Hubo un error al enviar los Valores Universitarios.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                     Swal.fire({
                         title: "Error",
-                        text: "Hubo un error al crear la solicitud.",
+                        text: "Hubo un error al realizar la acción.",
                         icon: "error",
                         confirmButtonText: "OK"
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    title: "Error",
-                    text: "Hubo un error al realizar la acción.",
-                    icon: "error",
-                    confirmButtonText: "OK"
                 });
-            });
+            }
         });
-        });
+    });
+});
 
 
        

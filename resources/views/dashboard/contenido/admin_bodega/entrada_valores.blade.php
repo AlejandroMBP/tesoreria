@@ -137,10 +137,10 @@
                         <div class="card-body">
                             <form id="form_guardar_adquisicion">
                                 <div class="row g-3">
-                                    <div class="col-12 col-md-6">
-                                        <label for="fecha" class="form-label">Fecha adquisición</label>
-                                        <input type="date" class="form-control" id="fecha" placeholder="Ingrese el tipo de documento">
-                                    </div>
+                                <div class="col-12 col-md-6">
+                                    <label for="fecha" class="form-label">Fecha adquisición</label>
+                                    <input type="date" class="form-control" id="fecha" readonly>
+                                </div>
                                 </div>
                             </form>
                         </div>
@@ -157,6 +157,12 @@
 
 @push('scripts')
 <script>
+//**************SCRIPT PARA OBTENER LA FECHA DE HOY ********************************* */
+document.addEventListener("DOMContentLoaded", function () {
+        let fechaInput = document.getElementById("fecha");
+        let hoy = new Date().toISOString().split('T')[0]; 
+        fechaInput.value = hoy;
+    });
      //********************Script tabla lista adquisiones********************************
      $(document).ready(function() {
             $('#tablaListaAdquisiciones').DataTable({

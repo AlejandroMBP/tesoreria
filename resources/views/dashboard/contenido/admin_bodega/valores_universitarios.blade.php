@@ -70,7 +70,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0 text-uppercase">Administración de valores universitarios</h6>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearValorunivModal"><i class="bi bi-plus-square"> </i>Crear nuevo usuario</button>       
+                    <button class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearValorunivModal"><i class="bi bi-plus-square"> </i>Crear nuevo Valor Universitario</button>       
                 </div>
             </div>
             <hr>
@@ -108,8 +108,8 @@
                                                     <form id="form_guardar_valoruni">
                                                         <div class="row g-3">
                                                             <div class="col-12 col-md-6">
-                                                                <label for="nombre" class="form-label">Tipo de documento:</label>
-                                                                <input type="text" class="form-control" id="nombre" placeholder="Ingrese el tipo de documento">
+                                                                <label for="nombre_valor" class="form-label">Tipo de documento:</label>
+                                                                <input type="text" class="form-control" id="nombre_valor" placeholder="Ingrese el tipo de documento">
                                                             </div>
                                                             <div class="col-12 col-md-6">
                                                                 <label for="preciounitario" class="form-label">Precio unitario:</label>
@@ -140,11 +140,11 @@
                                         <form id="form_editar_valoruni">
                                             <div class="row g-3">
                                                 <div class="col-12 col-md-6">
-                                                    <label for="nombre" class="form-label">Tipo de Documento:</label>
+                                                    <label for="nombreeditar" class="form-label">Tipo de Documento:</label>
                                                     <input type="text" class="form-control" id="nombreeditar" placeholder="Ingrese el tipo de documento">
                                                 </div>
                                                 <div class="col-12 col-md-6">
-                                                    <label for="preciounitario" class="form-label">Precio Unitario:</label>
+                                                    <label for="preciounitarioeditar" class="form-label">Precio Unitario:</label>
                                                     <input type="number" step="0.01" class="form-control" id="preciounitarioeditar" placeholder="Ingrese el precio unitario">
                                                 </div>
                                             </div>
@@ -270,7 +270,7 @@
     const btnGuardarValoruni = document.getElementById('btnGuardarValoruni');
 
     btnGuardarValoruni.addEventListener('click', function () {
-        const nombre = document.getElementById('nombre').value;
+        const nombre = document.getElementById('nombre_valor').value;
         const preciounitario = document.getElementById('preciounitario').value;
         if (!nombre || !preciounitario) {
             Swal.fire({
@@ -354,7 +354,7 @@
         });
     });
 
-    // Script para guardar los cambios con confirmación de SweetAlert
+    // *******Script para guardar los cambios con confirmación de SweetAlert***
     $('#btnEditarValoruni').on('click', function() {
         var id = $(this).data('id');
         var nombre = $('#nombreeditar').val();

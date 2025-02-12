@@ -4,7 +4,7 @@
         <div class="main-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Gestión de ventanilla de valores </div>
+                <div class="breadcrumb-title pe-3">Administración de Bodega</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -12,35 +12,67 @@
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Stock</li>
                         </ol>
-                    </nav>
-                </div>
-                <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary">Settings</button>
-                        <button type="button"
-                            class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                                href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div>
-                    </div>
+                    </nav> 
                 </div>
             </div>
             <!--end breadcrumb-->
-
             <div class="row">
-             
+                <div class="col-xxl-8 d-flex align-items-stretch">
+                    <div class="card w-100 overflow-hidden rounded-4">
+                        <div class="card-body position-relative p-4">
+                            <div class="row">
+                                <div class="col-12 col-sm-7">
+                                    <div class="d-flex align-items-center gap-3 mb-5">
+                                        <img src="https://placehold.co/110x110/png" class="rounded-circle bg-grd-info p-1"
+                                            width="60" height="60" alt="user">
+                                        <div>
+                                            <p class="mb-0 fw-semibold">Bienvenido/a</p>
+                                            <h4 class="fw-semibold mb-0 fs-4 mb-0">{{ Auth::user()->name }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-5">
+                                        <div>
+                                            <h4 class="mb-1 fw-semibold d-flex align-content-center">65.4K<i
+                                                    class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
+                                            </h4>
+                                            <p class="mb-3">Valores escasos</p>
+                                            <div class="progress mb-0" style="height:5px;">
+                                                <div class="progress-bar bg-grd-danger" role="progressbar"
+                                                    style="width: 60%" aria-valuenow="25" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="vr"></div>
+                                        <div>
+                                            <h4 class="mb-1 fw-semibold d-flex align-content-center">78.4<i
+                                                    class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
+                                            </h4>
+                                            <p class="mb-3">Valores suficientes</p>
+                                            <div class="progress mb-0" style="height:5px;">
+                                                <div class="progress-bar bg-grd-success" role="progressbar"
+                                                    style="width: 60%" aria-valuenow="25" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-5">
+                                    <div class="welcome-back-img pt-4">
+                                        <img src="assets/images/gallery/image_bodega2.jpg" height="266" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***Pestañas para usuarios activos e inactivos ***-->
                 <hr>
                 <div class="card">
                     <div class="card-body">
-                        <ul class="nav nav-pills mb-3" role="tablist">
+                        <ul class="nav nav-tabs nav-success" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="pill" href="#tabProveedoresactivos" role="tab" aria-selected="true">
+                                <a class="nav-link active" data-bs-toggle="pill" href="#tabStockEscaso" role="tab"
+                                    aria-selected="true">
                                     <div class="d-flex align-items-center">
                                         <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i></div>
                                         <div class="tab-title">Valores escasos</div>
@@ -48,138 +80,141 @@
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="pill" href="#tabProveedoresinactivos" role='tab' aria-selected='false' tabindex='-1'>
-                                    <div class='d-flex align-items-center'>
-                                        <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
-                                        <div class='tab-title'>Valores suficientes</div>
+                                <a class="nav-link" data-bs-toggle="pill" href="#tabStockSuficiente" role="tab"
+                                    aria-selected="false">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon"><i class="bi bi-person me-1 fs-6"></i></div>
+                                        <div class="tab-title">Valores suficientes</div>
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="pill" href="#tablistadquisiciones" role='tab' aria-selected='false' tabindex='-1'>
-                                    <div class='d-flex align-items-center'>
-                                        <div class='tab-icon'><i class='bi bi-person me-1 fs-6'></i></div>
-                                        <div class='tab-title'>Lista de adquisiciones</div>
-                                    </div>
-                                </a>
-                            </li>
-                        
-                            <!--********************* Modal para crear un nuevo proveedor ****************************-->
-                            <div class="modal fade" id="crearProveedorModal" tabindex="-1" aria-labelledby="crearProveedorModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="crearProveedorModalLabel">Registrar nuev ingreso</h5>
-                                            <a href="javascript:;" class="primaery-menu-close" data-bs-dismiss="modal">
-                                                <i class="material-icons-outlined">close</i>
-                                            </a>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Formulario para crear un nuevo proveedor -->
-                                            <form>
-                                                <div class="row">
-                                                    <!-- Primera columna -->
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label for="nombreproveedor" class="form-label">Nombre del proveedor:</label>
-                                                            <input type="text" class="form-control" id="nombreproveedor" placeholder="Ingrese el nombre del proveedor">
-                                                        </div>
-                                                    </div>
-                                                    <!-- Segunda columna -->
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label for="nrocelular" class="form-label">Nro de celular:</label>
-                                                            <input type="text" class="form-control" id="nrocelular" placeholder="Ingrese el número de celular">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col-12 text-center">
-                                                        <button type="submit" class="btn btn-primary">Guardar</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
-                                    </div>
+                            
+                        </ul>
+                        <!-- **** Contenido de las pestañas **** -->
+                        <div class="tab-content mt-3">
+                            <!-- **** Pestaña de Valores escasos **** -->
+                            <div class="tab-pane fade show active" id="tabStockEscaso" role="tabpanel">
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="contenedorStockEscaso">
+                                    <p class="text-center">Cargando datos...</p>
                                 </div>
                             </div>
-                        </ul>
-                        <!--Pestaña de Valores escasos-->
-                        <div class='tab-content' id='espacioactivo'>
-                            <div class='tab-pane fade show active' id='tabProveedoresactivos' role='tabpanel'>
-                                <div class="table-responsive">
-                                    <table id="tablaProveedoresActivos" class="table table-bordered dt-responsive nowrap">
-                                        <div class="card rounded-4">
-                                            <div class="card-body">
-                                                <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4 g-3">
-                                                    <div class="col">
-                                                        <div class="card rounded-4 mb-0 border">
-                                                            <div class="card-body">
-                                                                <div class="mt-4 text-center">
-                                                                    <p class="mb-0" style="font-weight: bold;">PRORROGA DE TITULO DE BACHILLER</p>
-                                                                </div>
-                                                                <div class="d-flex align-items-center justify-content-center mt-3">
-                                                                    <img src="assets/images/gallery/documents.png" width="150" alt="">
-                                                                </div>
-                                                                <div class="mt-4 text-center">
-                                                                    <p class="mb-0" style="color: red; font-size: 1.2rem; font-weight: bold;">50 unidades</p>
-                                                                    <p class="mb-0" >Fecha de ultimo ingreso: </p>
-                                                                    <p class="mb-0" >Estado:  </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>  
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </table>
+                            <!-- **** Pestaña de Valores suficientes **** -->
+                            <div class="tab-pane fade" id="tabStockSuficiente" role="tabpanel">
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3" id="contenedorStockSuficiente">
+                                    <p class="text-center">Cargando datos...</p>
                                 </div>
                             </div>
                         </div>
-                        <!--Pestaña de Valores suficientes -->
-                        <div class='tab-content' id='espacioinactivo'>   
-                            <div class='tab-pane fade show' id='tabProveedoresinactivos' role='tabpanel'>
-                                <div class="table-responsive">
-                                    <table id="tablaProveedoresInactivos" class="table table-bordered dt-responsive nowrap">
-                                        <div class="card rounded-4">
-                                                <div class="card-body">
-                                                    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4 g-3">
-                                                        <div class="col">
-                                                            <div class="card rounded-4 mb-0 border">
-                                                                <div class="card-body">
-                                                                    <div class="mt-4 text-center">
-                                                                        <p class="mb-0" style="font-weight: bold;">PRORROGA DE TITULO DE BACHILLER</p>
-                                                                    </div>
-                                                                    <div class="d-flex align-items-center justify-content-center mt-3">
-                                                                        <img src="assets/images/gallery/documents.png" width="150" alt="">
-                                                                    </div>
-                                                                    <div class="mt-4 text-center">
-                                                                        <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;">1250 unidades</p>
-                                                                        <p class="mb-0" >Fecha de ultimo ingreso: </p>
-                                                                        <p class="mb-0" >Estado:  </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div> 
-                    </div> 
+                    </div>
                 </div>
             </div>
+            
+            <!-- end row -->
         </div>
     </main>
     <div class="overlay btn-toggle"></div>
 @endsection
 @push('scripts')
-   
+<script>
+     const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-primary",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+       
+// con este script cargo los valores escasos
+    $(document).ready(function () {
+        function cargarValoresEscasos() {
+            $.ajax({
+                url: '{{ url("stock/valores-escasos_ventanilla") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response); 
+                    let cards = '';
+                    response.forEach(function (valor) {
+                        let conceptoNombre = valor.nombre || 'Sin nombre';  
+                        cards += `
+                            <div class="row row-cols-10 row-cols-lg-20 row-cols-xl-9 g-3">
+                                <div class="col">
+                                    <div class="card rounded-4 mb-0 border">
+                                        <div class="card-body text-center">
+                                            <div class="mt-4 text-center">
+                                                <p class="mb-0" style="font-weight: bold;">${conceptoNombre}</p>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center mt-3">
+                                                <img src="{{asset('assets/images/gallery/documents.png')}}" width="150" alt="">
+                                            </div>
+                                            <div class="mt-4 text-center">
+                                                <p class="mb-0" style="color: red; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
+                                                <p class="text">Fecha último ingreso: </p>
+                                                <p class="text">Estado: ${valor.estado}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    $('#contenedorStockEscaso').html(cards);
+                },
+                error: function () {
+                    $('#contenedorStockEscaso').html('<p class="text-danger">Error al cargar los datos.</p>');
+                }
+            });
+        }
+        function cargarValoresSuficientes() {
+            $.ajax({
+                url: '{{ url("stock/valores-suficientes_ventanilla") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);  
+
+                    let cards = '';
+                    response.forEach(function (valor) {
+                        let conceptoNombre = valor.nombre || 'Sin nombre';  
+                        cards += `
+                            <div class="row row-cols-10 row-cols-lg-20 row-cols-xl-9 g-3">
+                                <div class="col">
+                                    <div class="card rounded-4 mb-0 border">
+                                        <div class="card-body text-center">
+                                            <div class="mt-4 text-center">
+                                                <p class="mb-0" style="font-weight: bold;">${conceptoNombre}</p>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center mt-3">
+                                                <img src="{{asset('assets/images/gallery/documents.png')}}" width="150" alt="">
+                                            </div>
+                                            <div class="mt-4 text-center">
+                                                <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
+                                                <p class="text">Fecha último ingreso: </p>
+                                                <p class="text">Estado: ${valor.estado}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                    $('#contenedorStockSuficiente').html(cards);
+                },
+                error: function () {
+                    $('#contenedorStockSuficiente').html('<p class="text-danger">Error al cargar los datos.</p>');
+                }
+            });
+        }
+        cargarValoresEscasos();
+
+        $('a[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
+            let target = $(e.target).attr("href");
+
+            if (target === "#tabStockEscaso") {
+                cargarValoresEscasos();
+            } else if (target === "#tabStockSuficiente") {
+                cargarValoresSuficientes();
+            }
+        });
+    });
+</script>
    
 @endpush

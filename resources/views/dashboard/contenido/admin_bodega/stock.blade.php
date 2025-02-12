@@ -140,7 +140,7 @@
                                                 <img src="{{asset('assets/images/gallery/documents.png')}}" width="150" alt="">
                                             </div>
                                             <div class="mt-4 text-center">
-                                                <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
+                                                <p class="mb-0" style="color: red; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
                                                 <p class="text">Fecha último ingreso: ${valor.fecha_adquisicion}</p>
                                                 <p class="text">Estado: ${valor.estado}</p>
                                             </div>

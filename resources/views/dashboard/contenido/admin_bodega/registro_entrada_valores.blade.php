@@ -5,6 +5,7 @@
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
                 <div class="breadcrumb-title pe-3">Administración de Bodega</div>
+                
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -19,8 +20,9 @@
             
             <!-- ***Pestañas para usuarios activos e inactivos ***-->
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0 text-uppercase">Administración de valores  {{$adquisicion->fecha_adquisicion}}</h6>
+                <h6 class="mb-0 text-uppercase">Administración de valores  </h6>
             </div>
+           
             <hr>
             <div class="card">
                 <div class="card-body">
@@ -64,81 +66,75 @@
                 </div>
             </div>
         </div>
-   
-
-    <!-- Modal para registrar nuevo ingreso de valor -->
-    <div class="modal fade" id="ingresarValorModal" tabindex="-1" aria-labelledby="ingresarValorModalLabel">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-                <div class="modal-header border-bottom-0 bg-primary py-2">
-                    <h5 class="modal-title text-white">Registrar nuevo ingreso de valor</h5> 
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 d-flex align-items-center justify-content-center">
-                            <div class="text-center">
-                                <img src="{{asset('assets/images/gallery/documents.png')}}" alt="Imagen del proveedor" class="img-fluid rounded mb-3" style="max-width: 80%; height: auto;">
-                                <p>Ingrese los Valores universitarios</p>
-                                <table class="table table-bordered">
-                                    <tbody> 
-                                    </tbody>
-                                </table>
+  
+        <!-- Modal para registrar nuevo ingreso de valor -->
+        <div class="modal fade" id="ingresarValorModal" tabindex="-1" aria-labelledby="ingresarValorModalLabel">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom-0 bg-primary py-2">
+                        <h5 class="modal-title text-white">Registrar nuevo ingreso de valor </h5> 
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                                <div class="text-center">
+                                    <img src="{{asset('assets/images/gallery/documents.png')}}" alt="Imagen del proveedor" class="img-fluid rounded mb-3" style="max-width: 80%; height: auto;">
+                                    <p>Ingrese los Valores universitarios</p>
+                                    <table class="table table-bordered">
+                                        <tbody> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <form id="form_guardar_valoruni">
+                                    <input type="hidden" name="id_adquisicion" id ="id_adquisicion" value="{{ $adquisicion->id }}">   
+                                    <input type="hidden" name="id_concepto_valor" id="id_concepto_valor">                      
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label for="cantidad_valor" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="cantidad_valor" placeholder="Ingrese la cantidad en unidades">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label for="correlativo_inicial" class="form-label">Correlativo Inicial</label>
+                                            <input type="number" class="form-control" id="correlativo_inicial" placeholder="Ingrese el correlativo inicial">
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="correlativo_final" class="form-label">Correlativo Final</label>
+                                            <input type="number" class="form-control" id="correlativo_final" placeholder="Ingrese el correlativo final">
+                                        </div>                                  
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label for="serie_valor" class="form-label">Serie</label>
+                                            <input type="text" class="form-control" id="serie_valor" placeholder="Ingrese la serie">
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label for="montototal" class="form-label">Monto</label>
+                                            <input type="number" class="form-control" id="montototal" placeholder="Ingrese el monto total en Bs">
+                                           
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <form id="form_nuevo_ingreso">
-                                <div class="mb-3">
-                                    <label for="fechaingresovalor" class="form-label">Fecha de hoy:</label>
-                                    <input type="date" class="form-control" id="fechaingresovalor" placeholder="Ingrese la fecha de ingreso de valor">
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6 mb-1">
-                                        <label for="unidades" class="form-label">Unidades:</label>
-                                        <input type="text" class="form-control" id="unidades" placeholder="Ingrese el número de celular">
-                                    </div>
-                                    <div class="col-md-6 mb-1">
-                                        <label for="total" class="form-label">Valor total en Bs.:</label>
-                                        <input type="text" class="form-control" id="total" placeholder="Ingrese el número de celular">
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6 mb-1">
-                                        <label for="correlativo_inicial" class="form-label">Correlativo inicial:</label>
-                                        <input type="text" class="form-control" id="correlativo_inicial" placeholder="Ingrese el número de celular">
-                                    </div>
-                                    <div class="col-md-6 mb-1">
-                                        <label for="serie_ini" class="form-label">Serie:</label>
-                                        <input type="text" class="form-control" id="serie_ini" placeholder="Ingrese el número de celular">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-1">
-                                        <label for="correlativo_final" class="form-label">Correlativo final:</label>
-                                        <input type="text" class="form-control" id="correlativo_final" placeholder="Ingrese el número de celular">
-                                    </div>
-                                    <div class="col-md-6 mb-1">
-                                        <label for="serie_fin" class="form-label">Serie:</label>
-                                        <input type="text" class="form-control" id="serie_fin" placeholder="Ingrese el número de celular">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
-                </div>
-                <div class="modal-footer border-top-0">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    <button id="btnGuardarNuevoIngreso" type="button" class="btn btn-primary">Guardar</button>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="btnGuardarValoruni" type="button" class="btn btn-primary">Guardar</button> 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </main>
 @endsection
 
 @push('scripts')
+
 <script>
     //**************funcion para cargar listar los valores escasos***************/
     $(document).ready(function () {
@@ -158,13 +154,13 @@
                                     <div class="card rounded-4 mb-0 border">
                                         <div class="card-body text-center">
                                             <div class="mt-4 text-center">
-                                                <p class="mb-0" style="font-weight: bold;">${valor.nombre}</p>
+                                                <p class="mb-0" style="font-weight: bold;">${valor.nombre} </p>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-center mt-3">
                                                 <img src="{{asset('assets/images/gallery/documents.png')}}" width="150" alt="">
                                             </div>
                                             <div class="mt-4 text-center">
-                                                <p class="mb-0" style="color: green; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
+                                                <p class="mb-0" style="color: red; font-size: 1.2rem; font-weight: bold;"">${valor.cantidad} unidades</p>
                                                 <p class="text">Fecha último ingreso: ${valor.fecha_adquisicion}</p>
                                                 <p class="text">Estado: ${valor.estado}</p>
                                             </div>
@@ -177,7 +173,9 @@
                                                         data-cantidad="${valor.cantidad}"
                                                         data-fecha="${valor.fecha_adquisicion}"
                                                         data-correlativo-inicial="${valor.correlativo_inicial}"
-                                                        data-correlativo-final="${valor.correlativo_final}">
+                                                        data-correlativo-final="${valor.correlativo_final}"
+                                                        data-id_concepto_valor="${valor.id_concepto_valor}">
+                                                        
                                                     <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span>
                                                     Agregar
                                                 </button>
@@ -230,7 +228,9 @@
                                                         data-cantidad="${valor.cantidad}"
                                                         data-fecha="${valor.fecha_adquisicion}"
                                                         data-correlativo-inicial="${valor.correlativo_inicial}"
-                                                        data-correlativo-final="${valor.correlativo_final}">
+                                                        data-correlativo-final="${valor.correlativo_final}"
+                                                        data-id_concepto_valor="${valor.id_concepto_valor}">
+                                                        
                                                     <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span>
                                                     Agregar
                                                 </button>
@@ -269,8 +269,11 @@
     var fecha = button.data('fecha');
     var correlativoInicial = button.data('correlativo-inicial');
     var correlativoFinal = button.data('correlativo-final');
+    var idconceptovalor = button.data('id_concepto_valor');
+    
   
-    $('#ingresarValorModal .modal-title').text(`Registrar nuevo ingreso de ${nombre}`);
+    $('#ingresarValorModal .modal-title').text(`Registrar nuevo ingreso de ${idconceptovalor}`);
+    $('#id_concepto_valor').val(idconceptovalor);
     $('#ingresarValorModal .table tbody').html(`
         
         <tr>
@@ -291,6 +294,81 @@
         </tr>
     `);
 });
+//********************Script botón guardar valor universitario********************************
+document.addEventListener('DOMContentLoaded', function () {
+  
+  const btnGuardarValoruni = document.getElementById('btnGuardarValoruni');
+
+  btnGuardarValoruni.addEventListener('click', function () {
+      const id_adquisicion = document.getElementById('id_adquisicion').value;
+      const id_concepto_valor = document.getElementById('id_concepto_valor').value;
+      const cantidad_v = document.getElementById('cantidad_valor').value;
+      const correlativo_ini = document.getElementById('correlativo_inicial').value;
+      const correlativo_fin = document.getElementById('correlativo_final').value;
+      const serie_val = document.getElementById('serie_valor').value;
+      const monto_val = document.getElementById('montototal').value;
+
+      if (!id_adquisicion || !cantidad_v || !correlativo_ini || !correlativo_fin || !serie_val || !monto_val  || !id_concepto_valor  ) {
+          Swal.fire({
+              title: "Error",
+              text: "Todos los campos son obligatorios.",
+              icon: "error",
+              confirmButtonText: "OK"
+          });
+          return;
+      }
+      fetch('/guardar_adqui_detalle', {  
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+              id_adqui: id_adquisicion,
+              cantidad: cantidad_v,
+              correlativo_ini: correlativo_ini,
+              correlativo_final: correlativo_fin,
+              serie: serie_val,
+              monto: monto_val,
+              id_concepto_valor: id_concepto_valor
+              
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              Swal.fire({
+                  title: "Éxito",
+                  text: "El Valor universitario se ha creado correctamente.",
+                  icon: "success",
+                  confirmButtonText: "OK"
+              }).then(() => {
+                  location.reload(); 
+              });
+          } else {
+              Swal.fire({
+                  title: "Error",
+                  text: "Hubo un error al crear el Valor universitario.",
+                  icon: "error",
+                  confirmButtonText: "OK"
+              });
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+              title: "Error",
+              text: "Hubo un error al realizar la acción.",
+              icon: "error",
+              confirmButtonText: "OK"
+          });
+      });
+  });
+});
+
+// CON ESTA FUNCION  AGARRO LA CANTIDAD INTRODUCIDA Y LO MULTIPLICO CON EL PRECIO_UNITARIO PARA SABER EL MONTO TOTAL
+
+
 
 </script>
 

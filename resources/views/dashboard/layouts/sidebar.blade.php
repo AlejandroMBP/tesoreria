@@ -48,6 +48,7 @@
                     </li>
                     <li><a href="{{ route('reporte_valores_bodega') }}"><i class="material-icons-outlined">arrow_right</i>Reporte de valores</a>
                     </li>
+                 
                 </ul>
             </li>
         

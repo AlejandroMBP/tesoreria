@@ -11,13 +11,20 @@ use Laravel\Sanctum\HasApiTokens;
 
 use Spatie\Permission\Traits\HasRoles;
 
-class Model_stock extends Authenticatable
+class Model_b_valores_stock extends Authenticatable
 {
+    use HasRoles;
+    use HasApiTokens;
     use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
-    protected $table = 'b_valores_stock'; 
-    protected $fillable = ['id', 'id_concepto_valor', 'cantidad'];
+    protected $table = 'b_valores_stock';
+    protected $fillable = ['id','cantidad','correlativo_inicial','correlativo_final','serie','estado', 'uuid'];
 
+    
+    
     
 }
 

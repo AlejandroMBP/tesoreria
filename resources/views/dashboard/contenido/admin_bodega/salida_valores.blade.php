@@ -122,7 +122,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!--Pestaña de Solicitudes atendidas-->
                     <div class='tab-content' id='espacioinactivoSalVal'>   
                         <div class='tab-pane fade show' id='tabSalValinactivos' role='tabpanel'>
@@ -138,7 +137,6 @@
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
-                                    
                                     <tbody>
                                         @foreach($valores_salida_atendidas as $val_sal_aten)
                                         <tr>
@@ -156,19 +154,13 @@
                                                     </button>
                                                 </a>
                                             </td>
-                                           
                                         </tr>
                                         @endforeach
                                     </tbody>  
-
-
-
-
                                 </table>
                             </div>
                         </div>
-                    </div> 
-                     
+                    </div>                    
                 </div> 
             </div> 
         </div>   

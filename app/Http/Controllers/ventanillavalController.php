@@ -7,6 +7,8 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use App\Models\Model_solicitud;
 use App\Models\Model_solicitud_detalle;
+use App\Models\Model_bodega;
+use App\Models\Model_valores_stock;
 
 class ventanillavalController extends Controller
 {
@@ -14,6 +16,45 @@ class ventanillavalController extends Controller
     public function stock_ventanilla(){
         return view('dashboard.contenido.gestion_ventanilla.stock');
     }
+        //******stock escasos */
+
+        public function obtenerValoresEscasosVentanilla()
+    {
+        $valores = DB::table('valores_stock AS vs')
+        ->join('concepto_valores AS cv', 'vs.id_concepto_valor', '=', 'cv.id')
+        ->where('vs.cantidad', '<', 50)
+        ->where('cv.estado', '=', 1)
+        ->select(
+            'vs.*',
+            'cv.nombre',
+            'cv.estado'
+        )
+        ->groupBy('vs.id', 'cv.nombre', 'cv.estado')
+        ->get();
+
+    return response()->json($valores);
+
+    }
+    ///********stock suficientes*************** */
+    public function obtenerValoresSuficientesVentanilla()
+    {
+        $valores = DB::table('valores_stock AS vs')
+        ->join('concepto_valores AS cv', 'vs.id_concepto_valor', '=', 'cv.id')
+        ->where('vs.cantidad', '>=', 50)
+        ->where('cv.estado', '=', 1)
+        ->select(
+            'vs.*',
+            'cv.nombre',
+            'cv.estado'
+        )
+        ->groupBy('vs.id', 'cv.nombre', 'cv.estado')
+        ->get();
+
+        return response()->json($valores);
+    }
+
+
+
     public function solicitud_valores(){
         $sol_val = DB::table('solicitud as sol')
         ->join('users as u', 'sol.id_usuario_destinatario', '=', 'u.id')
@@ -69,4 +110,7 @@ class ventanillavalController extends Controller
         $pdf = \PDF::loadView('dashboard.contenido.gestion_ventanilla.solicitud_pdf');
         return $pdf->stream('Solicitud.pdf');
     }
+
+
+    
 }
