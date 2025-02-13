@@ -9,6 +9,8 @@ use App\Models\Model_solicitud;
 use App\Models\Model_solicitud_detalle;
 use App\Models\Model_bodega;
 use App\Models\Model_valores_stock;
+use App\Models\Model_venta_valores_detalle;
+use App\Models\Model_venta_valores;
 
 class ventanillavalController extends Controller
 {
@@ -98,13 +100,64 @@ class ventanillavalController extends Controller
         }
         return response()->json(['success' => true]);
     }
-
+    //FUNCIONES PARA LA VENTA DE VALROES
     public function venta_valores(){
-        return view('dashboard.contenido.gestion_ventanilla.venta_valores');
+        $venta_val = DB::table('venta_valores')->get();
+        return view('dashboard.contenido.gestion_ventanilla.venta_valores', compact('venta_val'));
     }
-    public function registro_ventas_valores(){
-        return view('dashboard.contenido.gestion_ventanilla.registro_ventas_valores');
+    public function registro_ventas_valores($id){
+        $venta_valor = Model_venta_valores::find($id);
+        if (!$venta_valor) {
+            return redirect()->route('ruta_de_error')->with('error', 'Registro no encontrado.');
+        }
+        $conceptos = Model_bodega::all(); 
+        return view('dashboard.contenido.gestion_ventanilla.registro_ventas_valores', compact('venta_valor','conceptos'));
     }
+    public function guardarVentaVal(Request $request)
+    {
+        $request->validate([
+            'fecha_venta' => 'required|date',
+            'nro_informe' => 'required|numeric',
+        ]);
+        $valor = new Model_venta_valores();
+        
+        $valor->fecha_venta = $request->fecha_venta;
+        $valor->nro_informe = $request->nro_informe;
+        $valor->id_user = auth()->id();
+        $valor->estado = 1;
+        $valor->uuid = \Str::uuid()->toString();
+        $valor->save();
+        
+        return response()->json(['success' => true]);
+    }
+    public function guardarVentaValoresDetalle(Request $request)
+    {
+        $venta_valor_id = $request->input('venta_valor_id');
+
+        // Lógica para guardar los valores de la venta
+        // Ejemplo de cómo guardar las filas dinámicas
+        foreach ($request->columna1 as $index => $concepto_id) {
+            VentaValor::create([
+                'id_venta_valores' => $venta_valor_id,
+                'id_concepto_valores' => $concepto_id,
+                'cantidad' => $request->columna2[$index],
+                'correlativo_inicial' => $request->columna3[$index],
+                'correlativo_final' => $request->columna4[$index],
+                'monto_total' => $request->columna5[$index],
+            ]);
+        }
+
+        // Redirigir después de guardar
+        return redirect()->route('ruta_deseada');
+    
+    }
+    public function generarPDFventa($id)
+{
+    $venta = \App\Models\Model_venta_valores::findOrFail($id);
+    $pdf = \PDF::loadView('dashboard.contenido.gestion_ventanilla.venta_pdf', compact('venta'));
+    return $pdf->stream('Venta.pdf'); 
+}
+
     public function generatePDFsolicitud()
     {
         $pdf = \PDF::loadView('dashboard.contenido.gestion_ventanilla.solicitud_pdf');

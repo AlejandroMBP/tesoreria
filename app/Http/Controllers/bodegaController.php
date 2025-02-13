@@ -12,6 +12,7 @@ use App\Models\Model_respuesta_solicitud;
 use App\Models\Model_respuesta_solicitud_detalle;
 use App\Models\Model_adquisicion;
 use App\Models\Model_adquisicion_detalle;
+use App\Models\Model_valores_stock;
 class bodegaController extends Controller
 {
 //ADMINISTRACION DE BODEGA
@@ -232,8 +233,6 @@ class bodegaController extends Controller
 
         return response()->json($valores);
     }
-    
-
     //ENTRADA VALORES 
     public function entrada_valores(){
        
@@ -292,9 +291,9 @@ class bodegaController extends Controller
     
         if ($stock) {
             $stock->cantidad += $request->cantidad; 
-            $stock->correlativo_inicial = $request->correlativo_ini; // Se actualiza el correlativo inicial
+            $stock->correlativo_inicial = $request->correlativo_ini; 
             $stock->correlativo_final = $request->correlativo_final; 
-            $stock->serie = $request->serie; // Se actualiza la serie
+            $stock->serie = $request->serie; 
             $stock->save();
         
         } else {
@@ -365,7 +364,19 @@ class bodegaController extends Controller
         $pdf = \PDF::loadView('dashboard.contenido.admin_bodega.valores_entregados_pdf');
         return $pdf->stream('Rep_valores_entregados.pdf');
     }
-    //***************************** */
+    //****************************con esta funcion obtengo el correlativo_inicial* */
+    public function obtenerCorrelativo($id)
+    {
+        $valorStock = DB::table('b_valores_stock')
+                        ->where('id_concepto_valor', $id)
+                        ->first();
+        if ($valorStock) {
+            return response()->json(['correlativo_inicial' => $valorStock->correlativo_inicial]);
+        } else {
+            return response()->json(['correlativo_inicial' => 0]);  // Si no se encuentra, devolvemos 0
+        }
+    }
+    //****************************** */
     public function form_entrega_valores_bodega($id)
     {
         $valor = Model_solicitud::find($id);
@@ -387,8 +398,6 @@ class bodegaController extends Controller
         return view('dashboard.contenido.admin_bodega.form_entrega_valores_bodega', compact('valor', 'detallesSolicitud', 'conceptos'));
     }
     
-
-
     public function guardarSolicitudRespuesta(Request $request)
     {
         $request->validate([
@@ -403,20 +412,34 @@ class bodegaController extends Controller
         $solicitud->id_usuario = auth()->id();
         $solicitud->estado = 1;
         $solicitud->save();
+
         foreach ($request->detalles as $detalle) {
             $detalleSolicitud = new Model_respuesta_solicitud_detalle();
             $detalleSolicitud->id_respuesta_solicitud = $solicitud->id;
             $detalleSolicitud->id_concepto_valores = $detalle['id_concepto_valor'];
             $detalleSolicitud->cantidad = $detalle['cantidad'];
+            $detalleSolicitud->correlativo_inicial = $detalle['correlativo_inicial'];
+            $detalleSolicitud->correlativo_final = $detalle['correlativo_final'];
             $detalleSolicitud->estado = 1;
             $detalleSolicitud->save();
 
             $stock = Model_b_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();
             if ($stock) {
                 $stock->cantidad -= $detalle['cantidad']; 
+                $stock->correlativo_inicial = $detalle['correlativo_inicial']; 
+                $stock->correlativo_final = $detalle['correlativo_final']; 
                 $stock->save();
             }
+            $valoresStock = Model_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();
+        if ($valoresStock) {
+            $valoresStock->cantidad += $detalle['cantidad']; 
+            $valoresStock->correlativo_final += $detalle['cantidad'];
+            if ($valoresStock->correlativo_inicial == 0) {
+                $valoresStock->correlativo_inicial = 1; 
+            }
+            $valoresStock->save();
         }
+    }
         $solicitudOriginal = Model_solicitud::find($request->idSolicitud); 
         if ($solicitudOriginal) {
             $solicitudOriginal->estado = 2;  
@@ -424,58 +447,54 @@ class bodegaController extends Controller
         }
     
         return response()->json(['success' => true]);
+        
     }
     
-    
     public function reporte_valores_bodega()
-{
-    $conceptos = \App\Models\Model_bodega::all();
-    // Ejecuta la consulta SQL directamente con DB::select() sin DB::raw()
-    $consulta = DB::select('
-        (
-            SELECT 
-                "ENTRADA" AS tipo_movimiento,
-                cv.nombre AS tipo_documento,
-                cv.precio_unitario,
-                avd.cantidad AS cantidad_entrada,
-                avd.correlativo_ini AS correlativo_ini_entrada,
-                avd.correlativo_fin AS correlativo_fin_entrada,
-                NULL AS cantidad_salida,
-                NULL AS correlativo_ini_salida,
-                NULL AS correlativo_fin_salida,
-                (cv.precio_unitario * avd.cantidad) AS costo,
-                avd.monto,
-                avd.estado AS observacion,
-                avd.created_at AS fecha_creacion
-            FROM adquisicion_valores_detalle avd
-            INNER JOIN concepto_valores cv ON avd.id_concepto_valores = cv.id
-        )
-        UNION
-        (
-            SELECT 
-                "SALIDA" AS tipo_movimiento,
-                cv.nombre AS tipo_documento,
-                cv.precio_unitario,
-                NULL AS cantidad_entrada,
-                NULL AS correlativo_ini_entrada,
-                NULL AS correlativo_fin_entrada,
-                rsd.cantidad AS cantidad_salida,
-                NULL AS correlativo_ini_salida,
-                NULL AS correlativo_fin_salida,
-                (cv.precio_unitario * rsd.cantidad) AS costo,
-                NULL AS monto,
-                rsd.estado AS observacion,
-                rsd.created_at AS fecha_creacion
-            FROM respuesta_solicitud_detalle rsd
-            INNER JOIN concepto_valores cv ON rsd.id_concepto_valores = cv.id
-        )
-        ORDER BY fecha_creacion ASC
-    ');
-
-    // Pasar los datos a la vista
-    return view('dashboard.contenido.admin_bodega.reporte_valores_bodega', compact('consulta','conceptos'));
-}
-    
+    {
+        $conceptos = \App\Models\Model_bodega::all();
+        $consulta = DB::select('
+            (
+                SELECT 
+                    "ENTRADA" AS tipo_movimiento,
+                    cv.nombre AS tipo_documento,
+                    cv.precio_unitario,
+                    avd.cantidad AS cantidad_entrada,
+                    avd.correlativo_ini AS correlativo_ini_entrada,
+                    avd.correlativo_fin AS correlativo_fin_entrada,
+                    NULL AS cantidad_salida,
+                    NULL AS correlativo_ini_salida,
+                    NULL AS correlativo_fin_salida,
+                    (cv.precio_unitario * avd.cantidad) AS costo,
+                    avd.monto,
+                    avd.estado AS observacion,
+                    avd.created_at AS fecha_creacion
+                FROM adquisicion_valores_detalle avd
+                INNER JOIN concepto_valores cv ON avd.id_concepto_valores = cv.id
+            )
+            UNION
+            (
+                SELECT 
+                    "SALIDA" AS tipo_movimiento,
+                    cv.nombre AS tipo_documento,
+                    cv.precio_unitario,
+                    NULL AS cantidad_entrada,
+                    NULL AS correlativo_ini_entrada,
+                    NULL AS correlativo_fin_entrada,
+                    rsd.cantidad AS cantidad_salida,
+                    NULL AS correlativo_ini_salida,
+                    NULL AS correlativo_fin_salida,
+                    (cv.precio_unitario * rsd.cantidad) AS costo,
+                    NULL AS monto,
+                    rsd.estado AS observacion,
+                    rsd.created_at AS fecha_creacion
+                FROM respuesta_solicitud_detalle rsd
+                INNER JOIN concepto_valores cv ON rsd.id_concepto_valores = cv.id
+            )
+            ORDER BY fecha_creacion ASC
+        ');
+        return view('dashboard.contenido.admin_bodega.reporte_valores_bodega', compact('consulta','conceptos'));
+    }
     public function generatePDFreporte()
     {
         $pdf = \PDF::loadView('dashboard.contenido.admin_bodega.reporte_pdf');

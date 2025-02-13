@@ -120,39 +120,40 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="avascript:;"
-                    data-bs-toggle="dropdown"><img src="{{asset('assets/images/county/02.png')}}" width="22" alt="">
+                    data-bs-toggle="dropdown"><img src="{{ asset('assets/images/county/02.png') }}" width="22" alt="">
+                    data-bs-toggle="dropdown"><img src="{{ asset('assets/images/county/02.png') }}" width="22" alt="">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/01.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/01.png') }}" width="20" alt=""><span
                                 class="ms-2">English</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/02.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/02.png') }}" width="20" alt=""><span
                                 class="ms-2">Catalan</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/03.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/03.png') }}" width="20" alt=""><span
                                 class="ms-2">French</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/04.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/04.png') }}" width="20" alt=""><span
                                 class="ms-2">Belize</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/05.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/05.png') }}" width="20" alt=""><span
                                 class="ms-2">Colombia</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/06.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/06.png') }}" width="20" alt=""><span
                                 class="ms-2">Spanish</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/07.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/07.png') }}" width="20" alt=""><span
                                 class="ms-2">Georgian</span></a>
                     </li>
                     <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img
-                                src="{{asset('assets/images/county/08.png')}}" width="20" alt=""><span
+                                src="{{ asset('assets/images/county/08.png') }}" width="20" alt=""><span
                                 class="ms-2">Hindi</span></a>
                     </li>
                 </ul>
@@ -237,7 +238,7 @@
                             <a class="dropdown-item border-bottom py-2" href="javascript:;">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="">
-                                        <img src="{{asset('assets/images/apps/13.png')}}" class="rounded-circle" width="45"
+                                        <img src="{{ asset('assets/images/apps/13.png') }}" class="rounded-circle" width="45"
                                             height="45" alt="">
                                     </div>
                                     <div class="">
@@ -255,7 +256,7 @@
                             <a class="dropdown-item border-bottom py-2" href="javascript:;">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="">
-                                        <img src="{{asset('assets/images/apps/14.png')}}" class="rounded-circle" width="45"
+                                        <img src="{{ asset('assets/images/apps/14.png') }}" class="rounded-circle" width="45"
                                             height="45" alt="">
                                     </div>
                                     <div class="">
@@ -309,41 +310,47 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
-                    <img src="https://placehold.co/110x110/png" class="rounded-circle p-1 border" width="45"
-                        height="45" alt="">
+                <!-- Botón de usuario -->
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                    <img src="https://placehold.co/110x110/png" class="rounded-circle p-1 border" width="45" height="45" alt="">
                 </a>
-                <div class="dropdown-menu dropdown-user dropdown-menu-end shadow">
-                    <a class="dropdown-item  gap-2 py-2" href="javascript:;">
+            
+                <!-- Menú desplegable -->
+                <div class="dropdown-menu dropdown-menu-end shadow">
+                    <a class="dropdown-item gap-2 py-2" href="javascript:void(0);">
                         <div class="text-center">
-                            <img src="https://placehold.co/110x110/png" class="rounded-circle p-1 shadow mb-3"
-                                width="90" height="90" alt="">
+                            <img src="https://placehold.co/110x110/png" class="rounded-circle p-1 shadow mb-3" width="90" height="90" alt="">
                             <h5 class="user-name mb-0 fw-bold">Hola {{ Auth::user()->name }}</h5>
                         </div>
                     </a>
                     <hr class="dropdown-divider">
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                            class="material-icons-outlined">person_outline</i>Profile</a>
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                            class="material-icons-outlined">local_bar</i>Setting</a>
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                            class="material-icons-outlined">dashboard</i>Dashboard</a>
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                            class="material-icons-outlined">account_balance</i>Earning</a>
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                            class="material-icons-outlined">cloud_download</i>Downloads</a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:void(0);">
+                        <i class="material-icons-outlined">person_outline</i> Profile
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:void(0);">
+                        <i class="material-icons-outlined">local_bar</i> Setting
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:void(0);">
+                        <i class="material-icons-outlined">dashboard</i> Dashboard
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:void(0);">
+                        <i class="material-icons-outlined">account_balance</i> Earning
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:void(0);">
+                        <i class="material-icons-outlined">cloud_download</i> Downloads
+                    </a>
                     <hr class="dropdown-divider">
+                    
+                    <!-- Botón de logout dentro del menú -->
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        {{-- <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                    class="material-icons-outlined">power_settings_new</i>Logout</a> --}}
-                        <button type="submit" class="dropdown-item d-flex align-items-center gap-2 py-2"
-                            href="javascript:;">
-                            <i class="material-icons-outlined">power_settings_new</i>Logout
+                        <button type="submit" class="dropdown-item d-flex align-items-center gap-2 py-2">
+                            <i class="material-icons-outlined">power_settings_new</i> Logout
                         </button>
                     </form>
                 </div>
             </li>
+            
         </ul>
 
     </nav>

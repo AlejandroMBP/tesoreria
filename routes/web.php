@@ -10,6 +10,7 @@ use App\Http\Controllers\gestionchequeController;
 use App\Http\Controllers\configuracionController;
 use App\Http\Controllers\documentacionController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -84,17 +85,13 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::post('/guardar_adqui_detalle', [bodegaController::class, 'guardarEntradaDetalle']);
 
         Route::get('/registrar_entrada/{id}', [bodegaController::class, 'registrarEntrada'])->name('registrar_entrada');
-
-
-
-
-
-
-        
-
+        Route::get('/obtener-correlativo/{id}', [bodegaController::class, 'obtenerCorrelativo']);
 
         //********************SALIDA VALORES*************
         Route::get('/sal_val', [bodegaController::class,'salida_valores'])->name('salida_valores');
+
+
+
         //********************FORM ENTREGA VALORES*************
         Route::get('/sol_val_bod/{id}', [bodegaController::class, 'form_entrega_valores_bodega'])->name('form_entrega_valores_bodega');
         //Route::post('/guardar_form_entrega', [bodegaController::class, 'guardarFormEntrega'])->name('guardarFormEntrega');
@@ -118,14 +115,21 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::post('/guardarSol', [ventanillavalController::class, 'guardarSolicitud'])->name('guardarSolicitud');
         Route::get('stock/valores-escasos_ventanilla', [ventanillavalController::class, 'obtenerValoresEscasosVentanilla']);
         Route::get('stock/valores-suficientes_ventanilla', [ventanillavalController::class, 'obtenerValoresSuficientesVentanilla']);
+        Route::post('/guardarVentaValor', [ventanillavalController::class, 'guardarVentaVal']);
 
 
         
 
 
         Route::get('/ven_val', [ventanillavalController::class,'venta_valores'])->name('venta_valores');
-        Route::get('/reg_ven_val', [ventanillavalController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
+        Route::get('/registro_ventas_valores/{id}', [ventanillavalController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
         Route::get('generar_pdf_solicitud', [ventanillavalController::class, 'generatePDFsolicitud']);
+        Route::post('/guardar-venta-valores', [ventanillavalController::class, 'guardarVentaValoresDetalle'])->name('guardar_venta_valores');
+        
+      
+
+        Route::get('/imprimir-venta/{id}', [ventanillavalController::class, 'generarPDFventa'])->name('imprimir_venta');
+
         //GESTIÓN DE CHEQUES
         Route::get('/cheque', [gestionchequeController::class,'cheque'])->name('cheque');
         Route::get('/form_cheque', [gestionchequeController::class,'formulario_registro_cheque'])->name('formulario_registro_cheque');
@@ -136,6 +140,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         //DOCUMENTACIÓN
         Route::get('/documentacion', [documentacionController::class,'documentacion'])->name('documentacion');
 
-
+        Route::post('/logout', function () {
+            Auth::guard('web')->logout();  // Usar el guard 'web' para cerrar sesión en el contexto de sesiones web
+            return redirect('/');
+        })->name('logout');
     });
 });
