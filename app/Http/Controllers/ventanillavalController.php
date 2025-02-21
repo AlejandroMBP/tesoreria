@@ -102,7 +102,10 @@ class ventanillavalController extends Controller
     }
     //FUNCIONES PARA LA VENTA DE VALROES
     public function venta_valores(){
-        $venta_val = DB::table('venta_valores')->get();
+        $venta_val = DB::table('venta_valores')
+        ->join('users', 'users.id', '=', 'venta_valores.id_user')
+        ->select('venta_valores.*', 'users.name as nombre_usuario')
+        ->get();
         return view('dashboard.contenido.gestion_ventanilla.venta_valores', compact('venta_val'));
     }
     public function registro_ventas_valores($id){
@@ -113,6 +116,46 @@ class ventanillavalController extends Controller
         $conceptos = Model_bodega::all(); 
         return view('dashboard.contenido.gestion_ventanilla.registro_ventas_valores', compact('venta_valor','conceptos'));
     }
+    //****************************con esta funcion obtengo el correlativo_inicial*******************************/
+    public function obtenerCorrelativoStockVentanilla($id)
+    {
+        $valorStock = Model_valores_stock::where('id_concepto_valor', $id)->first();
+        if ($valorStock) {
+            return response()->json(['correlativo_inicial' => $valorStock->correlativo_inicial]);
+        } else {
+            return response()->json(['correlativo_inicial' => 0]); 
+        }
+    }
+    //*************con esta función obtengo si la cantidad en estock es suficiente//// */
+ 
+
+    public function verificarStockVentanilla($idConcepto)
+    {
+    
+        $stock = Model_valores_stock::where('id_concepto_valor', $idConcepto)->first();
+
+        if ($stock === null) {
+            
+            return response()->json([
+                'error' => 'Concepto no encontrado'
+            ], 404);
+        }
+
+        $concepto = Model_bodega::where('id', $stock->id_concepto_valor)->first();
+
+        if ($concepto === null) {
+            return response()->json([
+                'error' => 'Nombre del concepto no encontrado'
+            ], 404);
+        }
+
+        return response()->json([
+            'stock' => $stock->cantidad,
+            'nombre_concepto' => $concepto->nombre 
+        ]);
+
+    }
+
     public function guardarVentaVal(Request $request)
     {
         $request->validate([
@@ -123,6 +166,7 @@ class ventanillavalController extends Controller
         
         $valor->fecha_venta = $request->fecha_venta;
         $valor->nro_informe = $request->nro_informe;
+        $valor->cantidad = 0;
         $valor->id_user = auth()->id();
         $valor->estado = 1;
         $valor->uuid = \Str::uuid()->toString();
@@ -130,33 +174,55 @@ class ventanillavalController extends Controller
         
         return response()->json(['success' => true]);
     }
-    public function guardarVentaValoresDetalle(Request $request)
+
+    public function guardarVentaValDetalle(Request $request)
     {
-        $venta_valor_id = $request->input('venta_valor_id');
+        $request->validate([
+            'idVenta' => 'required|numeric',
+            //'fecha_respuesta' => 'required|date',
+            'cantidad_detalles' => 'required|numeric',
+        ]);
+        $solicitud = Model_venta_valores::where('id', $request->idVenta)->first();
 
-        // Lógica para guardar los valores de la venta
-        // Ejemplo de cómo guardar las filas dinámicas
-        foreach ($request->columna1 as $index => $concepto_id) {
-            VentaValor::create([
-                'id_venta_valores' => $venta_valor_id,
-                'id_concepto_valores' => $concepto_id,
-                'cantidad' => $request->columna2[$index],
-                'correlativo_inicial' => $request->columna3[$index],
-                'correlativo_final' => $request->columna4[$index],
-                'monto_total' => $request->columna5[$index],
-            ]);
+        if ($solicitud) {
+            $solicitud->cantidad = $request->cantidad_detalles;
+            $solicitud->estado = 2;
+            $solicitud->save();
+        } 
+
+        foreach ($request->detalles as $detalle) {
+            $detalleSolicitud = new Model_venta_valores_detalle();
+            $detalleSolicitud->id_venta_valores = $request->idVenta;
+            $detalleSolicitud->id_concepto_valores = $detalle['id_concepto_valor'];
+            $detalleSolicitud->cantidad = $detalle['cantidad'];
+            $detalleSolicitud->correlativo_inicial = $detalle['correlativo_inicial'];
+            $detalleSolicitud->correlativo_final = $detalle['correlativo_final'];
+            $detalleSolicitud->monto = 0;
+            $detalleSolicitud->estado = 1;
+            $detalleSolicitud->save();
+
+            $stock = Model_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();
+            if ($stock) {
+                $stock->cantidad -= $detalle['cantidad']; 
+                $stock->correlativo_inicial = $detalle['correlativo_final'] + 1;
+                //$stock->correlativo_final = $detalle['correlativo_final']; 
+                $stock->save();
+            }
+            
         }
-
-        // Redirigir después de guardar
-        return redirect()->route('ruta_deseada');
     
+        return response()->json(['success' => true]);
+        
     }
-    public function generarPDFventa($id)
-{
-    $venta = \App\Models\Model_venta_valores::findOrFail($id);
-    $pdf = \PDF::loadView('dashboard.contenido.gestion_ventanilla.venta_pdf', compact('venta'));
-    return $pdf->stream('Venta.pdf'); 
-}
+   
+
+
+        public function generarPDFventa($id)
+    {
+        $venta = \App\Models\Model_venta_valores::findOrFail($id);
+        $pdf = \PDF::loadView('dashboard.contenido.gestion_ventanilla.venta_pdf', compact('venta'));
+        return $pdf->stream('Venta.pdf'); 
+    }
 
     public function generatePDFsolicitud()
     {

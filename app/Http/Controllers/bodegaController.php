@@ -52,7 +52,7 @@ class bodegaController extends Controller
         return response()->json(['success' => true]);
     }
 
-    //**************FUNCION PARA ACTIVAR AL USUARIO ********************
+    //**************FUNCION PARA ACTIVAR AL VALOR ********************
     public function activarVal($id)
     {
         $valores_univ = Model_bodega::find($id);
@@ -111,12 +111,12 @@ class bodegaController extends Controller
         );
     }
     //**************FUNCION PARA GUARDAR PROVEEDOR ********************
-    public function guardarProv(Request $request)
+    public function guardarProveedor(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
-            'contacto' => 'required|numeric|digits_between:5,15', 
+            'contacto' => 'required|numeric', 
             'email' => 'required|email|max:255',
         ]);
         $proveedor = new Model_proveedor();
@@ -203,6 +203,7 @@ class bodegaController extends Controller
             'bvs.*',
             'cv.nombre',
             'cv.estado',
+            'cv.precio_unitario',
             DB::raw('MAX(av.fecha_adquisicion) AS fecha_adquisicion')
         )
         ->groupBy('bvs.id', 'cv.nombre', 'cv.estado')
@@ -225,6 +226,7 @@ class bodegaController extends Controller
             'bvs.*',
             'cv.nombre',
             'cv.estado',
+            'cv.precio_unitario',
             DB::raw('MAX(av.fecha_adquisicion) AS fecha_adquisicion')
         )
         ->groupBy('bvs.id', 'cv.nombre', 'cv.estado')
@@ -270,8 +272,10 @@ class bodegaController extends Controller
             'correlativo_ini' => 'required|numeric',
             'correlativo_final' => 'required|numeric',
             'serie' => 'required|string|max:25',
-            'monto' => 'required|numeric'
-        ]);
+            'monto' => 'required|numeric',
+            'costonuevo' => 'required|numeric',
+            'cantidadnuevo' => 'required|numeric'
+        ]);    
     
        
         $valor = new Model_adquisicion_detalle();
@@ -281,39 +285,32 @@ class bodegaController extends Controller
         $valor->correlativo_ini = $request->correlativo_ini;
         $valor->correlativo_fin = $request->correlativo_final;
         $valor->serie = $request->serie;
-        $valor->monto = $request->monto;
+        $valor->costo = $request->monto;
+        $valor->monto_saldo = $request->costonuevo;
+        $valor->cantidad_saldo = $request->cantidadnuevo;
         $valor->estado = 1; 
         $valor->uuid = \Str::uuid()->toString();
         $valor->save();
-    
-       
-        $stock = Model_b_valores_stock::where('id_concepto_valor', $request->id_concepto_valor)->first();
-    
-        if ($stock) {
-            $stock->cantidad += $request->cantidad; 
-            $stock->correlativo_inicial = $request->correlativo_ini; 
-            $stock->correlativo_final = $request->correlativo_final; 
-            $stock->serie = $request->serie; 
-            $stock->save();
-        
-        } else {
-           
-            $nuevoStock = new Model_b_valores_stock();
-            $nuevoStock->id_concepto_valor = $request->id_concepto_valor;
-            $nuevoStock->cantidad = $request->cantidad;
-            $nuevoStock->correlativo_inicial = $request->correlativo_ini;
-            $nuevoStock->correlativo_final = $request->correlativo_final;
-            $nuevoStock->serie = $request->serie;
-            $nuevoStock->estado = 1;
-            $nuevoStock->uuid = \Str::uuid()->toString();
-            $nuevoStock->save();
-        }
-    
-        return response()->json(['success' => true]);
-    }
-    
-    
 
+        $stock = Model_b_valores_stock::where('id_concepto_valor', $request->id_concepto_valor)->first();
+
+            if ($stock) {
+                // Si ya existe el stock, actualizar los valores
+                if ($stock->correlativo_inicial == 0) {
+                    $stock->correlativo_inicial += 1;
+                }
+                $stock->cantidad += $request->cantidad;
+                $stock->correlativo_final = $request->correlativo_final;
+                $stock->costo += $request->monto;
+                $stock->serie = $request->serie;
+                $stock->save();
+                
+                return response()->json(['success' => true]);
+            } else {
+               
+                return response()->json(['success' => false, 'message' => 'No se encontró el valor de stock. No se creará un nuevo registro.']);
+            }
+        }
     //****ESTA FUNCIÓN PERMITE REGISTRAR UN NUEVO CONCEPTO_VALOR EN MI BD ***********/
     public function guardar_ingreso_valores(Request $request)
     {
@@ -365,7 +362,7 @@ class bodegaController extends Controller
         return $pdf->stream('Rep_valores_entregados.pdf');
     }
     //****************************con esta funcion obtengo el correlativo_inicial* */
-    public function obtenerCorrelativo($id)
+    /*public function obtenerCorrelativo($id)
     {
         $valorStock = DB::table('b_valores_stock')
                         ->where('id_concepto_valor', $id)
@@ -373,8 +370,118 @@ class bodegaController extends Controller
         if ($valorStock) {
             return response()->json(['correlativo_inicial' => $valorStock->correlativo_inicial]);
         } else {
-            return response()->json(['correlativo_inicial' => 0]);  // Si no se encuentra, devolvemos 0
+            return response()->json(['correlativo_inicial' => 0]); 
         }
+    }
+    //mi funcion para obtener costo y cantidad de la misma tabla 
+    public function obtenerCostoStock($id)
+{
+
+    $valorStock = DB::table('b_valores_stock')
+                    ->where('id_concepto_valor', $id)
+                    ->first();
+
+    if ($valorStock) {
+      
+        return response()->json([
+            'costo' => $valorStock->costo,
+            'cantidad' => $valorStock->cantidad 
+        ]);
+    } else {
+     
+        return response()->json([
+            'costo' => 0,
+            'cantidad' => 0
+        ]);
+    }
+}
+
+    public function obtenerPrecioUnitario($id)
+    {
+        $conceptoValor = DB::table('concepto_valores')
+                        ->where('id', $id)
+                        ->first();
+        if ($conceptoValor) {
+            return response()->json(['precio_unitario' => $conceptoValor->precio_unitario]);
+        } else {
+            return response()->json(['precio_unitario' => 0]); 
+        }
+    }
+    /*public function obtenerCantidaCostoVentanilla($id)
+    {
+        $conceptoValor = Model_valores_stock::where('id_concepto_valor', $id)->first();
+        if ($conceptoValor) {
+            return response()->json(['cantidad' => $conceptoValor->cantidadventanilla]);
+        } else {
+            return response()->json(['cantidad' => 0]); 
+        }
+    }
+   */
+  public function obtenerDatosCompletos($id)
+{
+    // Obtener correlativo, costo y cantidad de la tabla b_valores_stock
+    $valorStock = DB::table('b_valores_stock')
+                    ->where('id_concepto_valor', $id)
+                    ->first();
+
+    // Obtener precio unitario de la tabla concepto_valores
+    $conceptoValor = DB::table('concepto_valores')
+                        ->where('id', $id)
+                        ->first();
+
+    // Obtener el costo de la tabla valores_stock
+    $valorStockVentilla = DB::table('valores_stock')
+                            ->where('id_concepto_valor', $id)
+                            ->first();
+
+    // Verificar si se encontraron los registros necesarios
+    if ($valorStock && $conceptoValor && $valorStockVentilla) {
+        return response()->json([
+            'correlativo_inicial' => $valorStock->correlativo_inicial,
+            'costo' => $valorStock->costo,  // Costo de la tabla b_valores_stock
+            'cantidad' => $valorStock->cantidad,
+            'precio_unitario' => $conceptoValor->precio_unitario,
+            'costo_ventilla' => $valorStockVentilla->costo,
+            'cantidad_ventilla' => $valorStockVentilla->cantidad// Costo de la tabla valores_stock
+        ]);
+    } else {
+        return response()->json([
+            'correlativo_inicial' => 0,
+            'costo' => 0,
+            'cantidad' => 0,
+            'precio_unitario' => 0,
+            'costo_ventilla' => 0, 
+            'cantidad_ventilla' => 0
+        ]);
+    }
+}
+
+
+    public function verificarStock($idConcepto)
+    {
+    
+        $stock = Model_b_valores_stock::where('id_concepto_valor', $idConcepto)->first();
+
+        if ($stock === null) {
+            
+            return response()->json([
+                'error' => 'Concepto no encontrado'
+            ], 404);
+        }
+
+        $concepto = Model_bodega::where('id', $stock->id_concepto_valor)->first();
+
+        if ($concepto === null) {
+            return response()->json([
+                'error' => 'Nombre del concepto no encontrado'
+            ], 404);
+        }
+
+        return response()->json([
+            'stock' => $stock->cantidad,
+            'nombre_concepto' => $concepto->nombre 
+        ]);
+
     }
     //****************************** */
     public function form_entrega_valores_bodega($id)
@@ -420,19 +527,26 @@ class bodegaController extends Controller
             $detalleSolicitud->cantidad = $detalle['cantidad'];
             $detalleSolicitud->correlativo_inicial = $detalle['correlativo_inicial'];
             $detalleSolicitud->correlativo_final = $detalle['correlativo_final'];
+            $detalleSolicitud->costo = $detalle['costo_total'];
+            $detalleSolicitud->monto_saldo_salida = $detalle['montosaldo_salida'];
+            $detalleSolicitud->cantidad_saldo_salida = $detalle['cantidadsaldo_salida'];
+            $detalleSolicitud->monto_saldo_entrada = $detalle['montosaldo_entrada'];
+            $detalleSolicitud->cantidad_saldo_entrada = $detalle['cantidadsaldo_entrada'];
             $detalleSolicitud->estado = 1;
             $detalleSolicitud->save();
 
             $stock = Model_b_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();
             if ($stock) {
                 $stock->cantidad -= $detalle['cantidad']; 
-                $stock->correlativo_inicial = $detalle['correlativo_inicial']; 
-                $stock->correlativo_final = $detalle['correlativo_final']; 
+                $stock->costo -= $detalle['costo_total']; 
+                $stock->correlativo_inicial = $detalle['correlativo_final'] + 1;
+                //$stock->correlativo_final = $detalle['correlativo_final']; 
                 $stock->save();
             }
             $valoresStock = Model_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();
         if ($valoresStock) {
             $valoresStock->cantidad += $detalle['cantidad']; 
+            $valoresStock->costo += $detalle['costo_total']; 
             $valoresStock->correlativo_final += $detalle['cantidad'];
             if ($valoresStock->correlativo_inicial == 0) {
                 $valoresStock->correlativo_inicial = 1; 
@@ -454,7 +568,7 @@ class bodegaController extends Controller
     {
         $conceptos = \App\Models\Model_bodega::all();
         $consulta = DB::select('
-            (
+           (
                 SELECT 
                     "ENTRADA" AS tipo_movimiento,
                     cv.nombre AS tipo_documento,
@@ -482,8 +596,8 @@ class bodegaController extends Controller
                     NULL AS correlativo_ini_entrada,
                     NULL AS correlativo_fin_entrada,
                     rsd.cantidad AS cantidad_salida,
-                    NULL AS correlativo_ini_salida,
-                    NULL AS correlativo_fin_salida,
+                    rsd.correlativo_inicial AS correlativo_ini_salida,
+                    rsd.correlativo_final AS correlativo_fin_salida,
                     (cv.precio_unitario * rsd.cantidad) AS costo,
                     NULL AS monto,
                     rsd.estado AS observacion,
@@ -491,7 +605,7 @@ class bodegaController extends Controller
                 FROM respuesta_solicitud_detalle rsd
                 INNER JOIN concepto_valores cv ON rsd.id_concepto_valores = cv.id
             )
-            ORDER BY fecha_creacion ASC
+            ORDER BY fecha_creacion ASC;
         ');
         return view('dashboard.contenido.admin_bodega.reporte_valores_bodega', compact('consulta','conceptos'));
     }

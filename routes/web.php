@@ -12,9 +12,6 @@ use App\Http\Controllers\documentacionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,7 +64,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::post('/val_univ/actualizarval', [bodegaController::class, 'actualizarval'])->name('val_univ.actualizarval');
         // PROVEEDORES
         Route::get('/proveedores', [bodegaController::class,'proveedores'])->name('proveedores');
-        Route::post('/guardarProv', [bodegaController::class, 'guardarProv']);
+        Route::post('/guardarProv', [bodegaController::class, 'guardarProveedor']);
         Route::put('/proveedores/{id}/inactivarProv', [bodegaController::class, 'inactivarProv']);
         Route::put('/proveedores/{id}/activarProv', [bodegaController::class, 'activarProv']);
         Route::put('/proveedores/{id}/eliminarProv', [bodegaController::class, 'eliminarProv']);
@@ -85,11 +82,16 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::post('/guardar_adqui_detalle', [bodegaController::class, 'guardarEntradaDetalle']);
 
         Route::get('/registrar_entrada/{id}', [bodegaController::class, 'registrarEntrada'])->name('registrar_entrada');
-        Route::get('/obtener-correlativo/{id}', [bodegaController::class, 'obtenerCorrelativo']);
+       
+        //Route::get('/obtener-costo/{id}', [bodegaController::class, 'obtenerCosto']);
+        Route::get('/verificar-stock/{idConcepto}', [bodegaController::class, 'verificarStock']);
+   
+
+      
 
         //********************SALIDA VALORES*************
-        Route::get('/sal_val', [bodegaController::class,'salida_valores'])->name('salida_valores');
-
+        
+        Route::get('/sal_val', [bodegaController::class, 'salida_valores'])->name('salida_valores');
 
 
         //********************FORM ENTREGA VALORES*************
@@ -101,12 +103,22 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('/rep_val_bod', [bodegaController::class,'reporte_valores_bodega'])->name('reporte_valores_bodega');
         Route::get('generar_pdf_valores_entregados', [bodegaController::class, 'generar_pdf_valores_entregados']);
         Route::get('generar-pdf', [bodegaController::class, 'generatePDFreporte']);
-        //GESTIÓN DE DEPÓSITOS
+        Route::get('/obtener-correlativo/{id}', [bodegaController::class, 'obtenerCorrelativo']);
+        Route::get('/obtener-costo_stock/{id}', [bodegaController::class, 'obtenerCostoStock']);
+        Route::get('/obtener-precio_unitario/{id}', [bodegaController::class, 'obtenerPrecioUnitario']);
+        //Route::get('/obtener-cantidadCosto/{id}', [bodegaController::class, 'obtenerCantidaCostoVentanilla']);
+        Route::get('/obtener-datos-completos/{id}', [bodegaController::class, 'obtenerDatosCompletos']);
+        //----------------------------------GESTIÓN DE DEPÓSITOS--------------------------------------------
         Route::get('/importar', [depositosController::class,'importar'])->name('importar');
         Route::get('/movimientos', [depositosController::class,'movimientos'])->name('movimientos');
         Route::get('/conceptos', [depositosController::class,'conceptos'])->name('conceptos');
+        Route::post('/guardarConcepto', [depositosController::class, 'guardarConceptos']);
+        Route::put('/concepto_univ/{id}/inactivarConcepto', [depositosController::class, 'inactivarConceptos'])->name('concepto_univ.inactivarConcepto');
+        Route::put('/concepto_univ/{id}/activarConcepto', [depositosController::class, 'activarConceptos'])->name('concepto_univ.activarConcepto');
+        Route::put('/concepto_univ/{id}/eliminarConcepto', [depositosController::class, 'eliminarConcepto'])->name('concepto_univ.eliminarConcepto');
         Route::get('/multiboletas', [depositosController::class,'multiboletas'])->name('multiboletas');
         Route::get('/reportes', [depositosController::class,'reportes'])->name('reportes');
+
         //GESTIÓN DE VENTANILLA DE VALORES
         Route::get('/stock_vent', [ventanillavalController::class,'stock_ventanilla'])->name('stock_ventanilla');
         Route::get('/sol_val', [ventanillavalController::class,'solicitud_valores'])->name('solicitud_valores');
@@ -117,19 +129,13 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::get('stock/valores-suficientes_ventanilla', [ventanillavalController::class, 'obtenerValoresSuficientesVentanilla']);
         Route::post('/guardarVentaValor', [ventanillavalController::class, 'guardarVentaVal']);
 
-
-        
-
-
         Route::get('/ven_val', [ventanillavalController::class,'venta_valores'])->name('venta_valores');
         Route::get('/registro_ventas_valores/{id}', [ventanillavalController::class,'registro_ventas_valores'])->name('registro_ventas_valores');
         Route::get('generar_pdf_solicitud', [ventanillavalController::class, 'generatePDFsolicitud']);
-        Route::post('/guardar-venta-valores', [ventanillavalController::class, 'guardarVentaValoresDetalle'])->name('guardar_venta_valores');
-        
-      
-
+        Route::post('/guardarVentaDetalle', [ventanillavalController::class, 'guardarVentaValDetalle'])->name('guardarVentaValDet');
+        Route::get('/obtener-correlativo_stock_ventanilla/{id}', [ventanillavalController::class, 'obtenerCorrelativoStockVentanilla']);
+        Route::get('/verifi_stock_ventanilla/{idConcepto}', [ventanillavalController::class,'verificarStockVentanilla']);     
         Route::get('/imprimir-venta/{id}', [ventanillavalController::class, 'generarPDFventa'])->name('imprimir_venta');
-
         //GESTIÓN DE CHEQUES
         Route::get('/cheque', [gestionchequeController::class,'cheque'])->name('cheque');
         Route::get('/form_cheque', [gestionchequeController::class,'formulario_registro_cheque'])->name('formulario_registro_cheque');

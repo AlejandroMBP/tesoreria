@@ -39,34 +39,33 @@
                             </thead>
                             <tbody>
                             @foreach($venta_val as $venta)
-                <tr>
-                    <td>{{ $venta->id }}</td>
-                    <td style="text-align: center;">{{ $venta->fecha_venta }}</td>
-                    <td style="text-align: center;">{{ $venta->nro_informe }}</td>
-                    <td>{{ $venta->id_user }}</td>
-                    <td>
-                        @if($venta->estado == 1)
-                            <span>PENDIENTE</span>
-                        @elseif($venta->estado == 2)
-                            <span>IMPRESA</span>
-                        @endif
-                    </td>
-                    <td>
-                       
-                        @if($venta->estado == 1)
-                            <a href="{{ route('registro_ventas_valores', [$venta->id] ) }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
-                               style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px; text-decoration: none;">
-                                REGISTRAR
-                            </a>
-                        @elseif($venta->estado == 2)
-                            <a href="{{ route('imprimir_venta', $venta->id) }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
-                               style="background-color: #4CAF50; color: #fff; border-color: #4CAF50; gap: 5px; text-decoration: none;">
-                                IMPRIMIR
-                            </a>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
+                                <tr>
+                                    <td>{{ $venta->id }}</td>
+                                    <td style="text-align: center;">{{ $venta->fecha_venta }}</td>
+                                    <td style="text-align: center;">{{ $venta->nro_informe }}</td>
+                                    <td>{{ $venta->id_user }}</td>
+                                    <td>
+                                        @if($venta->estado == 1)
+                                            <span>PENDIENTE</span>
+                                        @elseif($venta->estado == 2)
+                                            <span>IMPRESA</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($venta->estado == 1)
+                                            <a href="{{ route('registro_ventas_valores', [$venta->id] ) }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
+                                            style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px; text-decoration: none;">
+                                                REGISTRAR
+                                            </a>
+                                        @elseif($venta->estado == 2)
+                                            <a href="{{ route('imprimir_venta', $venta->id) }}" class="btn btn-sm d-inline-flex align-items-center justify-content-center" 
+                                            style="background-color: #4CAF50; color: #fff; border-color: #4CAF50; gap: 5px; text-decoration: none;">
+                                                IMPRIMIR
+                                            </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

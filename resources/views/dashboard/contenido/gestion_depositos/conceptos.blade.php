@@ -56,35 +56,18 @@
                                     <div class="order-summary">
                                         <div class="card mb-0">
                                             <div class="card-body">
-                                            <form id="form_guardar_concepto">
-                                            <div class="row">
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="tipoconcepto" class="form-label">Tipo de concepto (Nombre):</label>
-                                                        <input type="text" class="form-control" id="tipoconcepto" placeholder="Ingrese el tipo de documento">
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="montominimo" class="form-label">Monto mínimo</label>
-                                                        <input type="text" class="form-control" id="montominimo" placeholder="Ingrese el precio (monto minimo)">
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="montominimo" class="form-label">Unidad involucrada</label>
-                                                        <input type="text" class="form-control" id="montominimo" placeholder="Ingrese el precio (monto minimo)">
-                                                    </div>
-                                                    
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="involucrados" class="form-label">Involucrados</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text"><i class="material-icons-outlined fs-5">description</i></span>
-                                                            <select class="form-select" id="involucrados">
-                                                                <option selected="">Selecciona el tipo de documento</option>
-                                                                <option value="1">Nacionales</option>
-                                                                <option value="2">Extranjeros</option>
-                                                                <option value="3">Ambos</option>
-                                                            </select>
+                                                <form id="form_guardar_concepto">
+                                                    <div class="row g-3">
+                                                        <div class="col-12 col-md-6">
+                                                            <label for="nombre_valor" class="form-label">Tipo de documento:</label>
+                                                            <input type="text" class="form-control" id="nombre_valor" placeholder="Ingrese el tipo de documento">
+                                                        </div>
+                                                        <div class="col-12 col-md-6">
+                                                            <label for="preciounitario" class="form-label">Precio unitario:</label>
+                                                            <input type="number" class="form-control" id="preciounitario" placeholder="Ingrese el precio unitario">
                                                         </div>
                                                     </div>
-                                            </div>
-                                        </form>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -170,19 +153,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach($conceptos_activos as $concepto)
                                         <tr>
-                                            <td>1</td>
-                                            <td>Registros y admisiones</td>
-                                            <td>Matriculación</td>
-                                            <td>Matriculación estudiantil</td>
-                                            <td>Nacional</td>
-                                            <td>Bs. 22</td>
-                                            <td><button id="btnActivoConcepto" class="btn btn-success btn-sm">Activo</button></td>
+                                            <td>{{ $concepto->id }}</td>
+                                            <td>{{ $concepto->unidadMovimiento_id }}</td>
+                                            <td>{{ $concepto->id_tipo }}</td>
+                                            <td>{{ $concepto->concepto }}</td>
+                                            <td>{{ $concepto->tipoNacionalidad }}</td>
+                                            <td>{{ $concepto->montoMinimo}}</td>
+                                            <td><button class="btnActivoConcepto btn btn-success btn-sm" data-id="{{ $concepto->id }}">Activo</button></td>
                                             <td>
-                                                <button id="btnEditarConcepto" class="btn btn-warning btn-sm"class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarConceptoModal">Editar</button>
-                                                <button id="btnEliminarConcepto" class="btn btn-danger btn-sm">Eliminar</button>
+                                            <button class="btn btn-warning btn-sm btnEditarConcepto" data-id="{{ $concepto->id }}" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
+                                                Editar
+                                            </button>
+                                                <button class="btnEliminarConcepto btn btn-danger btn-sm" data-id="{{ $concepto->id }}">Eliminar</button>
                                             </td>
                                         </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -205,20 +192,24 @@
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                            <td>1</td>
-                                            <td>Registros y admisiones</td>
-                                            <td>Matriculación</td>
-                                            <td>Matriculación estudiantil</td>
-                                            <td>Nacional</td>
-                                            <td>Bs. 22</td>
-                                            <td><button id="btnInactivoConcepto" class="btn btn-danger btn-sm">Inactivo</button></td>
-                                            <td>
-                                                <button id="btnEditarConcepto" class="btn btn-warning btn-sm"class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarConceptoModal">Editar</button>
-                                                <button id="btnEliminarConcepto2" class="btn btn-danger btn-sm">Eliminar</button>
-                                            </td>
-                                        </tr>
+                                        <tbody>
+                                        @foreach($conceptos_inactivos as $concepto)
+                                            <tr>
+                                                <td>{{ $concepto->id }}</td>
+                                                <td>{{ $concepto->unidadMovimiento_id }}</td>
+                                                <td>{{ $concepto->id_tipo }}</td>
+                                                <td>{{ $concepto->concepto }}</td>
+                                                <td>{{ $concepto->tipoNacionalidad }}</td>
+                                                <td>{{ $concepto->montoMinimo}}</td>
+                                                <td><button class="btnInactivoConcepto btn btn-danger btn-sm" data-id="{{ $concepto->id }}">Inactivo</button></td>
+                                                <td>
+                                                <button class="btn btn-warning btn-sm btnEditarConcepto" data-id="{{ $concepto->id }}" data-bs-toggle="modal" data-bs-target="#editarValoruniModal">
+                                                    Editar
+                                                </button>
+                                                    <button class="btnEliminarConcepto btn btn-danger btn-sm" data-id="{{ $concepto->id }}">Eliminar</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -261,44 +252,66 @@
             },
             buttonsStyling: false
         });
-        //********************Script botón guardar valor universitario********************************
-    document.getElementById("btnGuardarConcepto").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de guardar el Concepto?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, guardar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Guardado exitosamente",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("form_guardar_concepto").submit();
-                        setTimeout(() => {
-                        location.reload();  
-                        }, 1000);  
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha guardado el Concepto",
-                        icon: "error"
-                    });
-                }
-            });
-        });
+       //********************Script botón guardar valor universitario********************************
+    document.addEventListener('DOMContentLoaded', function () {
+  
+  const btnGuardarConcepto = document.getElementById('btnGuardarConcepto');
+
+  btnGuardarConcepto.addEventListener('click', function () {
+      const nombre = document.getElementById('nombre_valor').value;
+      const preciounitario = document.getElementById('preciounitario').value;
+      if (!nombre || !preciounitario) {
+          Swal.fire({
+              title: "Error",
+              text: "Todos los campos son obligatorios.",
+              icon: "error",
+              confirmButtonText: "OK"
+          });
+          return;
+      }
+      fetch('/guardarConcepto', {  
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+              nombre: nombre,
+              precio_unitario: preciounitario
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              Swal.fire({
+                  title: "Éxito",
+                  text: "El Valor universitario se ha creado correctamente.",
+                  icon: "success",
+                  confirmButtonText: "OK"
+              }).then(() => {
+                  location.reload(); 
+              });
+          } else {
+              Swal.fire({
+                  title: "Error",
+                  text: "Hubo un error al crear el Valor universitario.",
+                  icon: "error",
+                  confirmButtonText: "OK"
+              });
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+              title: "Error",
+              text: "Hubo un error al realizar la acción.",
+              icon: "error",
+              confirmButtonText: "OK"
+          });
+      });
+  });
+});
+
         //********************Script botón editar concepto********************************
     document.getElementById("btnEditarConcepto").addEventListener("click", function (e) {
             e.preventDefault();
@@ -411,39 +424,66 @@
             });
         });
         //********************Script botón activo a inactivo********************************
-    document.getElementById("btnActivoConcepto").addEventListener("click", function (e) {
-            e.preventDefault();
-            swalWithBootstrapButtons.fire({
-                title: "¿Estás seguro de inactivar el Concepto?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sí, inactivar!",
-                cancelButtonText: "No, cancelar!",
-                reverseButtons: true,
-                didRender: () => {
-                    const actionsContainer = document.querySelector('.swal2-actions');
-                    if (actionsContainer) {
-                        actionsContainer.style.justifyContent = "center"; 
-                        actionsContainer.style.gap = "1rem"; 
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnActivosVal = document.querySelectorAll('.btnActivoConcepto');
+            
+            btnActivosConcepto.forEach(function(btnActivoConcepto) {
+                btnActivoConcepto.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const userId = this.getAttribute('data-id');
                     swalWithBootstrapButtons.fire({
-                        title: "Guardado",
-                        text: "El concepto se ha inactivo correctamente.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        document.getElementById("formulariosoli").submit();
+                        title: "¿Estás seguro de inactivar el Concepto?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Sí, inactivar!",
+                        cancelButtonText: "No, cancelar!",
+                        reverseButtons: true 
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/concepto_univ/' + userId + '/inactivarConcepto', {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({ estado: 0 })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Guardado",
+                                        text: "El Concepto ha sido desactivado correctamente.",
+                                        icon: "success",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload(); 
+                                    });
+                                } else {
+                                    swalWithBootstrapButtons.fire({
+                                        title: "Error",
+                                        text: "Hubo un error al desactivar el Concepto",
+                                        icon: "error"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                swalWithBootstrapButtons.fire({
+                                    title: "Error",
+                                    text: "Hubo un error al realizar la acción.",
+                                    icon: "error"
+                                });
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            swalWithBootstrapButtons.fire({
+                                title: "Cancelado",
+                                text: "El Concepto no ha sido desactivado.",
+                                icon: "error"
+                            });
+                        }
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelado",
-                        text: "No se ha inactivado el Concepto",
-                        icon: "error"
-                    });
-                }
+                });
             });
         });
         //********************Script botón inactivo a activo********************************

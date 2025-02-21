@@ -23,6 +23,7 @@ class ModelBodegaObserver
         $valor->cantidad = 0;
         $valor->correlativo_inicial = 0;
         $valor->correlativo_final = 0; 
+        $valor->costo = 0; 
         $valor->serie = 0; 
         $valor->estado = 1; 
         $valor->uuid = \Str::uuid()->toString();
@@ -35,6 +36,7 @@ class ModelBodegaObserver
         $valorValoresStock->cantidad = 0;    
         $valorValoresStock->correlativo_inicial = 0;
         $valorValoresStock->correlativo_final = 0;
+        $valorValoresStock->costo = 0; 
         $valorValoresStock->serie = 0; 
         $valorValoresStock->estado = 1; 
         $valorValoresStock->save();

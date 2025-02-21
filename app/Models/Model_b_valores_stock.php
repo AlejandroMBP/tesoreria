@@ -21,7 +21,7 @@ class Model_b_valores_stock extends Authenticatable
     use TwoFactorAuthenticatable;
 
     protected $table = 'b_valores_stock';
-    protected $fillable = ['id','cantidad','correlativo_inicial','correlativo_final','serie','estado', 'uuid'];
+    protected $fillable = ['id','cantidad','correlativo_inicial','correlativo_final','costo','serie','estado', 'uuid'];
 
     
     

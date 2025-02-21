@@ -21,7 +21,7 @@ class Model_adquisicion_detalle extends Authenticatable
     use TwoFactorAuthenticatable;
 
     protected $table = 'adquisicion_valores_detalle';
-    protected $fillable = ['id','id_adquisicion_valores','id_concepto_valores','cantidad','correlativo_ini','correlativo_fin','serie','monto', 'uuid'];
+    protected $fillable = ['id','id_adquisicion_valores','id_concepto_valores','cantidad','correlativo_ini','correlativo_fin','serie','costo','monto_saldo','cantidad_saldo','estado', 'uuid'];
 
     
     

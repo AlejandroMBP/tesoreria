@@ -28,5 +28,6 @@ class Model_proveedor extends Authenticatable
         'contacto', 
         'email', 
         'estado',
+        'uuid'
     ];
 }

@@ -122,6 +122,7 @@
                                                             <div class="col-12 col-md-6">
                                                                 <label for="emailprov" class="form-label">Correo electrónico</label>
                                                                 <input type="email" class="form-control" id="emailprov" placeholder="Ingrese el correo electrónico del proveedor">
+                                                                <span class="text-danger error-message" id="error-emailprov"></span>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -296,7 +297,7 @@
             buttonsStyling: false
         });
     //********************Script botón guardar nuevo proveedor********************************
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const btnGuardarProv = document.getElementById('btnGuardarProv');
 
     btnGuardarProv.addEventListener('click', function () {
@@ -304,7 +305,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const direccionprov = document.getElementById('direccionprov').value.trim();
         const contactoprov = document.getElementById('contactoprov').value.trim();
         const emailprov = document.getElementById('emailprov').value.trim();
+        const emailError = document.getElementById('error-emailprov');
 
+        let valid = true;
+
+        // Limpiar mensajes previos de error
+        emailError.textContent = "";
+
+        // Validación de correo con expresión regular
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailprov.match(emailRegex)) {
+            emailError.textContent = "Ingrese un correo electrónico válido (ejemplo@dominio.com).";
+            valid = false;
+        }
+
+        // Validar que no haya campos vacíos
         if (!nombreprov || !direccionprov || !contactoprov || !emailprov) {
             Swal.fire({
                 title: "Error",
@@ -314,6 +329,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return;
         }
+
+        // Si hay errores, no enviamos la solicitud
+        if (!valid) return;
+
         fetch('/guardarProv', {
             method: 'POST',
             headers: {
@@ -324,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 nombre: nombreprov,
                 direccion: direccionprov,
                 contacto: contactoprov,
-                email: emailprov 
+                email: emailprov
             })
         })
         .then(response => {
@@ -358,7 +377,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
 
     //********************Script botón activo a inactivo********************************
     document.addEventListener('DOMContentLoaded', function() {

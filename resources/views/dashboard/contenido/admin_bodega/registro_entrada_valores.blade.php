@@ -91,6 +91,12 @@
                                 <form id="form_guardar_valoruni">
                                     <input type="hidden" name="id_adquisicion" id ="id_adquisicion" value="{{ $adquisicion->id }}">   
                                     <input type="hidden" name="id_concepto_valor" id="id_concepto_valor">                      
+                                    <input type="hidden" id="precio_unitario">
+                                    <input type="hidden" id="costo">
+                                    <input type="hidden" id="costonuevo">
+                                    <input type="hidden" id="cantidad">
+                                    <input type="hidden" id="cantidadnuevo">
+                                 
                                     <div class="row g-3">
                                         <div class="col-12 col-md-6">
                                             <label for="cantidad_valor" class="form-label">Cantidad</label>
@@ -101,12 +107,13 @@
                                     <div class="row g-3">
                                         <div class="col-12 col-md-6">
                                             <label for="correlativo_inicial" class="form-label">Correlativo Inicial</label>
-                                            <input type="number" class="form-control" id="correlativo_inicial" placeholder="Ingrese el correlativo inicial">
+                                            <input type="number" class="form-control" id="correlativo_inicial" placeholder="Ingrese el correlativo inicial" readonly>
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <label for="correlativo_final" class="form-label">Correlativo Final</label>
-                                            <input type="number" class="form-control" id="correlativo_final" placeholder="Ingrese el correlativo final">
-                                        </div>                                  
+                                            <input type="number" class="form-control" id="correlativo_final" placeholder="Ingrese el correlativo final" readonly>
+                                        </div>  
+                                                                      
                                     </div>
                                     <div class="row g-3">
                                         <div class="col-12 col-md-6">
@@ -136,7 +143,7 @@
 @push('scripts')
 
 <script>
-    //**************funcion para cargar listar los valores escasos***************/
+    //**************funcion para cargar lista de  los valores escasos***************/
     $(document).ready(function () {
         function cargarValoresEscasosEnt() {
             $.ajax({
@@ -174,7 +181,9 @@
                                                         data-fecha="${valor.fecha_adquisicion}"
                                                         data-correlativo-inicial="${valor.correlativo_inicial}"
                                                         data-correlativo-final="${valor.correlativo_final}"
-                                                        data-id_concepto_valor="${valor.id_concepto_valor}">
+                                                        data-id_concepto_valor="${valor.id_concepto_valor}"
+                                                        data-precio_unitario="${valor.precio_unitario}"
+                                                        data-costo="${valor.costo}">
                                                         
                                                     <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span>
                                                     Agregar
@@ -229,7 +238,9 @@
                                                         data-fecha="${valor.fecha_adquisicion}"
                                                         data-correlativo-inicial="${valor.correlativo_inicial}"
                                                         data-correlativo-final="${valor.correlativo_final}"
-                                                        data-id_concepto_valor="${valor.id_concepto_valor}">
+                                                        data-id_concepto_valor="${valor.id_concepto_valor}"
+                                                        data-precio_unitario="${valor.precio_unitario}"
+                                                        data-costo="${valor.costo}">
                                                         
                                                     <span style="display: inline-block; width: 20px; height: 20px; background-color: #080C29; color: #95C11E; font-weight: bold; font-size: 14px; text-align: center; line-height: 20px; border-radius: 4px;">+</span>
                                                     Agregar
@@ -259,47 +270,99 @@
             }
         });
     });
-    //******ABRIMOS EL MODAL PASANDO LOS DATOS NECESARIOS*******
+    $(document).ready(function () {
+    // ****** ABRIMOS EL MODAL PASANDO LOS DATOS NECESARIOS ******
     $('#ingresarValorModal').on('shown.bs.modal', function (e) {
-    
-    var button = $(e.relatedTarget); 
-    var id = button.data('id');
-    var nombre = button.data('nombre');
-    var cantidad = button.data('cantidad');
-    var fecha = button.data('fecha');
-    var correlativoInicial = button.data('correlativo-inicial');
-    var correlativoFinal = button.data('correlativo-final');
-    var idconceptovalor = button.data('id_concepto_valor');
-    
-  
-    $('#ingresarValorModal .modal-title').text(`Registrar nuevo ingreso de ${idconceptovalor}`);
-    $('#id_concepto_valor').val(idconceptovalor);
-    $('#ingresarValorModal .table tbody').html(`
+        var button = $(e.relatedTarget); 
+        var id = button.data('id');
+        var nombre = button.data('nombre');
+        var cantidad = button.data('cantidad');
+        var fecha = button.data('fecha');
+        var correlativoInicial = button.data('correlativo-inicial');
+        var correlativoFinal = button.data('correlativo-final');
+        var idconceptovalor = button.data('id_concepto_valor');
+        var precio = parseFloat(button.data('precio_unitario')) || 0; 
+        var costo = parseFloat(button.data('costo')) || 0;
+
+        $('#ingresarValorModal .modal-title').text(`Registrar nuevo ingreso de ${nombre}`);
+        $('#id_concepto_valor').val(idconceptovalor);
+        $('#montototal').val(precio.toFixed(2)); 
+        $('#precio_unitario').val(precio.toFixed(2)); 
+        $('#costo').val(costo.toFixed(2));
+        $('#cantidad').val(cantidad);
         
-        <tr>
-            <td>Cantidad de unidades</td>
-            <td>${cantidad}</td>
-        </tr>
-        <tr>
-            <td>Fecha último ingreso</td>
-            <td>${fecha}</td>
-        </tr>
-        <tr>
-            <td>Correlativo inicial</td>
-            <td>${correlativoInicial}</td>
-        </tr>
-        <tr>
-            <td>Correlativo final</td>
-            <td>${correlativoFinal}</td>
-        </tr>
-    `);
+        var nuevoCorrelativoInicial = correlativoFinal === 0 ? 1 : correlativoFinal + 1;
+        $('#correlativo_inicial').val(nuevoCorrelativoInicial);
+
+        $('#ingresarValorModal .table tbody').html(`
+            <tr>
+                <td>Cantidad de unidades</td>
+                <td>${cantidad}</td>
+            </tr>
+            <tr>
+                <td>Fecha último ingreso</td>
+                <td>${fecha}</td>
+            </tr>
+            <tr>
+                <td>Correlativo inicial</td>
+                <td>${correlativoInicial}</td>
+            </tr>
+            <tr>
+                <td>Correlativo final</td>
+                <td>${correlativoFinal}</td>
+            </tr>
+            <tr>
+                <td>Precio</td>
+                <td>${precio.toFixed(2)}</td>
+            </tr>
+        `);
+        calcularCostoNuevo();
+    });
+
+    // ****** CALCULAR MONTO TOTAL Y ACTUALIZAR CANTIDAD NUEVO CUANDO SE INGRESA CANTIDAD ******
+    $('#cantidad_valor').on('input', function () {
+        var cantidad = $(this).val().trim(); 
+        var cantidadOriginal = parseFloat($('#cantidad').val()) || 0;  
+        
+        if (cantidad === "" || isNaN(cantidad) || parseFloat(cantidad) <= 0) {
+            $('#montototal').val($('#precio_unitario').val());
+            $('#cantidadnuevo').val(cantidadOriginal);  
+            calcularCostoNuevo(); 
+            return;
+        }
+
+        var cantidadNum = parseFloat(cantidad) || 0; 
+        var precioUnitario = parseFloat($('#precio_unitario').val()) || 0; 
+        var total = cantidadNum * precioUnitario; 
+        $('#montototal').val(total.toFixed(2));
+
+        // Calcular la cantidad nueva acumulada
+        var cantidadNueva = cantidadNum + cantidadOriginal;
+        $('#cantidadnuevo').val(cantidadNueva);
+
+        calcularCostoNuevo();
+    });
+
+    // ****** FUNCIÓN PARA CALCULAR COSTO NUEVO ******
+    function calcularCostoNuevo() {
+        var costo = parseFloat($('#costo').val()) || 0;
+        var montototal = parseFloat($('#montototal').val()) || 0;
+        var costonuevo = costo + montototal; 
+
+        $('#costonuevo').val(costonuevo.toFixed(2));
+    }
 });
+
+
 //********************Script botón guardar valor universitario********************************
 document.addEventListener('DOMContentLoaded', function () {
+  console.log("El documento ha sido cargado");
   
   const btnGuardarValoruni = document.getElementById('btnGuardarValoruni');
+  console.log(btnGuardarValoruni); // Verifica si el botón está correctamente seleccionado.
 
   btnGuardarValoruni.addEventListener('click', function () {
+      console.log("Botón de guardar clickeado");
       const id_adquisicion = document.getElementById('id_adquisicion').value;
       const id_concepto_valor = document.getElementById('id_concepto_valor').value;
       const cantidad_v = document.getElementById('cantidad_valor').value;
@@ -307,8 +370,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const correlativo_fin = document.getElementById('correlativo_final').value;
       const serie_val = document.getElementById('serie_valor').value;
       const monto_val = document.getElementById('montototal').value;
+      const costonuevo = document.getElementById('costonuevo').value;
+      const cantidadnuevo = document.getElementById('cantidadnuevo').value;
 
-      if (!id_adquisicion || !cantidad_v || !correlativo_ini || !correlativo_fin || !serie_val || !monto_val  || !id_concepto_valor  ) {
+      console.log(id_adquisicion, cantidad_v, correlativo_ini, correlativo_fin, serie_val, monto_val, id_concepto_valor,costonuevo,cantidadnuevo); 
+
+      if (!id_adquisicion || !cantidad_v || !correlativo_ini || !correlativo_fin || !serie_val || !monto_val || !id_concepto_valor || !costonuevo || !cantidadnuevo) {
           Swal.fire({
               title: "Error",
               text: "Todos los campos son obligatorios.",
@@ -317,7 +384,8 @@ document.addEventListener('DOMContentLoaded', function () {
           });
           return;
       }
-      fetch('/guardar_adqui_detalle', {  
+      
+      fetch('/guardar_adqui_detalle', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -330,8 +398,9 @@ document.addEventListener('DOMContentLoaded', function () {
               correlativo_final: correlativo_fin,
               serie: serie_val,
               monto: monto_val,
-              id_concepto_valor: id_concepto_valor
-              
+              id_concepto_valor: id_concepto_valor,
+              costonuevo: costonuevo, 
+              cantidadnuevo: cantidadnuevo 
           })
       })
       .then(response => response.json())
@@ -343,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   icon: "success",
                   confirmButtonText: "OK"
               }).then(() => {
-                  location.reload(); 
+                  location.reload();
               });
           } else {
               Swal.fire({
@@ -366,8 +435,51 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// CON ESTA FUNCION  AGARRO LA CANTIDAD INTRODUCIDA Y LO MULTIPLICO CON EL PRECIO_UNITARIO PARA SABER EL MONTO TOTAL
 
+/*function getCorrelativoInicial() {
+    var conceptoId = document.getElementById('id_concepto_valor').value;
+    if (!conceptoId) return;
+
+    $.ajax({
+        url: '/obtener-correlativo/' + conceptoId, 
+        method: 'GET',
+        success: function(response) {   
+            document.getElementById('correlativo_inicial').value = response.correlativo_inicial;
+            document.getElementById('correlativo_final').value = response.correlativo_inicial;
+        },
+        error: function(error) {
+            console.error('Error al obtener correlativo inicial', error);
+        }
+    });
+}
+function getCosto() {
+    var conceptoId = document.getElementById('id_concepto_valor').value;
+    if (!conceptoId) return;
+
+    $.ajax({
+        url: '/obtener-costo/' + conceptoId, 
+        method: 'GET',
+        success: function(response) {
+            // Asignar el correlativo_inicial al input
+            document.getElementById('costo').value = response.costo;
+            // Inicializamos correlativo_final con el mismo valor de correlativo_inicial
+            document.getElementById('costo').value = response.costo;
+        },
+        error: function(error) {
+            console.error('Error al obtener costo', error);
+        }
+    });
+}*/
+
+// Cambiar el valor de correlativo_final cuando se ingresa la cantidad
+document.getElementById('cantidad_valor').addEventListener('input', function() {
+    var cantidad = parseInt(document.getElementById('cantidad_valor').value) || 0;
+    var correlativoInicial = parseInt(document.getElementById('correlativo_inicial').value) || 0;
+    var nuevoCorrelativo = correlativoInicial + cantidad - 1;
+
+    // Actualizamos solo el correlativo_final
+    document.getElementById('correlativo_final').value = nuevoCorrelativo;
+});
 
 
 </script>
