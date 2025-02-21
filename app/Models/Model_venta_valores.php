@@ -21,7 +21,7 @@ class Model_venta_valores extends Authenticatable
     use TwoFactorAuthenticatable;
 
     protected $table = 'venta_valores';
-    protected $fillable = ['id','nro_informe','fecha_venta','cantidad','id_user','uuid'];
+    protected $fillable = ['id','nro_informe','fecha_venta','cantidad','id_user','estado','uuid'];
 
 }
 

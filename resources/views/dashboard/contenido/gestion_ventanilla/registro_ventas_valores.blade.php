@@ -38,10 +38,10 @@
                                 <div class="row g-3" id="dynamicInputs">
                                     <div class="col-md-3">
                                         <label for="id_concepto_valor_0" class="form-label">Concepto Valor</label>
-                                        <select class="form-control" name="id_concepto_valor[]" id="id_concepto_valor_0" onchange="getCorrelativoInicial(0)">
+                                        <select class="form-control" name="id_concepto_valor[]" id="id_concepto_valor_0" >
                                             <option value="">Seleccione un concepto valor</option>
                                             @foreach ($conceptos as $concepto)
-                                                <option value="{{ $concepto->id }}" data-precio="{{ $concepto->precio_unitario }}">{{ $concepto->nombre }}</option>
+                                                <option value="{{ $concepto->id }}">{{ $concepto->nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -57,9 +57,14 @@
                                         <label for="correlativo_final_0" class="form-label">Correlativo Final</label>
                                         <input type="number" class="form-control correlativo_final" name="correlativo_final[]" id="correlativo_final_0" placeholder="Final" readonly>
                                     </div>
+                                    <input type="hidden" name="costo_stock[]" id="costo_stock_0">
+                                    <input type="hidden" name="precio_unitario[]" id="precio_unitario_0">
+                                    <input type="hidden" name="cantidad_stock[]" id="cantidad_stock_0">
+                                    <input type="hidden" name="costonuevo[]" id="costonuevo_0">
+                                    <input type="hidden" name="cantidadnuevo[]" id="cantidadnuevo_0">
                                     <div class="col-md-2">
-                                        <label for="monto_0" class="form-label">Monto</label>
-                                        <input type="number" class="form-control monto" name="monto[]" id="monto_0" placeholder="Monto" readonly>
+                                        <label for="costototal_0" class="form-label">Costo</label>
+                                        <input type="number" class="form-control costototal" name="costototal[]" id="costototal_0" placeholder="Costo" readonly>
                                     </div>
                                 </div>
                                 <hr>
@@ -83,40 +88,52 @@
 @endsection
 @push('scripts')
 <script>
-//***********Función para obtener el correlativo inicial para la fila correspondiente***********//
-function getCorrelativoInicial(index) {
-    let idConcepto = document.getElementById('id_concepto_valor_' + index).value;
-    let cantidad = parseInt($('#cantidad_' + index).val()) || 0;  
-    
-    if(idConcepto) {
-        $.ajax({
-            url: '/obtener-correlativo_stock_ventanilla/' + idConcepto, 
-            type: 'GET',
-            success: function(response) {
-                let correlativoInicial = response.correlativo_inicial || 0; 
-                if (correlativoInicial === 0) {
-                    correlativoInicial = 1;
-                }
-                $('#correlativo_inicial_' + index).val(correlativoInicial);
-                let correlativoFinal = correlativoInicial + cantidad;
-                $('#correlativo_final_' + index).val(correlativoFinal);  
-            },
-            error: function() {
-                alert('Hubo un error al obtener el correlativo inicial.');
-            }
-        });
-    }
+
+$(document).ready(function() {
+    $('#dynamicInputs').on('change input', 'select[id^="id_concepto_valor_"], input[id^="cantidad_"]', function() {
+        var idParts = $(this).attr('id').split('_');
+        var index = idParts[idParts.length - 1]; // Asegurar que obtiene el índice correcto
+        obtenerDatosCompletos(index);
+    });
+});
+
+// Función para obtener todos los datos y actualizar los campos
+function obtenerDatosCompletos(index) {
+    let idConcepto = $('#id_concepto_valor_' + index).val();
+    let cantidad = parseInt($('#cantidad_' + index).val()) || 0;
+
+    if (!idConcepto) return; // Si no hay concepto, salimos de la función
+
+    $.ajax({
+        url: '/obtener-correlativo_stock_ventanilla/' + idConcepto, 
+        type: 'GET',
+        success: function(response) {
+            let { correlativo_inicial = 0, costo = 0, cantidad: cantidadStock = 0, precio_unitario = 0 } = response;
+
+            // Calcular correlativo final y costo total
+            let correlativoFinal = correlativo_inicial + cantidad - 1;
+            let costoTotal = (precio_unitario * cantidad).toFixed(2);
+            let monto_saldo = costo - costoTotal;
+           
+
+            // Asignar valores a los campos
+            $('#correlativo_inicial_' + index).val(correlativo_inicial);
+            $('#correlativo_final_' + index).val(correlativoFinal);
+            $('#precio_unitario_' + index).val(precio_unitario);
+            $('#costo_stock_' + index).val(costo);
+            $('#cantidad_stock_' + index).val(cantidadStock);
+            $('#costototal_' + index).val(costoTotal);
+            $('#costonuevo_' + index).val(monto_saldo);
+            let cantidad_saldo = cantidadStock - cantidad;
+            $('#cantidadnuevo_' + index).val(cantidad_saldo);
+        },
+        error: function() {
+            alert('Hubo un error al obtener los datos.');
+        }
+    });
 }
 
-//MI SCRIPT PARA OBTENER EL CORRELATIVO FINAL
-$(document).on('input', '.cantidad', function() {
-    let index = $(this).attr('id').split('_')[1]; 
-    let cantidad = parseInt($('#cantidad_' + index).val()) || 0; 
-    let correlativoInicial = parseInt($('#correlativo_inicial_' + index).val()) || 0;  
-    let correlativoFinal = correlativoInicial + cantidad - 1;
-    $('#correlativo_final_' + index).val(correlativoFinal); 
-});
-let index = 1; // Asegúrate de inicializar la variable index
+let index = 1; 
 
 $('#btnAgregarInputs').click(function() {
     let newRow = `
@@ -142,9 +159,13 @@ $('#btnAgregarInputs').click(function() {
                 
                 <input type="number" class="form-control correlativo_final" name="correlativo_final[]" id="correlativo_final_${index}" placeholder="Final" readonly>
             </div>
-            <div class="col-md-2">
-                
-                <input type="number" class="form-control monto" name="monto[]" id="monto_${index}" placeholder="Monto" readonly>
+            <input type="hidden" name="costo_stock[]" id="costo_stock_${index}">
+            <input type="hidden" name="precio_unitario[]" id="precio_unitario_${index}">
+            <input type="hidden" name="cantidad_stock[]" id="cantidad_stock_${index}">
+            <input type="hidden" name="costonuevo[]" id="costonuevo_${index}">
+            <input type="hidden" name="cantidadnuevo[]" id="cantidadnuevo_${index}">
+            <div class="col-md-2">            
+                <input type="number" class="form-control monto" name="costototal[]" id="costototal_${index}" placeholder="costototal" readonly>
             </div>
             <div class="col-md-1 d-flex justify-content-center align-items-center">
                 <button type="button" class="btn btn-sm btn-danger" onclick="eliminarFila(${index})">
@@ -163,23 +184,6 @@ function eliminarFila(id) {
     $("#dynamicInputsRow_" + id).remove();
 }
 
-
-
-
-
-// Mi FUNCIÓN PARA CALCULAR MONTO TOTAL, ESTE SE MULTIPLICA EL PRECIO_UNITARIO DEL VALOR POR LA CANTIDAD
-function calcularMonto(index) {
-    const cantidad = $('#cantidad_' + index).val();
-    const precioUnitario = $('#id_concepto_valor_' + index).find('option:selected').data('precio');
-    const monto = cantidad * precioUnitario;
-    $('#monto_' + index).val(monto.toFixed(2));
-}
-
-
-function eliminarFila(index) {
-   
-    $('#dynamicInputsRow_' + index).remove();
-}
 // *******************MI SCRIPT PARA GUARDAR EL FORMULARIO DE LA ENTREGA DE VALORES***************//
 document.addEventListener('DOMContentLoaded', function () {
     const btnGuardarValoruni = document.getElementById('btnGuardarSolicitud');
@@ -201,6 +205,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const cantidades = document.querySelectorAll('input[name="cantidad[]"]');
         const correlativoInicial = document.querySelectorAll('input[name="correlativo_inicial[]"]');
         const correlativoFinal = document.querySelectorAll('input[name="correlativo_final[]"]');
+        const costoTotal = document.querySelectorAll('input[name="costototal[]"]');
+        const monto_saldo = document.querySelectorAll('input[name="costonuevo[]"]');
+        const cantidad_saldo = document.querySelectorAll('input[name="cantidadnuevo[]"]');
 
         const detalles = [];
         let camposVacios = false;
@@ -208,9 +215,19 @@ document.addEventListener('DOMContentLoaded', function () {
         let conceptosSinStock = [];
 
         for (let i = 0; i < idConceptoValor.length; i++) {
-            if (!idConceptoValor[i].value || !cantidades[i].value || !correlativoInicial[i].value || !correlativoFinal[i].value) {
+            if (!idConceptoValor[i].value || !cantidades[i].value || !correlativoInicial[i].value || !correlativoFinal[i].value || !costoTotal[i].value || !monto_saldo[i].value || !cantidad_saldo[i].value) {
                 camposVacios = true;
                 break;
+            }
+             // Validación de correlativo inicial y final, el final debe ser mayo al inicial
+             if (parseInt(correlativoFinal[i].value) <= parseInt(correlativoInicial[i].value)) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Por favor introduzca una cantidad mayor a 0.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+                return;
             }
 
             const idConcepto = idConceptoValor[i].value;
@@ -245,7 +262,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 id_concepto_valor: idConceptoValor[i].value,
                 cantidad: cantidades[i].value,
                 correlativo_inicial: correlativoInicial[i].value,
-                correlativo_final: correlativoFinal[i].value
+                correlativo_final: correlativoFinal[i].value,
+                costo_total: costoTotal[i].value,
+                montosaldo: monto_saldo[i].value,
+                cantidadsaldo: cantidad_saldo[i].value
             });
         }
 

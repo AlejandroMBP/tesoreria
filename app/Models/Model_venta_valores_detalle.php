@@ -21,7 +21,7 @@ class Model_venta_valores_detalle extends Authenticatable
     use TwoFactorAuthenticatable;
 
     protected $table = 'venta_valores_detalle';
-    protected $fillable = ['id','id_concepto_val','cantidad','id_usuario','correlativo_inicial','correlativo_final','monto_total','id_vent_val','uuid'];
+    protected $fillable = ['id','id_venta_valores','id_concepto_valores','cantidad','correlativo_inicial','correlativo_final','costo','monto_saldo','cantidad_saldo','estado'];
 
 }
 

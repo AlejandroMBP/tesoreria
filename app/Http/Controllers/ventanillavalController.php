@@ -116,14 +116,33 @@ class ventanillavalController extends Controller
         $conceptos = Model_bodega::all(); 
         return view('dashboard.contenido.gestion_ventanilla.registro_ventas_valores', compact('venta_valor','conceptos'));
     }
-    //****************************con esta funcion obtengo el correlativo_inicial*******************************/
+    //****************************con esta funcion obtengo el correlativo_inicial, costo, cantidad y precio_unitario*******************************/
+
+   
     public function obtenerCorrelativoStockVentanilla($id)
     {
-        $valorStock = Model_valores_stock::where('id_concepto_valor', $id)->first();
-        if ($valorStock) {
-            return response()->json(['correlativo_inicial' => $valorStock->correlativo_inicial]);
+      
+        $valorStock = DB::table('valores_stock')
+                        ->where('id_concepto_valor', $id)
+                        ->first();
+
+        $conceptoValor = DB::table('concepto_valores')
+                            ->where('id', $id)
+                            ->first();
+        if ($valorStock && $conceptoValor ) {
+            return response()->json([
+                'correlativo_inicial' => $valorStock->correlativo_inicial,
+                'costo' => $valorStock->costo, 
+                'cantidad' => $valorStock->cantidad,
+                'precio_unitario' => $conceptoValor->precio_unitario,   
+            ]);
         } else {
-            return response()->json(['correlativo_inicial' => 0]); 
+            return response()->json([
+                'correlativo_inicial' => 0,
+                'costo' => 0,
+                'cantidad' => 0,
+                'precio_unitario' => 0,
+            ]);
         }
     }
     //*************con esta función obtengo si la cantidad en estock es suficiente//// */
@@ -179,7 +198,6 @@ class ventanillavalController extends Controller
     {
         $request->validate([
             'idVenta' => 'required|numeric',
-            //'fecha_respuesta' => 'required|date',
             'cantidad_detalles' => 'required|numeric',
         ]);
         $solicitud = Model_venta_valores::where('id', $request->idVenta)->first();
@@ -197,13 +215,16 @@ class ventanillavalController extends Controller
             $detalleSolicitud->cantidad = $detalle['cantidad'];
             $detalleSolicitud->correlativo_inicial = $detalle['correlativo_inicial'];
             $detalleSolicitud->correlativo_final = $detalle['correlativo_final'];
-            $detalleSolicitud->monto = 0;
+            $detalleSolicitud->costo = $detalle['costo_total'];
+            $detalleSolicitud->monto_saldo = $detalle['montosaldo'];
+            $detalleSolicitud->cantidad_saldo = $detalle['cantidadsaldo'];
             $detalleSolicitud->estado = 1;
             $detalleSolicitud->save();
 
             $stock = Model_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();
             if ($stock) {
                 $stock->cantidad -= $detalle['cantidad']; 
+                $stock->costo -= $detalle['costo_total']; 
                 $stock->correlativo_inicial = $detalle['correlativo_final'] + 1;
                 //$stock->correlativo_final = $detalle['correlativo_final']; 
                 $stock->save();

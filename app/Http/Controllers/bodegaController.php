@@ -361,100 +361,45 @@ class bodegaController extends Controller
         $pdf = \PDF::loadView('dashboard.contenido.admin_bodega.valores_entregados_pdf');
         return $pdf->stream('Rep_valores_entregados.pdf');
     }
-    //****************************con esta funcion obtengo el correlativo_inicial* */
-    /*public function obtenerCorrelativo($id)
+   
+  public function obtenerDatosCompletos($id)
     {
+      
         $valorStock = DB::table('b_valores_stock')
                         ->where('id_concepto_valor', $id)
                         ->first();
-        if ($valorStock) {
-            return response()->json(['correlativo_inicial' => $valorStock->correlativo_inicial]);
-        } else {
-            return response()->json(['correlativo_inicial' => 0]); 
-        }
-    }
-    //mi funcion para obtener costo y cantidad de la misma tabla 
-    public function obtenerCostoStock($id)
-{
 
-    $valorStock = DB::table('b_valores_stock')
-                    ->where('id_concepto_valor', $id)
-                    ->first();
-
-    if ($valorStock) {
       
-        return response()->json([
-            'costo' => $valorStock->costo,
-            'cantidad' => $valorStock->cantidad 
-        ]);
-    } else {
-     
-        return response()->json([
-            'costo' => 0,
-            'cantidad' => 0
-        ]);
-    }
-}
-
-    public function obtenerPrecioUnitario($id)
-    {
         $conceptoValor = DB::table('concepto_valores')
-                        ->where('id', $id)
-                        ->first();
-        if ($conceptoValor) {
-            return response()->json(['precio_unitario' => $conceptoValor->precio_unitario]);
-        } else {
-            return response()->json(['precio_unitario' => 0]); 
-        }
-    }
-    /*public function obtenerCantidaCostoVentanilla($id)
-    {
-        $conceptoValor = Model_valores_stock::where('id_concepto_valor', $id)->first();
-        if ($conceptoValor) {
-            return response()->json(['cantidad' => $conceptoValor->cantidadventanilla]);
-        } else {
-            return response()->json(['cantidad' => 0]); 
-        }
-    }
-   */
-  public function obtenerDatosCompletos($id)
-{
-    // Obtener correlativo, costo y cantidad de la tabla b_valores_stock
-    $valorStock = DB::table('b_valores_stock')
-                    ->where('id_concepto_valor', $id)
-                    ->first();
-
-    // Obtener precio unitario de la tabla concepto_valores
-    $conceptoValor = DB::table('concepto_valores')
-                        ->where('id', $id)
-                        ->first();
-
-    // Obtener el costo de la tabla valores_stock
-    $valorStockVentilla = DB::table('valores_stock')
-                            ->where('id_concepto_valor', $id)
+                            ->where('id', $id)
                             ->first();
 
-    // Verificar si se encontraron los registros necesarios
-    if ($valorStock && $conceptoValor && $valorStockVentilla) {
-        return response()->json([
-            'correlativo_inicial' => $valorStock->correlativo_inicial,
-            'costo' => $valorStock->costo,  // Costo de la tabla b_valores_stock
-            'cantidad' => $valorStock->cantidad,
-            'precio_unitario' => $conceptoValor->precio_unitario,
-            'costo_ventilla' => $valorStockVentilla->costo,
-            'cantidad_ventilla' => $valorStockVentilla->cantidad// Costo de la tabla valores_stock
-        ]);
-    } else {
-        return response()->json([
-            'correlativo_inicial' => 0,
-            'costo' => 0,
-            'cantidad' => 0,
-            'precio_unitario' => 0,
-            'costo_ventilla' => 0, 
-            'cantidad_ventilla' => 0
-        ]);
+       
+        $valorStockVentilla = DB::table('valores_stock')
+                                ->where('id_concepto_valor', $id)
+                                ->first();
+
+        
+        if ($valorStock && $conceptoValor && $valorStockVentilla) {
+            return response()->json([
+                'correlativo_inicial' => $valorStock->correlativo_inicial,
+                'costo' => $valorStock->costo, 
+                'cantidad' => $valorStock->cantidad,
+                'precio_unitario' => $conceptoValor->precio_unitario,
+                'costo_ventilla' => $valorStockVentilla->costo,
+                'cantidad_ventilla' => $valorStockVentilla->cantidad
+            ]);
+        } else {
+            return response()->json([
+                'correlativo_inicial' => 0,
+                'costo' => 0,
+                'cantidad' => 0,
+                'precio_unitario' => 0,
+                'costo_ventilla' => 0, 
+                'cantidad_ventilla' => 0
+            ]);
+        }
     }
-}
 
 
     public function verificarStock($idConcepto)
