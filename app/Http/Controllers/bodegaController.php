@@ -254,63 +254,66 @@ class bodegaController extends Controller
         return response()->json(['success' => true]);
     }    
     //******ESTA FUNCIÓN ME PERMITE DIRIGIRME A MI VISTA DONDE SE ENCUENTRA REGISTRAR UNA ADQUISICIÓN A PARTIR DEL ID DE LA TABLA ADQUISICIÓN_VALORES *******/
-    public function registrarEntrada($id)
+    public function registrarEntrada()
     {
-        $adquisicion = Model_adquisicion::find($id);
-        if (!$adquisicion) {
-            return redirect()->route('ruta_de_error')->with('error', 'Registro no encontrado.');
-        }
         $conceptos = Model_bodega::all(); 
-       
-        return view('dashboard.contenido.admin_bodega.registro_entrada_valores', compact('adquisicion', 'conceptos'));
+        return view('dashboard.contenido.admin_bodega.registro_entrada_valores', compact('conceptos'));
     }
-    public function guardarEntradaDetalle(Request $request){
+    public function form_entrada_valores()
+    {
+        $user = auth()->user();
+        $conceptos = Model_bodega::where('estado', 1)->get();
+        $proveedor = Model_proveedor::where('estado', 1)->get();
+        $fechaHoy = date('Y-m-d'); 
+        return view('dashboard.contenido.admin_bodega.formulario_entrada_valores', compact('user','conceptos','proveedor','fechaHoy'));
+    }
+    public function guardarAdquisiciones(Request $request)
+    {
         $request->validate([
-            'id_adqui' => 'required|numeric',
-            'id_concepto_valor' => 'required|numeric',
-            'cantidad' => 'required|numeric',
-            'correlativo_ini' => 'required|numeric',
-            'correlativo_final' => 'required|numeric',
-            'serie' => 'required|string|max:25',
-            'monto' => 'required|numeric',
-            'costonuevo' => 'required|numeric',
-            'cantidadnuevo' => 'required|numeric'
-        ]);    
-    
-       
-        $valor = new Model_adquisicion_detalle();
-        $valor->id_adquisicion_valores = $request->id_adqui;
-        $valor->id_concepto_valores = $request->id_concepto_valor;
-        $valor->cantidad = $request->cantidad;
-        $valor->correlativo_ini = $request->correlativo_ini;
-        $valor->correlativo_fin = $request->correlativo_final;
-        $valor->serie = $request->serie;
-        $valor->costo = $request->monto;
-        $valor->monto_saldo = $request->costonuevo;
-        $valor->cantidad_saldo = $request->cantidadnuevo;
-        $valor->estado = 1; 
-        $valor->uuid = \Str::uuid()->toString();
-        $valor->save();
-
-        $stock = Model_b_valores_stock::where('id_concepto_valor', $request->id_concepto_valor)->first();
-
-            if ($stock) {
-                // Si ya existe el stock, actualizar los valores
-                if ($stock->correlativo_inicial == 0) {
-                    $stock->correlativo_inicial += 1;
+            'fecha_adquisicion' => 'required|date',
+            'proveedor_adquisicion' => 'required|numeric',
+            'cantidad_detalles' => 'required|numeric',
+        ]);
+            $solicitud = new Model_adquisicion();
+            $solicitud->id_proveedor = $request->proveedor_adquisicion;
+            $solicitud->id_user = auth()->id();
+            $solicitud->fecha_adquisicion = $request->fecha_adquisicion;
+            $solicitud->cantidad_registros = $request->cantidad_detalles;
+            $solicitud->estado = 1;
+            $solicitud->uuid = \Str::uuid()->toString();
+            $solicitud->save();
+            foreach ($request->detalles as $detalle) {
+                $detalleSolicitud = new Model_adquisicion_detalle();
+                $detalleSolicitud->id_adquisicion_valores = $solicitud->id;
+                $detalleSolicitud->id_concepto_valores = $detalle['id_concepto_valor'];
+                $detalleSolicitud->cantidad = $detalle['cantidad'];
+                $detalleSolicitud->correlativo_ini = $detalle['correlativoIni'];
+                $detalleSolicitud->correlativo_fin = $detalle['correlativoFin'];
+                $detalleSolicitud->serie = "A";
+                $detalleSolicitud->costo = $detalle['costoTotales'];
+                $detalleSolicitud->monto_saldo = $detalle['montoSaldos'];
+                $detalleSolicitud->cantidad_saldo = $detalle['cantidadSaldos'];
+                $detalleSolicitud->estado = 1;
+                $detalleSolicitud->uuid = \Str::uuid()->toString();
+                $detalleSolicitud->save();
+                $stock = Model_b_valores_stock::where('id_concepto_valor', $detalle['id_concepto_valor'])->first();       
+                if ($stock) {
+                    if ($stock->correlativo_inicial == 0) {
+                        $stock->correlativo_inicial = $detalle['correlativoIni'];
+                    }
+                    $stock->cantidad += $detalle['cantidad'];
+                    $stock->correlativo_final = $detalle['correlativoFin'];
+                    $stock->costo += $detalle['costoTotales'];
+                    $stock->serie = "A";
+                    $stock->save();
+                } else {
+                    return response()->json(['error' => 'No existe el valor en la tabla de stock para el concepto: ' . $detalle['id_concepto_valor']], 400);
                 }
-                $stock->cantidad += $request->cantidad;
-                $stock->correlativo_final = $request->correlativo_final;
-                $stock->costo += $request->monto;
-                $stock->serie = $request->serie;
-                $stock->save();
-                
-                return response()->json(['success' => true]);
-            } else {
-               
-                return response()->json(['success' => false, 'message' => 'No se encontró el valor de stock. No se creará un nuevo registro.']);
             }
+            return response()->json(['success' => true]);
         }
+        
+
     //****ESTA FUNCIÓN PERMITE REGISTRAR UN NUEVO CONCEPTO_VALOR EN MI BD ***********/
     public function guardar_ingreso_valores(Request $request)
     {
@@ -362,45 +365,41 @@ class bodegaController extends Controller
         return $pdf->stream('Rep_valores_entregados.pdf');
     }
    
-  public function obtenerDatosCompletos($id)
+    public function obtenerDatosCompletos($id)
     {
-      
-        $valorStock = DB::table('b_valores_stock')
-                        ->where('id_concepto_valor', $id)
-                        ->first();
-
-      
-        $conceptoValor = DB::table('concepto_valores')
-                            ->where('id', $id)
-                            ->first();
-
-       
-        $valorStockVentilla = DB::table('valores_stock')
-                                ->where('id_concepto_valor', $id)
-                                ->first();
-
-        
-        if ($valorStock && $conceptoValor && $valorStockVentilla) {
-            return response()->json([
-                'correlativo_inicial' => $valorStock->correlativo_inicial,
-                'costo' => $valorStock->costo, 
-                'cantidad' => $valorStock->cantidad,
-                'precio_unitario' => $conceptoValor->precio_unitario,
-                'costo_ventilla' => $valorStockVentilla->costo,
-                'cantidad_ventilla' => $valorStockVentilla->cantidad
+        $data = DB::table('concepto_valores')
+            ->join('b_valores_stock', 'b_valores_stock.id_concepto_valor', '=', 'concepto_valores.id')
+            ->join('valores_stock', 'valores_stock.id_concepto_valor', '=', 'concepto_valores.id')
+            ->where('concepto_valores.estado', 1)
+            ->where('concepto_valores.id', $id)
+            ->first([
+                'b_valores_stock.correlativo_inicial',
+                'b_valores_stock.correlativo_final',
+                'b_valores_stock.costo',
+                'b_valores_stock.cantidad',
+                'concepto_valores.precio_unitario',
+                'valores_stock.costo AS costo_ventilla',
+                'valores_stock.cantidad AS cantidad_ventilla'
             ]);
+    
+        if ($data) {
+            return response()->json([
+                'correlativo_inicial' => $data->correlativo_inicial == 0 ? 1 : $data->correlativo_inicial,
+                'costo' => $data->costo, 
+                'cantidad' => $data->cantidad,
+                'precio_unitario' => $data->precio_unitario,
+                'costo_ventilla' => $data->costo_ventilla,
+                'cantidad_ventilla' => $data->cantidad_ventilla,
+                'correlativo_final' => $data->correlativo_final == 0 ? 1 : $data->correlativo_final
+            ]);
+             
         } else {
             return response()->json([
-                'correlativo_inicial' => 0,
-                'costo' => 0,
-                'cantidad' => 0,
-                'precio_unitario' => 0,
-                'costo_ventilla' => 0, 
-                'cantidad_ventilla' => 0
+                'error' => 'No se obtuvo el tipo de documento'
             ]);
         }
     }
-
+    
 
     public function verificarStock($idConcepto)
     {

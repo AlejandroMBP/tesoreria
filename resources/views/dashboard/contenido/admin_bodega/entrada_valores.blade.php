@@ -69,54 +69,38 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0 text-uppercase">Administración de valores universitarios</h6>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-inverse-success px-5" data-bs-toggle="modal" data-bs-target="#crearAdquiModal"><i class="bi bi-plus-square"> </i>Crear nuevo usuario</button>       
+                     
+                    <a href="{{ route('formulario_entradaValores') }}" class="btn btn-inverse-success px-5">Registrar adquisición de valores</a>     
                 </div>
             </div>
             <hr>
             <div class="card">
-                <div class="card-body">
-                    <ul class="nav nav-tabs nav-success" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" data-bs-toggle="pill" href="#tabEntLista" role="tab" aria-selected="true">
-                                <div class="d-flex align-items-center">
-                                    <div class="tab-icon"><i class="bi bi-person me-1 fs-6"></i></div>
-                                    <div class="tab-title">Lista de adquisiciones</div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- **** Contenido de las pestañas **** -->
-                    <div class="tab-pane fade show active" id="tabEntLista" role="tabpanel">
-                        <div class="table-responsive">
-                            <table id="tablaListaAdquisiciones" class="table table-bordered dt-responsive nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Fecha adquisición</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($lista_adquisiciones as $adquisiciones)
-                                        <tr>
-                                            <td>{{ $adquisiciones->id }}</td>
-                                            <td>{{ $adquisiciones->fecha_adquisicion }}</td>
-                                            <td>
-                                                <button class="btnEliminar btn btn-danger btn-sm">Eliminar</button>
-                                                
-                                                <a href="{{ route('registrar_entrada', [$adquisiciones->id]) }}"
-                                                    class="btn btn-sm d-inline-flex align-items-center justify-content-center"
-                                                    style="background-color: #95C11E; color: #080C29; border-color: #95C11E; gap: 5px; text-decoration: none;">
-                                                        Realizar registro
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="card-body">      
+                    <div class="table-responsive">
+                        <table id="tablaListaAdquisiciones" class="table table-bordered dt-responsive nowrap">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha adquisición</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($lista_adquisiciones as $adquisiciones)
+                                <tr>
+                                    <td>{{ $adquisiciones->id }}</td>
+                                    <td>{{ $adquisiciones->fecha_adquisicion }}</td>
+                                    <td>
+                                        <a href="{{ url('generar_pdf_solicitud') }}"  target="_blank">
+                                            <button class="btn btn-warning btn-sm">IMPRIMIR SOLICITUD</button>
+                                        </a>
+                                    </td>  
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </main>
@@ -124,7 +108,7 @@
 @endsection
 
 <!-- Modal -->
-<div class="modal fade" id="crearAdquiModal" tabindex="-1" aria-labelledby="crearAdquiModalLabel" >
+<!-- <div class="modal fade" id="crearAdquiModal" tabindex="-1" aria-labelledby="crearAdquiModalLabel" >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header border-bottom-0 bg-primary py-2">
@@ -153,12 +137,21 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 @push('scripts')
 <script>
+    //********************Script tabla lista adquisiones********************************
+        $('#tablaListaAdquisiciones').DataTable({
+    responsive: true,
+    paging: true,
+    searching: true,
+    language: {
+        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+    }
+});
 //**************SCRIPT PARA OBTENER LA FECHA DE HOY ********************************* */
-document.addEventListener("DOMContentLoaded", function () {
+/*document.addEventListener("DOMContentLoaded", function () {
         let fechaInput = document.getElementById("fecha");
         let hoy = new Date().toISOString().split('T')[0]; 
         fechaInput.value = hoy;
@@ -175,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     //********************Script guardar adquisiones********************************
-    document.addEventListener('DOMContentLoaded', function () {
+   /* document.addEventListener('DOMContentLoaded', function () {
   
   const btnGuardarAdquisicion = document.getElementById('btnGuardarAdquisicion');
 
@@ -232,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
       });
   });
-});
+});*/
 
 
 </script>

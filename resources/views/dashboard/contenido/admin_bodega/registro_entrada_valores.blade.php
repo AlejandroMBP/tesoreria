@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-md-6">
                                 <form id="form_guardar_valoruni">
-                                    <input type="hidden" name="id_adquisicion" id ="id_adquisicion" value="{{ $adquisicion->id }}">   
+                                      
                                     <input type="hidden" name="id_concepto_valor" id="id_concepto_valor">                      
                                     <input type="hidden" id="precio_unitario">
                                     <input type="hidden" id="costo">

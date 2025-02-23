@@ -13,6 +13,7 @@
     <link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet">
     <script src="{{ asset('assets/js/pace.min.js') }}"></script>
 
+
     <!--plugins-->
     <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/metismenu/metisMenu.min.css') }}">
@@ -22,6 +23,9 @@
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
+    <!-- Incluir Font Awesome desde su CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <!--main css-->
     <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet">
     <link href="{{ asset('sass/main.css') }}" rel="stylesheet">
@@ -30,6 +34,7 @@
     <link href="{{ asset('sass/semi-dark.css') }}" rel="stylesheet">
     <link href="{{ asset('sass/semi-dark.css') }}" rel="stylesheet">
     <link href="{{ asset('sass/responsive.css') }}" rel="stylesheet">
+
     <!-- SweetAlert2 CSS -->
     <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

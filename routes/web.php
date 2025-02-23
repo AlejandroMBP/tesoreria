@@ -81,11 +81,12 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])
         Route::post('/guardar_adquisicion', [bodegaController::class, 'guardar_adqui']);
         Route::post('/guardar_adqui_detalle', [bodegaController::class, 'guardarEntradaDetalle']);
 
-        Route::get('/registrar_entrada/{id}', [bodegaController::class, 'registrarEntrada'])->name('registrar_entrada');
-       
+        //Route::get('/registrar_entrada/{id}', [bodegaController::class, 'registrarEntrada'])->name('registrar_entrada');
+        Route::get('/registrar_entrada', [bodegaController::class, 'registrarEntrada'])->name('registrar_entradas');
+        Route::get('/formulario_entrada_valores', [bodegaController::class, 'form_entrada_valores'])->name('formulario_entradaValores');
         //Route::get('/obtener-costo/{id}', [bodegaController::class, 'obtenerCosto']);
         Route::get('/verificar-stock/{idConcepto}', [bodegaController::class, 'verificarStock']);
-   
+        Route::post('/guardarAdquis', [bodegaController::class, 'guardarAdquisiciones'])->name('guardaradquis');
 
       
 
