@@ -1,0 +1,51 @@
+/* Estilos para la tabla de detalles */
+.tabla-detalles-container {
+    font-size: 16px; 
+    margin-bottom: 15px;
+    padding: 10px; 
+    background-color: #f1f5f9; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tabla-detalles-container .fecha-proveedor {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.tabla-detalles {
+    width: 100%; 
+    border-collapse: collapse; 
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-detalles thead {
+    background-color: #0b0c2a; 
+    color: white; 
+    text-align: left;
+}
+
+.tabla-detalles th {
+    padding: 8px; 
+    border-bottom: 2px solid #3b82f6;
+}
+
+.tabla-detalles tbody tr {
+    background-color: #f8f9fa; 
+    transition: background-color 0.3s ease;
+}
+
+.tabla-detalles td {
+    padding: 10px; 
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-detalles tbody tr:hover {
+    background-color: #dbeafe !important;
+}
+.custom-icon {
+    font-size: 10px; /* Ajusta el tamaño del icono según lo que necesites */
+}

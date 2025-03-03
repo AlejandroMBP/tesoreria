@@ -12,6 +12,7 @@
     <!-- loader -->
     <link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet">
     <script src="{{ asset('assets/js/pace.min.js') }}"></script>
+    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
 
 
     <!--plugins-->
@@ -21,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}">
     <!--bootstrap css-->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
     <!-- Incluir Font Awesome desde su CDN -->

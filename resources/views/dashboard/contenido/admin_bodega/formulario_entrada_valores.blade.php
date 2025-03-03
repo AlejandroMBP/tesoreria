@@ -43,9 +43,9 @@
                             <div id="dynamicInputs">
                                 <div class="row g-3">
                                 <div class="col-md-3">
-                                    <label for="id_concepto_valor_0" class="form-label">Concepto Valor</label>
+                                    <label for="id_concepto_valor_0" class="form-label">Tipo documento</label>
                                     <select class="form-control form-control-sm input-reducido" name="id_concepto_valor[]" id="id_concepto_valor_0">
-                                        <option value="">Seleccione un concepto valor</option>
+                                        <option value="">Seleccione un Tipo documento</option>
                                         @foreach ($conceptos as $concepto)
                                             <option value="{{ $concepto->id }}">{{ $concepto->nombre }}</option> 
                                         @endforeach
@@ -57,24 +57,24 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label for="correlativo_inicial_0" class="form-label">Correlativo inicial</label>
-                                    <input type="number" class="form-control form-control-sm input-reducido" name="correlativo_inicial[]" id="correlativo_inicial_0" placeholder="Inicial">
+                                    <input type="number" class="form-control form-control-sm input-reducido" name="correlativo_inicial[]" id="correlativo_inicial_0" placeholder="Inicial" readonly>
                                 </div>
                                 <div class="col-md-2">
                                     <label for="correlativo_final_0" class="form-label">Correlativo final</label>
-                                    <input type="number" class="form-control form-control-sm input-reducido" name="correlativo_final[]" id="correlativo_final_0" placeholder="Final">
+                                    <input type="number" class="form-control form-control-sm input-reducido" name="correlativo_final[]" id="correlativo_final_0" placeholder="Final" readonly>
                                 </div>
                                 <div class="col-md-2">
-                                    <label for="costototal_0" class="form-label">Costo Total</label>
-                                    <input type="number" class="form-control form-control-sm input-reducido" name="costototal[]" id="costototal_0" placeholder="Costo">
+                                    <label for="costototal_0" class="form-label">Costo Total (Bs.)</label>
+                                    <input type="number" class="form-control form-control-sm input-reducido" name="costototal[]" id="costototal_0" placeholder="Costo" readonly>
                                 </div>
                                 <div class="col-md-2 d-none">
-                                    <label for="monto_saldo_0" class="form-label">Costo Total</label>
-                                    <input type="number" class="form-control form-control-sm input-reducido" name="monto_saldo[]" id="monto_saldo_0">
+                                    <label for="monto_saldo_0" class="form-label">Monto Total</label>
+                                    <input type="number" class="form-control form-control-sm input-reducido" name="monto_saldo[]" id="monto_saldo_0" readonly>
                                 </div>
 
                                 <div class="col-md-2 d-none">
-                                    <label for="cantidad_saldo_0" class="form-label">Costo Total</label>
-                                    <input type="number" class="form-control form-control-sm input-reducido" name="cantidad_saldo[]" id="cantidad_saldo_0">
+                                    <label for="cantidad_saldo_0" class="form-label">Cantidad Total</label>
+                                    <input type="number" class="form-control form-control-sm input-reducido" name="cantidad_saldo[]" id="cantidad_saldo_0" readonly>
                                 </div>
                                 <div class="col-md-1 d-flex align-items-center">
                                     <!-- Botón de eliminar con ícono de basurero -->
@@ -163,6 +163,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Agregar la nueva fila al contenedor
         dynamicInputs.appendChild(newRow);
 
+        newRow.querySelectorAll('input[readonly]').forEach(input => {
+            input.addEventListener('keydown', function (e) {
+                e.preventDefault(); // Bloquea la edición manual
+            });
+        });
         // Incrementar el contador para la siguiente fila
         counter++;
 
@@ -231,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!fecha || !proveedor) {
             Swal.fire({
                 title: "Error",
-                text: "Todos los campos son obligatorios.",
+                text: "El campo de proveedor debe ser llenado!",
                 icon: "error",
                 confirmButtonText: "OK"
             });
@@ -248,12 +253,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const detalles = [];
         let camposVacios = false;
+        let tiposDocumentos = []; // Array para los tipos de documento
+
         for (let i = 0; i < idConceptoValor.length; i++) {
+            const tipoDocumento = idConceptoValor[i].value;
+
+            // Verifica si el tipo de documento ya existe en el array
+            if (tiposDocumentos.includes(tipoDocumento)) {
+                Swal.fire({
+                    title: "Error",
+                    text: "No puedes agregar el mismo tipo de documento más de una vez.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+                return;
+            }
+
+            // Si no existe, lo agrega al array para la validación futura
+            tiposDocumentos.push(tipoDocumento);
+
+            // Validación de los demás campos
             if (!idConceptoValor[i].value || !cantidades[i].value || !correlativoInicial[i].value || !correlativoFinal[i].value || !costosTotal[i].value || !montosSaldo[i].value || !cantidadesSaldo[i].value) {
                 camposVacios = true;
                 break;
             }
-            // Validación de correlativo inicial y final, el final debe ser mayor o igual al inicial
+            
+            // Validación de correlativo inicial y final
             if (parseInt(correlativoFinal[i].value) < parseInt(correlativoInicial[i].value)) {
                 Swal.fire({
                     title: "Error",
@@ -263,6 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 return;
             }
+
             const conceptoNombre = idConceptoValor[i].options[idConceptoValor[i].selectedIndex].text;
             detalles.push({
                 id_concepto_valor: idConceptoValor[i].value,
@@ -286,31 +312,36 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Crear una tabla HTML para mostrar los detalles
-        let tablaDetalles = '<table style="width:100%; border-collapse: collapse; border: 1px solid #ddd; font-size: 14px;">';
-        tablaDetalles += '<thead style="background-color:rgb(30, 13, 126); color: white;">';
+        let tablaDetalles = '<div class="tabla-detalles-container">';
+
+        tablaDetalles += '<div class="fecha-proveedor">';
+        tablaDetalles += `<strong>Fecha de adquisición:</strong> ${fecha} <br>`;
+        tablaDetalles += `<strong>Proveedor:</strong> ${proveedor}`;
+        tablaDetalles += '</div>';
+
+        tablaDetalles += '<table class="tabla-detalles">';
+        tablaDetalles += '<thead>';
         tablaDetalles += '<tr>';
-        tablaDetalles += '<th style="padding: 8px; text-align: left;">Tipo documento</th>';
-        tablaDetalles += '<th style="padding: 8px; text-align: left;">Cantidad (unidades)</th>';
-        tablaDetalles += '<th style="padding: 8px; text-align: left;">Correlativo (Inicial)</th>';
-        tablaDetalles += '<th style="padding: 8px; text-align: left;">Correlativo (Final)</th>';
-        tablaDetalles += '<th style="padding: 8px; text-align: left;">Costo Total (Bs.)</th>';
-       
+        tablaDetalles += '<th>Tipo documento</th>';
+        tablaDetalles += '<th>Cantidad (unidades)</th>';
+        tablaDetalles += '<th>Correlativo (Inicial)</th>';
+        tablaDetalles += '<th>Correlativo (Final)</th>';
+        tablaDetalles += '<th>Costo Total (Bs.)</th>';
         tablaDetalles += '</tr>';
         tablaDetalles += '</thead><tbody>';
 
         detalles.forEach(detalle => {
             tablaDetalles += '<tr>';
-            tablaDetalles += `<td style="padding: 8px; text-align: left;">${detalle.concepto_nombre}</td>`;
-            tablaDetalles += `<td style="padding: 8px; text-align: left;">${detalle.cantidad}</td>`;
-            tablaDetalles += `<td style="padding: 8px; text-align: left;">${detalle.correlativoIni}</td>`;
-            tablaDetalles += `<td style="padding: 8px; text-align: left;">${detalle.correlativoFin}</td>`;
-            tablaDetalles += `<td style="padding: 8px; text-align: left;">${detalle.costoTotales}</td>`;
-           
+            tablaDetalles += `<td>${detalle.concepto_nombre}</td>`;
+            tablaDetalles += `<td>${detalle.cantidad}</td>`;
+            tablaDetalles += `<td>${detalle.correlativoIni}</td>`;
+            tablaDetalles += `<td>${detalle.correlativoFin}</td>`;
+            tablaDetalles += `<td>${detalle.costoTotales}</td>`;
             tablaDetalles += '</tr>';
         });
 
         tablaDetalles += '</tbody></table>';
+        tablaDetalles += '</div>';
 
         // Confirmación antes de guardar con tabla de vista previa
         Swal.fire({
@@ -321,6 +352,9 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonText: "Sí, guardar",
             cancelButtonText: "No, cancelar",
             reverseButtons: true,
+            customClass: {
+            icon: 'custom-icon'  
+         },
             html: `
                 <p><strong>Datos a guardar:</strong></p>
                 <div style="max-height: 400px; overflow-y: auto;">${tablaDetalles}</div>
@@ -375,6 +409,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const btnCancelar = document.querySelector('[data-bs-dismiss="modal"]'); // Selecciona el botón cancelar

@@ -237,6 +237,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        
                                     @foreach($proveedores_inactivos as $proveedores)
                                         <tr>
                                             <td>{{ $proveedores->id }}</td>

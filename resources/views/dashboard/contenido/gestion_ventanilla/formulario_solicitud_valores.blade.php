@@ -92,7 +92,7 @@
             newRow.className = 'row g-3 mt-2';
             newRow.innerHTML = `
             <div class="col-md-6">
-                <label for="id_concepto_valor_${counter}" class="form-label">ID Concepto Valor</label>
+                
                 <select class="form-control" name="id_concepto_valor[]" id="id_concepto_valor_${counter}">
                 <option value="">Seleccione un concepto valor</option>
                 @foreach ($conceptos as $concepto)
@@ -101,7 +101,7 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label for="cantidad_${counter}" class="form-label">Cantidad</label>
+               
                 <input type="number" class="form-control" name="cantidad[]" id="cantidad_${counter}" placeholder="Ingrese la cantidad">
             </div>
             `;
@@ -201,8 +201,5 @@
             });
         });
         });
-
-
-
     </script>
 @endpush

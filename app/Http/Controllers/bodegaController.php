@@ -68,7 +68,7 @@ class bodegaController extends Controller
     {
         $valores_univ = Model_bodega::find($id);
         if ($valores_univ) {
-            $valores_univ->estado = 3;  
+            $valores_univ->estado = 2;  
             $valores_univ->save();
             return response()->json(['success' => true]);
         }
@@ -242,7 +242,7 @@ class bodegaController extends Controller
         return view('dashboard.contenido.admin_bodega.entrada_valores',compact('lista_adquisiciones'));
     }
     //**ESTA FUNCIÓN ME PERMITE GUARDAR UNA NUEVA FECHA DE ADQUSICIÓN EN MI TABLA ADQUISICION_VALORES***
-    public function guardar_adqui(Request $request)
+    /*public function guardar_adqui(Request $request)
     {
         $request->validate([
             'fecha' => 'required|string|max:255',
@@ -252,7 +252,7 @@ class bodegaController extends Controller
         $valor->uuid = \Str::uuid()->toString();
         $valor->save();
         return response()->json(['success' => true]);
-    }    
+    }    */
     //******ESTA FUNCIÓN ME PERMITE DIRIGIRME A MI VISTA DONDE SE ENCUENTRA REGISTRAR UNA ADQUISICIÓN A PARTIR DEL ID DE LA TABLA ADQUISICIÓN_VALORES *******/
     public function registrarEntrada()
     {
@@ -507,52 +507,84 @@ class bodegaController extends Controller
         return response()->json(['success' => true]);
         
     }
-    
-    public function reporte_valores_bodega()
+
+    public function reporte_valores_bodega(Request $request)
     {
         $conceptos = \App\Models\Model_bodega::all();
+    
+        // Ejecutar la consulta SQL directamente
         $consulta = DB::select('
-           (
-                SELECT 
-                    "ENTRADA" AS tipo_movimiento,
-                    cv.nombre AS tipo_documento,
-                    cv.precio_unitario,
-                    avd.cantidad AS cantidad_entrada,
-                    avd.correlativo_ini AS correlativo_ini_entrada,
-                    avd.correlativo_fin AS correlativo_fin_entrada,
-                    NULL AS cantidad_salida,
-                    NULL AS correlativo_ini_salida,
-                    NULL AS correlativo_fin_salida,
-                    (cv.precio_unitario * avd.cantidad) AS costo,
-                    avd.monto,
-                    avd.estado AS observacion,
-                    avd.created_at AS fecha_creacion
-                FROM adquisicion_valores_detalle avd
-                INNER JOIN concepto_valores cv ON avd.id_concepto_valores = cv.id
-            )
-            UNION
-            (
-                SELECT 
-                    "SALIDA" AS tipo_movimiento,
-                    cv.nombre AS tipo_documento,
-                    cv.precio_unitario,
-                    NULL AS cantidad_entrada,
-                    NULL AS correlativo_ini_entrada,
-                    NULL AS correlativo_fin_entrada,
-                    rsd.cantidad AS cantidad_salida,
-                    rsd.correlativo_inicial AS correlativo_ini_salida,
-                    rsd.correlativo_final AS correlativo_fin_salida,
-                    (cv.precio_unitario * rsd.cantidad) AS costo,
-                    NULL AS monto,
-                    rsd.estado AS observacion,
-                    rsd.created_at AS fecha_creacion
-                FROM respuesta_solicitud_detalle rsd
-                INNER JOIN concepto_valores cv ON rsd.id_concepto_valores = cv.id
-            )
-            ORDER BY fecha_creacion ASC;
-        ');
-        return view('dashboard.contenido.admin_bodega.reporte_valores_bodega', compact('consulta','conceptos'));
+        (
+            SELECT 
+                "ENTRADA" AS tipo_movimiento,
+                cv.nombre AS tipo_documento,
+                cv.precio_unitario,
+                avd.cantidad AS cantidad_entrada,
+                avd.correlativo_ini AS correlativo_ini_entrada,
+                avd.correlativo_fin AS correlativo_fin_entrada,
+                NULL AS cantidad_salida,
+                NULL AS correlativo_ini_salida,
+                NULL AS correlativo_fin_salida,
+                avd.costo,
+                avd.monto_saldo AS monto,
+                avd.cantidad_saldo AS cantidad_saldos, 
+                "Compra Gestión" AS observacion,
+                avd.created_at AS fecha_creacion
+            FROM adquisicion_valores_detalle avd
+            INNER JOIN concepto_valores cv ON avd.id_concepto_valores = cv.id
+        )
+        UNION
+        (
+            SELECT 
+                "SALIDA" AS tipo_movimiento,
+                cv.nombre AS tipo_documento,
+                cv.precio_unitario,
+                NULL AS cantidad_entrada,
+                NULL AS correlativo_ini_entrada,
+                NULL AS correlativo_fin_entrada,
+                rsd.cantidad AS cantidad_salida,
+                rsd.correlativo_inicial AS correlativo_ini_salida,
+                rsd.correlativo_final AS correlativo_fin_salida,
+                rsd.costo,
+                rsd.monto_saldo_salida AS monto,
+                rsd.cantidad_saldo_salida AS cantidad_saldos,
+                "-" AS observacion,
+                rsd.created_at AS fecha_creacion
+            FROM respuesta_solicitud_detalle rsd
+            INNER JOIN concepto_valores cv ON rsd.id_concepto_valores = cv.id
+        )
+        ORDER BY fecha_creacion DESC;
+    ');
+    
+        $consulta = collect($consulta);
+
+        if ($request->filled('año') && $request->año !== 'ninguno') {
+            $consulta = $consulta->filter(function ($item) use ($request) {
+                return $item->fecha_creacion && \Carbon\Carbon::parse($item->fecha_creacion)->year == $request->año;
+            });
+        }
+
+        if ($request->filled('mes') && $request->mes !== 'ninguno') {
+            $consulta = $consulta->filter(function ($item) use ($request) {
+                return $item->fecha_creacion && \Carbon\Carbon::parse($item->fecha_creacion)->month == $request->mes;
+            });
+        }
+ 
+        if ($request->filled('tipo_documento') && $request->tipo_documento !== 'ninguno') {
+            $consulta = $consulta->filter(function ($item) use ($request) {
+                return $item->tipo_documento == $request->tipo_documento;
+            });
+        }
+    
+
+        if ($request->ajax()) {
+            return response()->json(['consulta' => $consulta]);
+        }
+    
+        return view('dashboard.contenido.admin_bodega.reporte_valores_bodega', compact('consulta', 'conceptos'));
     }
+    
+    
     public function generatePDFreporte()
     {
         $pdf = \PDF::loadView('dashboard.contenido.admin_bodega.reporte_pdf');

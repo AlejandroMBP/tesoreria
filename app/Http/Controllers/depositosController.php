@@ -20,24 +20,39 @@ class depositosController extends Controller
     }
     //*********************CONCEPTOS******************************
     public function conceptos(){
-        $conceptos_activos = DB::table('concepto')->where('estadoConcepto', 1)->get();
-        $conceptos_inactivos = DB::table('concepto')->where('estadoConcepto', 0)->get();
-        return view('dashboard.contenido.gestion_depositos.conceptos', compact('conceptos_activos', 'conceptos_inactivos'));
+        $conceptos_activos = DB::table('concepto')
+    ->join('unidad_movimiento as um', 'concepto.unidadMovimiento_id', '=', 'um.id')
+    ->join('tipo_concepto as tc', 'concepto.id_tipo', '=', 'tc.id')
+    ->where('concepto.estadoConcepto', 1)
+    ->select('um.descripcion as unidad_movimiento', 'tc.descripcion as tipo_concepto', 'concepto.id','concepto.concepto', 'concepto.montoMinimo', 'concepto.tipoNacionalidad')
+    ->get();
+    $conceptos_inactivos = DB::table('concepto')
+    ->join('unidad_movimiento as um', 'concepto.unidadMovimiento_id', '=', 'um.id')
+    ->join('tipo_concepto as tc', 'concepto.id_tipo', '=', 'tc.id')
+    ->where('concepto.estadoConcepto', 0)
+    ->select('um.descripcion as unidad_movimiento', 'tc.descripcion as tipo_concepto', 'concepto.id','concepto.concepto', 'concepto.montoMinimo', 'concepto.tipoNacionalidad')
+    ->get();
+        $tipoConcepto = DB::table('tipo_concepto')->where('estado', 1)->get();
+        $UnidadInvolucrada = DB::table('unidad_movimiento')->where('estado', 1)->get();
+        return view('dashboard.contenido.gestion_depositos.conceptos', compact('conceptos_activos', 'conceptos_inactivos','tipoConcepto','UnidadInvolucrada'));
     }
     public function guardarConceptos(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio_unitario' => 'required|numeric',
+            'unidad_movimiento' => 'required|numeric',
+            'tipo_nacionalidad' => 'required|numeric',
+            'tipo_concepto' => 'required|numeric',
         ]);
         $valor = new Model_concepto();
         $valor->concepto = $request->nombre;
         $valor->montoMinimo = $request->precio_unitario;
-        $valor->tipoNacionalidad = 1 ; 
+        $valor->tipoNacionalidad = $request->tipo_nacionalidad;
         $valor->estadoConcepto = 1; 
-        $valor->unidadMovimiento_id = 1; 
+        $valor->unidadMovimiento_id = $request->unidad_movimiento;
         $valor->id_usuario = auth()->id();
-        $valor->id_tipo = 1; 
+        $valor->id_tipo = $request->tipo_concepto;
         $valor->uuid = \Str::uuid()->toString();
         $valor->save();
         
@@ -46,10 +61,10 @@ class depositosController extends Controller
     
     public function inactivarConceptos($id)
     {
-        $valores_univ = Model_concepto::find($id);
-        if ($valores_univ) {
-            $valores_univ->estadoConcepto = 0;  
-            $valores_univ->save();
+        $concepto_univ = Model_concepto::find($id);
+        if ($concepto_univ) {
+            $concepto_univ->estadoConcepto = 0;  
+            $concepto_univ->save();
             return response()->json(['success' => true]);
             }
             return response()->json(['success' => false, 'message' => 'Concepto no encontrado'], 404);
@@ -57,14 +72,58 @@ class depositosController extends Controller
     
     public function activarConceptos($id)
     {
-        $valores_univ = Model_concepto::find($id);
-        if ($valores_univ) {
-            $valores_univ->estadoConcepto = 1;  
-            $valores_univ->save();
+        $concepto_univ = Model_concepto::find($id);
+        if ($concepto_univ) {
+            $concepto_univ->estadoConcepto = 1;  
+            $concepto_univ->save();
             return response()->json(['success' => true]);
         }
         return response()->json(['success' => false, 'message' => 'Concepto no encontrado'], 404);
     }
+    public function eliminarConceptos($id)
+    {
+        $concepto_univ = Model_concepto::find($id);
+        if ($concepto_univ) {
+            $concepto_univ->estadoConcepto = 2;  
+            $concepto_univ->save();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false, 'message' => 'Concepto no encontrado'], 404);
+    }
+    //**************FUNCION PARA OBTENER concepto VALOR ********************
+    public function obtenerConcepto(Request $request)
+    {
+        $valor = Model_concepto::find($request->id);
+        if ($valor) {
+            return response()->json($valor);
+        }
+        return response()->json(['error' => 'Registro no encontrado'], 404);
+    }
+    public function actualizarConcepto(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:concepto,id',
+            'tipoConcepto' => 'required|numeric|min:0',
+            'unidad_movimiento' => 'required|numeric',
+            'tipoNacionalidad' => 'required|string|max:255',
+            'nombre_concepto' => 'required|string|max:255',
+            'monto' => 'required|numeric|min:0',
+        ]);
+
+        $valor = Model_concepto::find($request->id);
+        if ($valor) {
+            $valor->update([
+                'id_tipo' => $request->tipoConcepto,
+                'unidadMovimiento_id' => $request->unidad_movimiento,
+                'tipoNacionalidad' => $request->tipoNacionalidad,
+                'concepto' => $request->nombre_concepto,
+                'montoMinimo' => $request->monto,
+            ]);
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['error' => 'No se pudo actualizar'], 500);
+    }
+
     
     //*********************MULTIBOLETAS***************************
     public function multiboletas(){
